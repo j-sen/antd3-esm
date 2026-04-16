@@ -1,0 +1,44 @@
+import { l as locale, j as locale$1, k as Pagination } from '../../../config-provider.js';
+import 'react';
+
+var ne_NP = {
+  locale: 'ne-np',
+  Pagination: Pagination,
+  DatePicker: locale,
+  TimePicker: locale$1,
+  Calendar: locale,
+  Table: {
+    filterTitle: 'फिल्टर मेनु',
+    filterConfirm: 'हो',
+    filterReset: 'रीसेट',
+    selectAll: 'सबै छान्नुुहोस्',
+    selectInvert: 'छनौट उल्टाउनुहोस'
+  },
+  Modal: {
+    okText: 'हो',
+    cancelText: 'होईन',
+    justOkText: 'हो'
+  },
+  Popconfirm: {
+    okText: 'हो',
+    cancelText: 'होईन'
+  },
+  Transfer: {
+    titles: ['', ''],
+    searchPlaceholder: 'यहाँ खोज्नुहोस्',
+    itemUnit: 'वस्तु',
+    itemsUnit: 'वस्तुहरू'
+  },
+  Upload: {
+    uploading: 'अपलोड गर्दै...',
+    removeFile: 'फाइल हटाउनुहोस्',
+    uploadError: 'अप्लोडमा समस्या भयो',
+    previewFile: 'फाइल पूर्वावलोकन गर्नुहोस्',
+    downloadFile: 'डाउनलोड फाइल'
+  },
+  Empty: {
+    description: 'डाटा छैन'
+  }
+};
+
+export { ne_NP as default };

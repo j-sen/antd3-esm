@@ -1,0 +1,14 @@
+import { n } from '../../config-provider.js';
+import { L as Layout, S as Sider } from '../../Sider.js';
+import 'react';
+import '../../menu.js';
+import 'react-dom';
+import '../../icon.js';
+import '../../input.js';
+
+var css = "/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */\n/* stylelint-disable no-duplicate-selectors */\n/* stylelint-disable */\n/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */\n.ant-layout {\n  display: flex;\n  flex: auto;\n  flex-direction: column;\n  /* fix firefox can't set height smaller than content on flex item */\n  min-height: 0;\n  background: #f0f2f5;\n}\n.ant-layout,\n.ant-layout * {\n  box-sizing: border-box;\n}\n.ant-layout.ant-layout-has-sider {\n  flex-direction: row;\n}\n.ant-layout.ant-layout-has-sider > .ant-layout,\n.ant-layout.ant-layout-has-sider > .ant-layout-content {\n  overflow-x: hidden;\n}\n.ant-layout-header,\n.ant-layout-footer {\n  flex: 0 0 auto;\n}\n.ant-layout-header {\n  height: 64px;\n  padding: 0 50px;\n  line-height: 64px;\n  background: #001529;\n}\n.ant-layout-footer {\n  padding: 24px 50px;\n  color: rgba(0, 0, 0, 0.65);\n  font-size: 14px;\n  background: #f0f2f5;\n}\n.ant-layout-content {\n  flex: auto;\n  /* fix firefox can't set height smaller than content on flex item */\n  min-height: 0;\n}\n.ant-layout-sider {\n  position: relative;\n  /* fix firefox can't set width smaller than content on flex item */\n  min-width: 0;\n  background: #001529;\n  transition: all 0.2s;\n}\n.ant-layout-sider-children {\n  height: 100%;\n  margin-top: -0.1px;\n  padding-top: 0.1px;\n}\n.ant-layout-sider-has-trigger {\n  padding-bottom: 48px;\n}\n.ant-layout-sider-right {\n  order: 1;\n}\n.ant-layout-sider-trigger {\n  position: fixed;\n  bottom: 0;\n  z-index: 1;\n  height: 48px;\n  color: #fff;\n  line-height: 48px;\n  text-align: center;\n  background: #002140;\n  cursor: pointer;\n  transition: all 0.2s;\n}\n.ant-layout-sider-zero-width > * {\n  overflow: hidden;\n}\n.ant-layout-sider-zero-width-trigger {\n  position: absolute;\n  top: 64px;\n  right: -36px;\n  z-index: 1;\n  width: 36px;\n  height: 42px;\n  color: #fff;\n  font-size: 18px;\n  line-height: 42px;\n  text-align: center;\n  background: #001529;\n  border-radius: 0 4px 4px 0;\n  cursor: pointer;\n  transition: background 0.3s ease;\n}\n.ant-layout-sider-zero-width-trigger:hover {\n  background: #192c3e;\n}\n.ant-layout-sider-zero-width-trigger-right {\n  left: -36px;\n  border-radius: 4px 0 0 4px;\n}\n.ant-layout-sider-light {\n  background: #fff;\n}\n.ant-layout-sider-light .ant-layout-sider-trigger {\n  color: rgba(0, 0, 0, 0.65);\n  background: #fff;\n}\n.ant-layout-sider-light .ant-layout-sider-zero-width-trigger {\n  color: rgba(0, 0, 0, 0.65);\n  background: #fff;\n}\n/*# sourceMappingURL=index.css.map */";
+n(css,{"prepend":true});
+
+Layout.Sider = Sider;
+
+export { Layout as default };

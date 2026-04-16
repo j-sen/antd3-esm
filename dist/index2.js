@@ -1,0 +1,374 @@
+import { e as requireReactIs, d as getAugmentedNamespace, g as getDefaultExportFromCjs } from './config-provider.js';
+import React__default from 'react';
+import ReactDOM__default from 'react-dom';
+import { r as requireWarning } from './warning.js';
+import { R as ResizeObserver_es } from './menu.js';
+
+var es = {};
+
+var findDOMNode = {};
+
+var hasRequiredFindDOMNode;
+
+function requireFindDOMNode () {
+	if (hasRequiredFindDOMNode) return findDOMNode;
+	hasRequiredFindDOMNode = 1;
+
+	Object.defineProperty(findDOMNode, "__esModule", {
+	  value: true
+	});
+	findDOMNode.default = findDOMNode$1;
+
+	var _reactDom = _interopRequireDefault(ReactDOM__default);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	/**
+	 * Return if a node is a DOM node. Else will return by `findDOMNode`
+	 */
+	function findDOMNode$1(node) {
+	  if (node instanceof HTMLElement) {
+	    return node;
+	  }
+
+	  return _reactDom.default.findDOMNode(node);
+	}
+	return findDOMNode;
+}
+
+var toArray = {};
+
+var hasRequiredToArray;
+
+function requireToArray () {
+	if (hasRequiredToArray) return toArray;
+	hasRequiredToArray = 1;
+
+	Object.defineProperty(toArray, "__esModule", {
+	  value: true
+	});
+	toArray.default = toArray$1;
+
+	var _react = _interopRequireDefault(React__default);
+
+	var _reactIs = requireReactIs();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function toArray$1(children) {
+	  var ret = [];
+
+	  _react.default.Children.forEach(children, function (child) {
+	    if (child === undefined || child === null) {
+	      return;
+	    }
+
+	    if (Array.isArray(child)) {
+	      ret = ret.concat(toArray$1(child));
+	    } else if ((0, _reactIs.isFragment)(child) && child.props) {
+	      ret = ret.concat(toArray$1(child.props.children));
+	    } else {
+	      ret.push(child);
+	    }
+	  });
+
+	  return ret;
+	}
+	return toArray;
+}
+
+var ref = {};
+
+var hasRequiredRef;
+
+function requireRef () {
+	if (hasRequiredRef) return ref;
+	hasRequiredRef = 1;
+
+	Object.defineProperty(ref, "__esModule", {
+	  value: true
+	});
+	ref.fillRef = fillRef;
+	ref.composeRef = composeRef;
+	ref.supportRef = supportRef;
+
+	function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+	function fillRef(ref, node) {
+	  if (typeof ref === 'function') {
+	    ref(node);
+	  } else if (_typeof(ref) === 'object' && ref && 'current' in ref) {
+	    ref.current = node;
+	  }
+	}
+	/**
+	 * Merge refs into one ref function to support ref passing.
+	 */
+
+
+	function composeRef() {
+	  for (var _len = arguments.length, refs = new Array(_len), _key = 0; _key < _len; _key++) {
+	    refs[_key] = arguments[_key];
+	  }
+
+	  return function (node) {
+	    refs.forEach(function (ref) {
+	      fillRef(ref, node);
+	    });
+	  };
+	}
+
+	function supportRef(nodeOrComponent) {
+	  // Function component node
+	  if (nodeOrComponent.type && nodeOrComponent.type.prototype && !nodeOrComponent.type.prototype.render) {
+	    return false;
+	  } // Class component
+
+
+	  if (typeof nodeOrComponent === 'function' && nodeOrComponent.prototype && !nodeOrComponent.prototype.render) {
+	    return false;
+	  }
+
+	  return true;
+	}
+	/* eslint-enable */
+	return ref;
+}
+
+var require$$9 = /*@__PURE__*/getAugmentedNamespace(ResizeObserver_es);
+
+var util = {};
+
+var hasRequiredUtil;
+
+function requireUtil () {
+	if (hasRequiredUtil) return util;
+	hasRequiredUtil = 1;
+
+	Object.defineProperty(util, "__esModule", {
+	  value: true
+	});
+
+	function supportRef(node) {
+	  // Function component
+	  if (node.type && node.type.prototype && !node.type.prototype.render) {
+	    return false;
+	  }
+
+	  return true;
+	}
+
+	util.supportRef = supportRef;
+	return util;
+}
+
+var hasRequiredEs;
+
+function requireEs () {
+	if (hasRequiredEs) return es;
+	hasRequiredEs = 1;
+
+	function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+	function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
+
+	function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+	function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+	function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+	function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+	var __importStar = es && es.__importStar || function (mod) {
+	  if (mod && mod.__esModule) return mod;
+	  var result = {};
+	  if (mod != null) for (var k in mod) {
+	    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+	  }
+	  result["default"] = mod;
+	  return result;
+	};
+
+	var __importDefault = es && es.__importDefault || function (mod) {
+	  return mod && mod.__esModule ? mod : {
+	    "default": mod
+	  };
+	};
+
+	Object.defineProperty(es, "__esModule", {
+	  value: true
+	});
+
+	var React = __importStar(React__default);
+
+	var findDOMNode_1 = __importDefault(requireFindDOMNode());
+
+	var toArray_1 = __importDefault(requireToArray());
+
+	var warning_1 = __importDefault(requireWarning());
+
+	var ref_1 = requireRef();
+
+	var resize_observer_polyfill_1 = __importDefault(require$$9);
+
+	var util_1 = requireUtil();
+
+	var INTERNAL_PREFIX_KEY = 'rc-observer-key'; // Still need to be compatible with React 15, we use class component here
+
+	var ReactResizeObserver =
+	/*#__PURE__*/
+	function (_React$Component) {
+	  _inherits(ReactResizeObserver, _React$Component);
+
+	  function ReactResizeObserver() {
+	    var _this;
+
+	    _classCallCheck(this, ReactResizeObserver);
+
+	    _this = _possibleConstructorReturn(this, _getPrototypeOf(ReactResizeObserver).apply(this, arguments));
+	    _this.resizeObserver = null;
+	    _this.childNode = null;
+	    _this.currentElement = null;
+	    _this.state = {
+	      width: 0,
+	      height: 0
+	    };
+
+	    _this.onResize = function (entries) {
+	      var onResize = _this.props.onResize;
+	      var target = entries[0].target;
+
+	      var _target$getBoundingCl = target.getBoundingClientRect(),
+	          width = _target$getBoundingCl.width,
+	          height = _target$getBoundingCl.height;
+	      /**
+	       * Resize observer trigger when content size changed.
+	       * In most case we just care about element size,
+	       * let's use `boundary` instead of `contentRect` here to avoid shaking.
+	       */
+
+
+	      var fixedWidth = Math.floor(width);
+	      var fixedHeight = Math.floor(height);
+
+	      if (_this.state.width !== fixedWidth || _this.state.height !== fixedHeight) {
+	        var size = {
+	          width: fixedWidth,
+	          height: fixedHeight
+	        };
+
+	        _this.setState(size);
+
+	        if (onResize) {
+	          onResize(size);
+	        }
+	      }
+	    };
+
+	    _this.setChildNode = function (node) {
+	      _this.childNode = node;
+	    };
+
+	    return _this;
+	  }
+
+	  _createClass(ReactResizeObserver, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      this.onComponentUpdated();
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate() {
+	      this.onComponentUpdated();
+	    }
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      this.destroyObserver();
+	    }
+	  }, {
+	    key: "onComponentUpdated",
+	    value: function onComponentUpdated() {
+	      var disabled = this.props.disabled; // Unregister if disabled
+
+	      if (disabled) {
+	        this.destroyObserver();
+	        return;
+	      } // Unregister if element changed
+
+
+	      var element = findDOMNode_1.default(this.childNode || this);
+	      var elementChanged = element !== this.currentElement;
+
+	      if (elementChanged) {
+	        this.destroyObserver();
+	        this.currentElement = element;
+	      }
+
+	      if (!this.resizeObserver && element) {
+	        this.resizeObserver = new resize_observer_polyfill_1.default(this.onResize);
+	        this.resizeObserver.observe(element);
+	      }
+	    }
+	  }, {
+	    key: "destroyObserver",
+	    value: function destroyObserver() {
+	      if (this.resizeObserver) {
+	        this.resizeObserver.disconnect();
+	        this.resizeObserver = null;
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var children = this.props.children;
+	      var childNodes = toArray_1.default(children);
+
+	      if (childNodes.length > 1) {
+	        warning_1.default(false, 'Find more than one child node with `children` in ResizeObserver. Will only observe first one.');
+	      } else if (childNodes.length === 0) {
+	        warning_1.default(false, '`children` of ResizeObserver is empty. Nothing is in observe.');
+	        return null;
+	      }
+
+	      var childNode = childNodes[0];
+
+	      if (React.isValidElement(childNode) && util_1.supportRef(childNode)) {
+	        var ref = childNode.ref;
+	        childNodes[0] = React.cloneElement(childNode, {
+	          ref: ref_1.composeRef(ref, this.setChildNode)
+	        });
+	      }
+
+	      return childNodes.length === 1 ? childNodes[0] : childNodes.map(function (node, index) {
+	        if (!React.isValidElement(node) || 'key' in node && node.key !== null) {
+	          return node;
+	        }
+
+	        return React.cloneElement(node, {
+	          key: "".concat(INTERNAL_PREFIX_KEY, "-").concat(index)
+	        });
+	      });
+	    }
+	  }]);
+
+	  return ReactResizeObserver;
+	}(React.Component);
+
+	ReactResizeObserver.displayName = 'ResizeObserver';
+	es.default = ReactResizeObserver;
+	return es;
+}
+
+var esExports = requireEs();
+var ResizeObserver = /*@__PURE__*/getDefaultExportFromCjs(esExports);
+
+export { ResizeObserver as R };
