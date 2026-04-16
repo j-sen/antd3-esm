@@ -4,7 +4,7 @@ import { d as _defineProperty, _ as _inherits$2, a as _classCallCheck$2, b as _p
 import { c as classNames, P as PropTypes, C as ConfigConsumer, L as LocaleReceiver, k as Pagination$3 } from './config-provider.js';
 import { P as Pagination$2 } from './zh_CN.js';
 import { p as polyfill } from './menu.js';
-import { S as Select } from './index12.js';
+import { S as Select } from './index15.js';
 
 var Pager = function Pager(props) {
   var _classNames;

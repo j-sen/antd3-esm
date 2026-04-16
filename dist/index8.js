@@ -1,215 +1,348 @@
 import * as React from 'react';
-import { c as classNames, C as ConfigConsumer, p as propTypesExports } from './config-provider.js';
-import { s as shallowEqual, p as polyfill } from './menu.js';
-import { C as Checkbox$1 } from './Checkbox.js';
-import { o as omit } from './input.js';
+import React__default, { Component } from 'react';
+import { b as Trigger, p as polyfill } from './menu.js';
+import { _ as _inherits$1, a as _classCallCheck$1, b as _possibleConstructorReturn$1, f as _objectWithoutProperties, e as _extends$2 } from './icon.js';
+import { P as PropTypes, c as classNames, C as ConfigConsumer } from './config-provider.js';
 
-function _typeof$1(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$1 = function _typeof(obj) { return typeof obj; }; } else { _typeof$1 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$1(obj); }
+var autoAdjustOverflow = {
+  adjustX: 1,
+  adjustY: 1
+};
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+var targetOffset$1 = [0, 0];
+
+var placements = {
+  left: {
+    points: ['cr', 'cl'],
+    overflow: autoAdjustOverflow,
+    offset: [-4, 0],
+    targetOffset: targetOffset$1
+  },
+  right: {
+    points: ['cl', 'cr'],
+    overflow: autoAdjustOverflow,
+    offset: [4, 0],
+    targetOffset: targetOffset$1
+  },
+  top: {
+    points: ['bc', 'tc'],
+    overflow: autoAdjustOverflow,
+    offset: [0, -4],
+    targetOffset: targetOffset$1
+  },
+  bottom: {
+    points: ['tc', 'bc'],
+    overflow: autoAdjustOverflow,
+    offset: [0, 4],
+    targetOffset: targetOffset$1
+  },
+  topLeft: {
+    points: ['bl', 'tl'],
+    overflow: autoAdjustOverflow,
+    offset: [0, -4],
+    targetOffset: targetOffset$1
+  },
+  leftTop: {
+    points: ['tr', 'tl'],
+    overflow: autoAdjustOverflow,
+    offset: [-4, 0],
+    targetOffset: targetOffset$1
+  },
+  topRight: {
+    points: ['br', 'tr'],
+    overflow: autoAdjustOverflow,
+    offset: [0, -4],
+    targetOffset: targetOffset$1
+  },
+  rightTop: {
+    points: ['tl', 'tr'],
+    overflow: autoAdjustOverflow,
+    offset: [4, 0],
+    targetOffset: targetOffset$1
+  },
+  bottomRight: {
+    points: ['tr', 'br'],
+    overflow: autoAdjustOverflow,
+    offset: [0, 4],
+    targetOffset: targetOffset$1
+  },
+  rightBottom: {
+    points: ['bl', 'br'],
+    overflow: autoAdjustOverflow,
+    offset: [4, 0],
+    targetOffset: targetOffset$1
+  },
+  bottomLeft: {
+    points: ['tl', 'bl'],
+    overflow: autoAdjustOverflow,
+    offset: [0, 4],
+    targetOffset: targetOffset$1
+  },
+  leftBottom: {
+    points: ['br', 'bl'],
+    overflow: autoAdjustOverflow,
+    offset: [-4, 0],
+    targetOffset: targetOffset$1
+  }
+};
+
+var Content = function (_React$Component) {
+  _inherits$1(Content, _React$Component);
+
+  function Content() {
+    _classCallCheck$1(this, Content);
+
+    return _possibleConstructorReturn$1(this, _React$Component.apply(this, arguments));
+  }
+
+  Content.prototype.componentDidUpdate = function componentDidUpdate() {
+    var trigger = this.props.trigger;
+
+    if (trigger) {
+      trigger.forcePopupAlign();
+    }
+  };
+
+  Content.prototype.render = function render() {
+    var _props = this.props,
+        overlay = _props.overlay,
+        prefixCls = _props.prefixCls,
+        id = _props.id;
+
+    return React__default.createElement(
+      'div',
+      { className: prefixCls + '-inner', id: id, role: 'tooltip' },
+      typeof overlay === 'function' ? overlay() : overlay
+    );
+  };
+
+  return Content;
+}(React__default.Component);
+
+Content.propTypes = {
+  prefixCls: PropTypes.string,
+  overlay: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+  id: PropTypes.string,
+  trigger: PropTypes.any
+};
+
+var Tooltip$1 = function (_Component) {
+  _inherits$1(Tooltip, _Component);
+
+  function Tooltip() {
+    var _temp, _this, _ret;
+
+    _classCallCheck$1(this, Tooltip);
+
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn$1(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.getPopupElement = function () {
+      var _this$props = _this.props,
+          arrowContent = _this$props.arrowContent,
+          overlay = _this$props.overlay,
+          prefixCls = _this$props.prefixCls,
+          id = _this$props.id;
+
+      return [React__default.createElement(
+        'div',
+        { className: prefixCls + '-arrow', key: 'arrow' },
+        arrowContent
+      ), React__default.createElement(Content, {
+        key: 'content',
+        trigger: _this.trigger,
+        prefixCls: prefixCls,
+        id: id,
+        overlay: overlay
+      })];
+    }, _this.saveTrigger = function (node) {
+      _this.trigger = node;
+    }, _temp), _possibleConstructorReturn$1(_this, _ret);
+  }
+
+  Tooltip.prototype.getPopupDomNode = function getPopupDomNode() {
+    return this.trigger.getPopupDomNode();
+  };
+
+  Tooltip.prototype.render = function render() {
+    var _props = this.props,
+        overlayClassName = _props.overlayClassName,
+        trigger = _props.trigger,
+        mouseEnterDelay = _props.mouseEnterDelay,
+        mouseLeaveDelay = _props.mouseLeaveDelay,
+        overlayStyle = _props.overlayStyle,
+        prefixCls = _props.prefixCls,
+        children = _props.children,
+        onVisibleChange = _props.onVisibleChange,
+        afterVisibleChange = _props.afterVisibleChange,
+        transitionName = _props.transitionName,
+        animation = _props.animation,
+        placement = _props.placement,
+        align = _props.align,
+        destroyTooltipOnHide = _props.destroyTooltipOnHide,
+        defaultVisible = _props.defaultVisible,
+        getTooltipContainer = _props.getTooltipContainer,
+        restProps = _objectWithoutProperties(_props, ['overlayClassName', 'trigger', 'mouseEnterDelay', 'mouseLeaveDelay', 'overlayStyle', 'prefixCls', 'children', 'onVisibleChange', 'afterVisibleChange', 'transitionName', 'animation', 'placement', 'align', 'destroyTooltipOnHide', 'defaultVisible', 'getTooltipContainer']);
+
+    var extraProps = _extends$2({}, restProps);
+    if ('visible' in this.props) {
+      extraProps.popupVisible = this.props.visible;
+    }
+    return React__default.createElement(
+      Trigger,
+      _extends$2({
+        popupClassName: overlayClassName,
+        ref: this.saveTrigger,
+        prefixCls: prefixCls,
+        popup: this.getPopupElement,
+        action: trigger,
+        builtinPlacements: placements,
+        popupPlacement: placement,
+        popupAlign: align,
+        getPopupContainer: getTooltipContainer,
+        onPopupVisibleChange: onVisibleChange,
+        afterPopupVisibleChange: afterVisibleChange,
+        popupTransitionName: transitionName,
+        popupAnimation: animation,
+        defaultPopupVisible: defaultVisible,
+        destroyPopupOnHide: destroyTooltipOnHide,
+        mouseLeaveDelay: mouseLeaveDelay,
+        popupStyle: overlayStyle,
+        mouseEnterDelay: mouseEnterDelay
+      }, extraProps),
+      children
+    );
+  };
+
+  return Tooltip;
+}(Component);
+
+Tooltip$1.propTypes = {
+  trigger: PropTypes.any,
+  children: PropTypes.any,
+  defaultVisible: PropTypes.bool,
+  visible: PropTypes.bool,
+  placement: PropTypes.string,
+  transitionName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
+  animation: PropTypes.any,
+  onVisibleChange: PropTypes.func,
+  afterVisibleChange: PropTypes.func,
+  overlay: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
+  overlayStyle: PropTypes.object,
+  overlayClassName: PropTypes.string,
+  prefixCls: PropTypes.string,
+  mouseEnterDelay: PropTypes.number,
+  mouseLeaveDelay: PropTypes.number,
+  getTooltipContainer: PropTypes.func,
+  destroyTooltipOnHide: PropTypes.bool,
+  align: PropTypes.object,
+  arrowContent: PropTypes.any,
+  id: PropTypes.string
+};
+Tooltip$1.defaultProps = {
+  prefixCls: 'rc-tooltip',
+  mouseEnterDelay: 0,
+  destroyTooltipOnHide: false,
+  mouseLeaveDelay: 0.1,
+  align: {},
+  placement: 'right',
+  trigger: ['hover'],
+  arrowContent: null
+};
 
 function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
-
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties$1(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); return Constructor; }
-
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
-
-function _setPrototypeOf$1(o, p) { _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$1(o, p); }
-
-function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf$1(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$1(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$1(this, result); }; }
-
-function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$1(self); }
-
-function _assertThisInitialized$1(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf$1(o) { _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$1(o); }
-
-var __rest$1 = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+var autoAdjustOverflowEnabled = {
+  adjustX: 1,
+  adjustY: 1
+};
+var autoAdjustOverflowDisabled = {
+  adjustX: 0,
+  adjustY: 0
+};
+var targetOffset = [0, 0];
+function getOverflowOptions(autoAdjustOverflow) {
+  if (typeof autoAdjustOverflow === 'boolean') {
+    return autoAdjustOverflow ? autoAdjustOverflowEnabled : autoAdjustOverflowDisabled;
   }
 
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-var Checkbox = /*#__PURE__*/function (_React$Component) {
-  _inherits$1(Checkbox, _React$Component);
-
-  var _super = _createSuper$1(Checkbox);
-
-  function Checkbox() {
-    var _this;
-
-    _classCallCheck$1(this, Checkbox);
-
-    _this = _super.apply(this, arguments);
-
-    _this.saveCheckbox = function (node) {
-      _this.rcCheckbox = node;
-    };
-
-    _this.renderCheckbox = function (_ref) {
-      var _classNames;
-
-      var getPrefixCls = _ref.getPrefixCls;
-
-      var _assertThisInitialize = _assertThisInitialized$1(_this),
-          props = _assertThisInitialize.props,
-          context = _assertThisInitialize.context;
-
-      var customizePrefixCls = props.prefixCls,
-          className = props.className,
-          children = props.children,
-          indeterminate = props.indeterminate,
-          style = props.style,
-          onMouseEnter = props.onMouseEnter,
-          onMouseLeave = props.onMouseLeave,
-          restProps = __rest$1(props, ["prefixCls", "className", "children", "indeterminate", "style", "onMouseEnter", "onMouseLeave"]);
-
-      var checkboxGroup = context.checkboxGroup;
-      var prefixCls = getPrefixCls('checkbox', customizePrefixCls);
-
-      var checkboxProps = _extends$1({}, restProps);
-
-      if (checkboxGroup) {
-        checkboxProps.onChange = function () {
-          if (restProps.onChange) {
-            restProps.onChange.apply(restProps, arguments);
-          }
-
-          checkboxGroup.toggleOption({
-            label: children,
-            value: props.value
-          });
-        };
-
-        checkboxProps.name = checkboxGroup.name;
-        checkboxProps.checked = checkboxGroup.value.indexOf(props.value) !== -1;
-        checkboxProps.disabled = props.disabled || checkboxGroup.disabled;
-      }
-
-      var classString = classNames(className, (_classNames = {}, _defineProperty(_classNames, "".concat(prefixCls, "-wrapper"), true), _defineProperty(_classNames, "".concat(prefixCls, "-wrapper-checked"), checkboxProps.checked), _defineProperty(_classNames, "".concat(prefixCls, "-wrapper-disabled"), checkboxProps.disabled), _classNames));
-      var checkboxClass = classNames(_defineProperty({}, "".concat(prefixCls, "-indeterminate"), indeterminate));
-      return (
-        /*#__PURE__*/
-        // eslint-disable-next-line jsx-a11y/label-has-associated-control
-        React.createElement("label", {
-          className: classString,
-          style: style,
-          onMouseEnter: onMouseEnter,
-          onMouseLeave: onMouseLeave
-        }, /*#__PURE__*/React.createElement(Checkbox$1, _extends$1({}, checkboxProps, {
-          prefixCls: prefixCls,
-          className: checkboxClass,
-          ref: _this.saveCheckbox
-        })), children !== undefined && /*#__PURE__*/React.createElement("span", null, children))
-      );
-    };
-
-    return _this;
-  }
-
-  _createClass$1(Checkbox, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var value = this.props.value;
-
-      var _ref2 = this.context || {},
-          _ref2$checkboxGroup = _ref2.checkboxGroup,
-          checkboxGroup = _ref2$checkboxGroup === void 0 ? {} : _ref2$checkboxGroup;
-
-      if (checkboxGroup.registerValue) {
-        checkboxGroup.registerValue(value);
-      }
+  return _extends$1(_extends$1({}, autoAdjustOverflowDisabled), autoAdjustOverflow);
+}
+function getPlacements() {
+  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+  var _config$arrowWidth = config.arrowWidth,
+      arrowWidth = _config$arrowWidth === void 0 ? 5 : _config$arrowWidth,
+      _config$horizontalArr = config.horizontalArrowShift,
+      horizontalArrowShift = _config$horizontalArr === void 0 ? 16 : _config$horizontalArr,
+      _config$verticalArrow = config.verticalArrowShift,
+      verticalArrowShift = _config$verticalArrow === void 0 ? 12 : _config$verticalArrow,
+      _config$autoAdjustOve = config.autoAdjustOverflow,
+      autoAdjustOverflow = _config$autoAdjustOve === void 0 ? true : _config$autoAdjustOve;
+  var placementMap = {
+    left: {
+      points: ['cr', 'cl'],
+      offset: [-4, 0]
+    },
+    right: {
+      points: ['cl', 'cr'],
+      offset: [4, 0]
+    },
+    top: {
+      points: ['bc', 'tc'],
+      offset: [0, -4]
+    },
+    bottom: {
+      points: ['tc', 'bc'],
+      offset: [0, 4]
+    },
+    topLeft: {
+      points: ['bl', 'tc'],
+      offset: [-(horizontalArrowShift + arrowWidth), -4]
+    },
+    leftTop: {
+      points: ['tr', 'cl'],
+      offset: [-4, -(verticalArrowShift + arrowWidth)]
+    },
+    topRight: {
+      points: ['br', 'tc'],
+      offset: [horizontalArrowShift + arrowWidth, -4]
+    },
+    rightTop: {
+      points: ['tl', 'cr'],
+      offset: [4, -(verticalArrowShift + arrowWidth)]
+    },
+    bottomRight: {
+      points: ['tr', 'bc'],
+      offset: [horizontalArrowShift + arrowWidth, 4]
+    },
+    rightBottom: {
+      points: ['bl', 'cr'],
+      offset: [4, verticalArrowShift + arrowWidth]
+    },
+    bottomLeft: {
+      points: ['tl', 'bc'],
+      offset: [-(horizontalArrowShift + arrowWidth), 4]
+    },
+    leftBottom: {
+      points: ['br', 'cl'],
+      offset: [-4, verticalArrowShift + arrowWidth]
     }
-  }, {
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(nextProps, nextState, nextContext) {
-      return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState) || !shallowEqual(this.context.checkboxGroup, nextContext.checkboxGroup);
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate(_ref3) {
-      var prevValue = _ref3.value;
-      var value = this.props.value;
-
-      var _ref4 = this.context || {},
-          _ref4$checkboxGroup = _ref4.checkboxGroup,
-          checkboxGroup = _ref4$checkboxGroup === void 0 ? {} : _ref4$checkboxGroup;
-
-      if (value !== prevValue && checkboxGroup.registerValue && checkboxGroup.cancelValue) {
-        checkboxGroup.cancelValue(prevValue);
-        checkboxGroup.registerValue(value);
-      }
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      var value = this.props.value;
-
-      var _ref5 = this.context || {},
-          _ref5$checkboxGroup = _ref5.checkboxGroup,
-          checkboxGroup = _ref5$checkboxGroup === void 0 ? {} : _ref5$checkboxGroup;
-
-      if (checkboxGroup.cancelValue) {
-        checkboxGroup.cancelValue(value);
-      }
-    }
-  }, {
-    key: "focus",
-    value: function focus() {
-      this.rcCheckbox.focus();
-    }
-  }, {
-    key: "blur",
-    value: function blur() {
-      this.rcCheckbox.blur();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderCheckbox);
-    }
-  }]);
-
-  return Checkbox;
-}(React.Component);
-
-Checkbox.__ANT_CHECKBOX = true;
-Checkbox.defaultProps = {
-  indeterminate: false
-};
-Checkbox.contextTypes = {
-  checkboxGroup: propTypesExports.any
-};
-polyfill(Checkbox);
+  };
+  Object.keys(placementMap).forEach(function (key) {
+    placementMap[key] = config.arrowPointAtCenter ? _extends$1(_extends$1({}, placementMap[key]), {
+      overflow: getOverflowOptions(autoAdjustOverflow),
+      targetOffset: targetOffset
+    }) : _extends$1(_extends$1({}, placements[key]), {
+      overflow: getOverflowOptions(autoAdjustOverflow)
+    });
+    placementMap[key].ignoreShake = true;
+  });
+  return placementMap;
+}
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -231,182 +364,220 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+var splitObject = function splitObject(obj, keys) {
+  var picked = {};
+
+  var omitted = _extends({}, obj);
+
+  keys.forEach(function (key) {
+    if (obj && key in obj) {
+      picked[key] = obj[key];
+      delete omitted[key];
+    }
+  });
+  return {
+    picked: picked,
+    omitted: omitted
+  };
+}; // Fix Tooltip won't hide at disabled button
+// mouse events don't trigger at disabled button in Chrome
+// https://github.com/react-component/tooltip/issues/18
+
+
+function getDisabledCompatibleChildren(element) {
+  var elementType = element.type;
+
+  if ((elementType.__ANT_BUTTON === true || elementType.__ANT_SWITCH === true || elementType.__ANT_CHECKBOX === true || element.type === 'button') && element.props.disabled) {
+    // Pick some layout related style properties up to span
+    // Prevent layout bugs like https://github.com/ant-design/ant-design/issues/5254
+    var _splitObject = splitObject(element.props.style, ['position', 'left', 'right', 'top', 'bottom', 'float', 'display', 'zIndex']),
+        picked = _splitObject.picked,
+        omitted = _splitObject.omitted;
+
+    var spanStyle = _extends(_extends({
+      display: 'inline-block'
+    }, picked), {
+      cursor: 'not-allowed',
+      width: element.props.block ? '100%' : null
+    });
+
+    var buttonStyle = _extends(_extends({}, omitted), {
+      pointerEvents: 'none'
+    });
+
+    var child = /*#__PURE__*/React.cloneElement(element, {
+      style: buttonStyle,
+      className: null
+    });
+    return /*#__PURE__*/React.createElement("span", {
+      style: spanStyle,
+      className: element.props.className
+    }, child);
   }
 
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
+  return element;
+}
 
-var CheckboxGroup = /*#__PURE__*/function (_React$Component) {
-  _inherits(CheckboxGroup, _React$Component);
+var Tooltip = /*#__PURE__*/function (_React$Component) {
+  _inherits(Tooltip, _React$Component);
 
-  var _super = _createSuper(CheckboxGroup);
+  var _super = _createSuper(Tooltip);
 
-  function CheckboxGroup(props) {
+  function Tooltip(props) {
     var _this;
 
-    _classCallCheck(this, CheckboxGroup);
+    _classCallCheck(this, Tooltip);
 
     _this = _super.call(this, props);
 
-    _this.cancelValue = function (value) {
-      _this.setState(function (_ref) {
-        var registeredValues = _ref.registeredValues;
-        return {
-          registeredValues: registeredValues.filter(function (val) {
-            return val !== value;
-          })
-        };
-      });
-    };
+    _this.onVisibleChange = function (visible) {
+      var onVisibleChange = _this.props.onVisibleChange;
 
-    _this.registerValue = function (value) {
-      _this.setState(function (_ref2) {
-        var registeredValues = _ref2.registeredValues;
-        return {
-          registeredValues: [].concat(_toConsumableArray(registeredValues), [value])
-        };
-      });
-    };
-
-    _this.toggleOption = function (option) {
-      var registeredValues = _this.state.registeredValues;
-
-      var optionIndex = _this.state.value.indexOf(option.value);
-
-      var value = _toConsumableArray(_this.state.value);
-
-      if (optionIndex === -1) {
-        value.push(option.value);
-      } else {
-        value.splice(optionIndex, 1);
-      }
-
-      if (!('value' in _this.props)) {
+      if (!('visible' in _this.props)) {
         _this.setState({
-          value: value
+          visible: _this.isNoTitle() ? false : visible
         });
       }
 
-      var onChange = _this.props.onChange;
-
-      if (onChange) {
-        var options = _this.getOptions();
-
-        onChange(value.filter(function (val) {
-          return registeredValues.indexOf(val) !== -1;
-        }).sort(function (a, b) {
-          var indexA = options.findIndex(function (opt) {
-            return opt.value === a;
-          });
-          var indexB = options.findIndex(function (opt) {
-            return opt.value === b;
-          });
-          return indexA - indexB;
-        }));
+      if (onVisibleChange && !_this.isNoTitle()) {
+        onVisibleChange(visible);
       }
     };
 
-    _this.renderGroup = function (_ref3) {
-      var getPrefixCls = _ref3.getPrefixCls;
+    _this.saveTooltip = function (node) {
+      _this.tooltip = node;
+    }; // 动态设置动画点
+
+
+    _this.onPopupAlign = function (domNode, align) {
+      var placements = _this.getPlacements(); // 当前返回的位置
+
+
+      var placement = Object.keys(placements).filter(function (key) {
+        return placements[key].points[0] === align.points[0] && placements[key].points[1] === align.points[1];
+      })[0];
+
+      if (!placement) {
+        return;
+      } // 根据当前坐标设置动画点
+
+
+      var rect = domNode.getBoundingClientRect();
+      var transformOrigin = {
+        top: '50%',
+        left: '50%'
+      };
+
+      if (placement.indexOf('top') >= 0 || placement.indexOf('Bottom') >= 0) {
+        transformOrigin.top = "".concat(rect.height - align.offset[1], "px");
+      } else if (placement.indexOf('Top') >= 0 || placement.indexOf('bottom') >= 0) {
+        transformOrigin.top = "".concat(-align.offset[1], "px");
+      }
+
+      if (placement.indexOf('left') >= 0 || placement.indexOf('Right') >= 0) {
+        transformOrigin.left = "".concat(rect.width - align.offset[0], "px");
+      } else if (placement.indexOf('right') >= 0 || placement.indexOf('Left') >= 0) {
+        transformOrigin.left = "".concat(-align.offset[0], "px");
+      }
+
+      domNode.style.transformOrigin = "".concat(transformOrigin.left, " ").concat(transformOrigin.top);
+    };
+
+    _this.renderTooltip = function (_ref) {
+      var getContextPopupContainer = _ref.getPopupContainer,
+          getPrefixCls = _ref.getPrefixCls;
 
       var _assertThisInitialize = _assertThisInitialized(_this),
           props = _assertThisInitialize.props,
           state = _assertThisInitialize.state;
 
       var customizePrefixCls = props.prefixCls,
-          className = props.className,
-          style = props.style,
-          options = props.options,
-          restProps = __rest(props, ["prefixCls", "className", "style", "options"]);
-
-      var prefixCls = getPrefixCls('checkbox', customizePrefixCls);
-      var groupPrefixCls = "".concat(prefixCls, "-group");
-      var domProps = omit(restProps, ['children', 'defaultValue', 'value', 'onChange', 'disabled']);
+          openClassName = props.openClassName,
+          getPopupContainer = props.getPopupContainer,
+          getTooltipContainer = props.getTooltipContainer;
       var children = props.children;
+      var prefixCls = getPrefixCls('tooltip', customizePrefixCls);
+      var visible = state.visible; // Hide tooltip when there is no title
 
-      if (options && options.length > 0) {
-        children = _this.getOptions().map(function (option) {
-          return /*#__PURE__*/React.createElement(Checkbox, {
-            prefixCls: prefixCls,
-            key: option.value.toString(),
-            disabled: 'disabled' in option ? option.disabled : props.disabled,
-            value: option.value,
-            checked: state.value.indexOf(option.value) !== -1,
-            onChange: option.onChange,
-            className: "".concat(groupPrefixCls, "-item")
-          }, option.label);
-        });
+      if (!('visible' in props) && _this.isNoTitle()) {
+        visible = false;
       }
 
-      var classString = classNames(groupPrefixCls, className);
-      return /*#__PURE__*/React.createElement("div", _extends({
-        className: classString,
-        style: style
-      }, domProps), children);
+      var child = getDisabledCompatibleChildren( /*#__PURE__*/React.isValidElement(children) ? children : /*#__PURE__*/React.createElement("span", null, children));
+      var childProps = child.props;
+      var childCls = classNames(childProps.className, _defineProperty({}, openClassName || "".concat(prefixCls, "-open"), true));
+      return /*#__PURE__*/React.createElement(Tooltip$1, _extends({}, _this.props, {
+        prefixCls: prefixCls,
+        getTooltipContainer: getPopupContainer || getTooltipContainer || getContextPopupContainer,
+        ref: _this.saveTooltip,
+        builtinPlacements: _this.getPlacements(),
+        overlay: _this.getOverlay(),
+        visible: visible,
+        onVisibleChange: _this.onVisibleChange,
+        onPopupAlign: _this.onPopupAlign
+      }), visible ? /*#__PURE__*/React.cloneElement(child, {
+        className: childCls
+      }) : child);
     };
 
     _this.state = {
-      value: props.value || props.defaultValue || [],
-      registeredValues: []
+      visible: !!props.visible || !!props.defaultVisible
     };
     return _this;
   }
 
-  _createClass(CheckboxGroup, [{
-    key: "getChildContext",
-    value: function getChildContext() {
-      return {
-        checkboxGroup: {
-          toggleOption: this.toggleOption,
-          value: this.state.value,
-          disabled: this.props.disabled,
-          name: this.props.name,
-          // https://github.com/ant-design/ant-design/issues/16376
-          registerValue: this.registerValue,
-          cancelValue: this.cancelValue
-        }
-      };
+  _createClass(Tooltip, [{
+    key: "getPopupDomNode",
+    value: function getPopupDomNode() {
+      return this.tooltip.getPopupDomNode();
     }
   }, {
-    key: "shouldComponentUpdate",
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
-    }
-  }, {
-    key: "getOptions",
-    value: function getOptions() {
-      var options = this.props.options; // https://github.com/Microsoft/TypeScript/issues/7960
-
-      return options.map(function (option) {
-        if (typeof option === 'string') {
-          return {
-            label: option,
-            value: option
-          };
-        }
-
-        return option;
+    key: "getPlacements",
+    value: function getPlacements$1() {
+      var _this$props = this.props,
+          builtinPlacements = _this$props.builtinPlacements,
+          arrowPointAtCenter = _this$props.arrowPointAtCenter,
+          autoAdjustOverflow = _this$props.autoAdjustOverflow;
+      return builtinPlacements || getPlacements({
+        arrowPointAtCenter: arrowPointAtCenter,
+        verticalArrowShift: 8,
+        autoAdjustOverflow: autoAdjustOverflow
       });
+    }
+  }, {
+    key: "isNoTitle",
+    value: function isNoTitle() {
+      var _this$props2 = this.props,
+          title = _this$props2.title,
+          overlay = _this$props2.overlay;
+      return !title && !overlay && title !== 0; // overlay for old version compatibility
+    }
+  }, {
+    key: "getOverlay",
+    value: function getOverlay() {
+      var _this$props3 = this.props,
+          title = _this$props3.title,
+          overlay = _this$props3.overlay;
+
+      if (title === 0) {
+        return title;
+      }
+
+      return overlay || title || '';
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderGroup);
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderTooltip);
     }
   }], [{
     key: "getDerivedStateFromProps",
     value: function getDerivedStateFromProps(nextProps) {
-      if ('value' in nextProps) {
+      if ('visible' in nextProps) {
         return {
-          value: nextProps.value || []
+          visible: nextProps.visible
         };
       }
 
@@ -414,23 +585,17 @@ var CheckboxGroup = /*#__PURE__*/function (_React$Component) {
     }
   }]);
 
-  return CheckboxGroup;
+  return Tooltip;
 }(React.Component);
 
-CheckboxGroup.defaultProps = {
-  options: []
+Tooltip.defaultProps = {
+  placement: 'top',
+  transitionName: 'zoom-big-fast',
+  mouseEnterDelay: 0.1,
+  mouseLeaveDelay: 0.1,
+  arrowPointAtCenter: false,
+  autoAdjustOverflow: true
 };
-CheckboxGroup.propTypes = {
-  defaultValue: propTypesExports.array,
-  value: propTypesExports.array,
-  options: propTypesExports.array.isRequired,
-  onChange: propTypesExports.func
-};
-CheckboxGroup.childContextTypes = {
-  checkboxGroup: propTypesExports.any
-};
-polyfill(CheckboxGroup);
+polyfill(Tooltip);
 
-Checkbox.Group = CheckboxGroup;
-
-export { Checkbox as C };
+export { Tooltip as T };

@@ -1,5 +1,5 @@
 import { n } from '../../config-provider.js';
-export { R as Button, a as Group, b as default } from '../../index13.js';
+export { R as Button, a as Group, b as default } from '../../index16.js';
 import 'react';
 import '../../Checkbox.js';
 import '../../icon.js';

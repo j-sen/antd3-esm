@@ -1394,7 +1394,7 @@ var internalProcessProps = function internalProcessProps(props) {
 function convertDataToTree(treeData, processor) {
   if (!treeData) return [];
 
-  var _ref3 = {},
+  var _ref3 = processor || {},
       _ref3$processProps = _ref3.processProps,
       processProps = _ref3$processProps === void 0 ? internalProcessProps : _ref3$processProps;
 
@@ -1403,7 +1403,7 @@ function convertDataToTree(treeData, processor) {
     var children = _ref4.children,
         props = _objectWithoutProperties(_ref4, ["children"]);
 
-    var childrenNodes = convertDataToTree(children);
+    var childrenNodes = convertDataToTree(children, processor);
     return React__default.createElement(ContextTreeNode, Object.assign({}, processProps(props)), childrenNodes);
   });
 }
@@ -3014,4 +3014,4 @@ Tree.defaultProps = {
   blockNode: false
 };
 
-export { Tree as T, requireIsSymbol as a, requireToNumber as b, collapseMotion as c, debounce as d, reactIsExports as e, require_root as f, require_baseGetTag as g, requireIsObject as h, requireIsObjectLike as i, require_freeGlobal as j, require_Symbol as r, toArray as t, warning as w };
+export { ContextTreeNode as C, Tree as T, requireIsSymbol as a, requireToNumber as b, collapseMotion as c, debounce as d, reactIsExports as e, require_root as f, require_baseGetTag as g, requireIsObject as h, requireIsObjectLike as i, require_freeGlobal as j, conductCheck as k, convertDataToTree as l, convertTreeToEntities as m, Tree$1 as n, require_Symbol as r, toArray as t, warning as w };

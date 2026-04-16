@@ -12,7 +12,7 @@ import { r as requireIsArray } from '../../_arrayMap.js';
 import { d as requireIsBuffer, e as requireIsTypedArray } from '../../_overArg.js';
 import { r as require_hasPath } from '../../_hasPath.js';
 import { r as require_baseProperty, a as requireToInteger } from '../../toInteger.js';
-import { T as Tooltip } from '../../index6.js';
+import { T as Tooltip } from '../../index8.js';
 import { P as Progress } from '../../progress.js';
 import '../../input.js';
 import '../../isLength.js';

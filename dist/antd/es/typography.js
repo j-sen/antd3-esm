@@ -1,30 +1,18 @@
-import { n, C as ConfigConsumer, c as classNames, g as getDefaultExportFromCjs, s as withConfigConsumer, w as warning, L as LocaleReceiver, v as configConsumerProps } from '../../config-provider.js';
+import { n, C as ConfigConsumer, c as classNames, g as getDefaultExportFromCjs, t as withConfigConsumer, w as warning, L as LocaleReceiver, y as configConsumerProps } from '../../config-provider.js';
 import * as React from 'react';
 import { K as KeyCode, p as polyfill, j as findDOMNode } from '../../menu.js';
 import { t as toArray, w as warning$1 } from '../../tree.js';
 import { o as omit, a as tupleNum } from '../../input.js';
-import { R as ResizeObserver } from '../../index2.js';
+import { R as ResizeObserver } from '../../index3.js';
 import { T as TransButton } from '../../transButton.js';
 import { w as wrapperRaf } from '../../raf.js';
+import { i as isStyleSupport } from '../../styleChecker.js';
 import { I as Icon } from '../../icon.js';
-import { T as Tooltip } from '../../index6.js';
+import { T as Tooltip } from '../../index8.js';
 import { T as TextArea } from '../../TextArea.js';
 import { render, unmountComponentAtNode } from 'react-dom';
 import '../../warning.js';
-
-var isStyleSupport = function isStyleSupport(styleName) {
-  if (typeof window !== 'undefined' && window.document && window.document.documentElement) {
-    var styleNameList = Array.isArray(styleName) ? styleName : [styleName];
-    var documentElement = window.document.documentElement;
-    return styleNameList.some(function (name) {
-      return name in documentElement.style;
-    });
-  }
-
-  return false;
-};
-
-isStyleSupport(['flex', 'webkitFlex', 'Flex', 'msFlex']);
+import '../../ResizeObserver.es.js';
 
 var css = "/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */\n/* stylelint-disable no-duplicate-selectors */\n/* stylelint-disable */\n/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */\n.ant-typography {\n  color: rgba(0, 0, 0, 0.65);\n}\n.ant-typography.ant-typography-secondary {\n  color: rgba(0, 0, 0, 0.45);\n}\n.ant-typography.ant-typography-warning {\n  color: #faad14;\n}\n.ant-typography.ant-typography-danger {\n  color: #f5222d;\n}\n.ant-typography.ant-typography-disabled {\n  color: rgba(0, 0, 0, 0.25);\n  cursor: not-allowed;\n  user-select: none;\n}\ndiv.ant-typography,\n.ant-typography p {\n  margin-bottom: 1em;\n}\nh1.ant-typography,\n.ant-typography h1 {\n  margin-bottom: 0.5em;\n  color: rgba(0, 0, 0, 0.85);\n  font-weight: 600;\n  font-size: 38px;\n  line-height: 1.23;\n}\nh2.ant-typography,\n.ant-typography h2 {\n  margin-bottom: 0.5em;\n  color: rgba(0, 0, 0, 0.85);\n  font-weight: 600;\n  font-size: 30px;\n  line-height: 1.35;\n}\nh3.ant-typography,\n.ant-typography h3 {\n  margin-bottom: 0.5em;\n  color: rgba(0, 0, 0, 0.85);\n  font-weight: 600;\n  font-size: 24px;\n  line-height: 1.35;\n}\nh4.ant-typography,\n.ant-typography h4 {\n  margin-bottom: 0.5em;\n  color: rgba(0, 0, 0, 0.85);\n  font-weight: 600;\n  font-size: 20px;\n  line-height: 1.4;\n}\n.ant-typography + h1.ant-typography,\n.ant-typography + h2.ant-typography,\n.ant-typography + h3.ant-typography,\n.ant-typography + h4.ant-typography {\n  margin-top: 1.2em;\n}\n.ant-typography div + h1,\n.ant-typography ul + h1,\n.ant-typography li + h1,\n.ant-typography p + h1,\n.ant-typography h1 + h1,\n.ant-typography h2 + h1,\n.ant-typography h3 + h1,\n.ant-typography h4 + h1,\n.ant-typography div + h2,\n.ant-typography ul + h2,\n.ant-typography li + h2,\n.ant-typography p + h2,\n.ant-typography h1 + h2,\n.ant-typography h2 + h2,\n.ant-typography h3 + h2,\n.ant-typography h4 + h2,\n.ant-typography div + h3,\n.ant-typography ul + h3,\n.ant-typography li + h3,\n.ant-typography p + h3,\n.ant-typography h1 + h3,\n.ant-typography h2 + h3,\n.ant-typography h3 + h3,\n.ant-typography h4 + h3,\n.ant-typography div + h4,\n.ant-typography ul + h4,\n.ant-typography li + h4,\n.ant-typography p + h4,\n.ant-typography h1 + h4,\n.ant-typography h2 + h4,\n.ant-typography h3 + h4,\n.ant-typography h4 + h4 {\n  margin-top: 1.2em;\n}\nspan.ant-typography-ellipsis {\n  display: inline-block;\n}\n.ant-typography a {\n  color: #1890ff;\n  text-decoration: none;\n  outline: none;\n  cursor: pointer;\n  transition: color 0.3s;\n}\n.ant-typography a:focus,\n.ant-typography a:hover {\n  color: #40a9ff;\n}\n.ant-typography a:active {\n  color: #096dd9;\n}\n.ant-typography a:active,\n.ant-typography a:hover {\n  text-decoration: none;\n}\n.ant-typography a[disabled] {\n  color: rgba(0, 0, 0, 0.25);\n  cursor: not-allowed;\n  pointer-events: none;\n}\n.ant-typography code {\n  margin: 0 0.2em;\n  padding: 0.2em 0.4em 0.1em;\n  font-size: 85%;\n  background: rgba(0, 0, 0, 0.06);\n  border: 1px solid rgba(0, 0, 0, 0.06);\n  border-radius: 3px;\n}\n.ant-typography mark {\n  padding: 0;\n  background-color: #ffe58f;\n}\n.ant-typography u,\n.ant-typography ins {\n  text-decoration: underline;\n  text-decoration-skip-ink: auto;\n}\n.ant-typography s,\n.ant-typography del {\n  text-decoration: line-through;\n}\n.ant-typography strong {\n  font-weight: 600;\n}\n.ant-typography-expand,\n.ant-typography-edit,\n.ant-typography-copy {\n  color: #1890ff;\n  text-decoration: none;\n  outline: none;\n  cursor: pointer;\n  transition: color 0.3s;\n  margin-left: 8px;\n}\n.ant-typography-expand:focus,\n.ant-typography-edit:focus,\n.ant-typography-copy:focus,\n.ant-typography-expand:hover,\n.ant-typography-edit:hover,\n.ant-typography-copy:hover {\n  color: #40a9ff;\n}\n.ant-typography-expand:active,\n.ant-typography-edit:active,\n.ant-typography-copy:active {\n  color: #096dd9;\n}\n.ant-typography-copy-success,\n.ant-typography-copy-success:hover,\n.ant-typography-copy-success:focus {\n  color: #52c41a;\n}\n.ant-typography-edit-content {\n  position: relative;\n}\ndiv.ant-typography-edit-content {\n  left: -12px;\n  margin-top: -5px;\n  margin-bottom: calc(1em - 4px - 2px);\n}\n.ant-typography-edit-content-confirm {\n  position: absolute;\n  right: 10px;\n  bottom: 8px;\n  color: rgba(0, 0, 0, 0.45);\n  pointer-events: none;\n}\n.ant-typography-edit-content textarea {\n  -moz-transition: none;\n}\n.ant-typography ul,\n.ant-typography ol {\n  margin: 0 0 1em 0;\n  padding: 0;\n}\n.ant-typography ul li,\n.ant-typography ol li {\n  margin: 0 0 0 20px;\n  padding: 0 0 0 4px;\n}\n.ant-typography ul li {\n  list-style-type: circle;\n}\n.ant-typography ul li li {\n  list-style-type: disc;\n}\n.ant-typography ol li {\n  list-style-type: decimal;\n}\n.ant-typography-ellipsis-single-line {\n  overflow: hidden;\n  white-space: nowrap;\n  text-overflow: ellipsis;\n}\n.ant-typography-ellipsis-multiple-line {\n  display: -webkit-box;\n  -webkit-line-clamp: 3;\n  /*! autoprefixer: ignore next */\n  -webkit-box-orient: vertical;\n  overflow: hidden;\n}\n/*# sourceMappingURL=index.css.map */";
 n(css,{"prepend":true});

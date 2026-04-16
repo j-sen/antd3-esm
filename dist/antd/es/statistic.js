@@ -1,4 +1,4 @@
-import { n, g as getDefaultExportFromCjs, s as withConfigConsumer, c as classNames, o as interopDefault, q as moment } from '../../config-provider.js';
+import { n, g as getDefaultExportFromCjs, t as withConfigConsumer, c as classNames, q as interopDefault, s as moment } from '../../config-provider.js';
 import * as React from 'react';
 import { r as require_baseToString, a as requireToString } from '../../toString.js';
 import { r as require_hasUnicode, a as require_stringToArray } from '../../_stringToArray.js';

@@ -1,6 +1,6 @@
 import { _ as _inherits, a as _classCallCheck, b as _possibleConstructorReturn, e as _extends } from './icon.js';
 import React__default, { Component } from 'react';
-import { m as moment, c as classNames, P as PropTypes, t as enUs } from './config-provider.js';
+import { o as moment, c as classNames, P as PropTypes, v as enUs } from './config-provider.js';
 import { p as polyfill } from './menu.js';
 
 var DateConstants = {

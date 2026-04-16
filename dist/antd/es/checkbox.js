@@ -1,5 +1,5 @@
 import { n } from '../../config-provider.js';
-export { C as default } from '../../index8.js';
+export { C as default } from '../../index10.js';
 import 'react';
 import '../../menu.js';
 import 'react-dom';

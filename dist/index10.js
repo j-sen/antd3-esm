@@ -1,82 +1,12 @@
-import { I as Input, o as omit } from './input.js';
 import * as React from 'react';
-import { C as ConfigConsumer, c as classNames } from './config-provider.js';
-import { I as Icon } from './icon.js';
-import { B as Button } from './index7.js';
-import { T as TextArea } from './TextArea.js';
-
-function _defineProperty$2(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-var Group = function Group(props) {
-  return /*#__PURE__*/React.createElement(ConfigConsumer, null, function (_ref) {
-    var _classNames;
-
-    var getPrefixCls = _ref.getPrefixCls;
-    var customizePrefixCls = props.prefixCls,
-        _props$className = props.className,
-        className = _props$className === void 0 ? '' : _props$className;
-    var prefixCls = getPrefixCls('input-group', customizePrefixCls);
-    var cls = classNames(prefixCls, (_classNames = {}, _defineProperty$2(_classNames, "".concat(prefixCls, "-lg"), props.size === 'large'), _defineProperty$2(_classNames, "".concat(prefixCls, "-sm"), props.size === 'small'), _defineProperty$2(_classNames, "".concat(prefixCls, "-compact"), props.compact), _classNames), className);
-    return /*#__PURE__*/React.createElement("span", {
-      className: cls,
-      style: props.style,
-      onMouseEnter: props.onMouseEnter,
-      onMouseLeave: props.onMouseLeave,
-      onFocus: props.onFocus,
-      onBlur: props.onBlur
-    }, props.children);
-  });
-};
-
-var isMobile = {exports: {}};
-
-var hasRequiredIsMobile;
-
-function requireIsMobile () {
-	if (hasRequiredIsMobile) return isMobile.exports;
-	hasRequiredIsMobile = 1;
-
-	isMobile.exports = isMobile$1;
-	isMobile.exports.isMobile = isMobile$1;
-	isMobile.exports.default = isMobile$1;
-
-	var mobileRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i;
-
-	var tabletRE = /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series[46]0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino|android|ipad|playbook|silk/i;
-
-	function isMobile$1 (opts) {
-	  if (!opts) opts = {};
-	  var ua = opts.ua;
-	  if (!ua && typeof navigator !== 'undefined') ua = navigator.userAgent;
-	  if (ua && ua.headers && typeof ua.headers['user-agent'] === 'string') {
-	    ua = ua.headers['user-agent'];
-	  }
-	  if (typeof ua !== 'string') return false
-
-	  var result = opts.tablet ? tabletRE.test(ua) : mobileRE.test(ua);
-
-	  if (
-	    !result &&
-	    opts.tablet &&
-	    opts.featureDetect &&
-	    navigator &&
-	    navigator.maxTouchPoints > 1 &&
-	    ua.indexOf('Macintosh') !== -1 &&
-	    ua.indexOf('Safari') !== -1
-	  ) {
-	    result = true;
-	  }
-
-	  return result
-	}
-	return isMobile.exports;
-}
-
-var isMobileExports = requireIsMobile();
+import { c as classNames, C as ConfigConsumer, p as propTypesExports } from './config-provider.js';
+import { s as shallowEqual, p as polyfill } from './menu.js';
+import { C as Checkbox$1 } from './Checkbox.js';
+import { o as omit } from './input.js';
 
 function _typeof$1(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$1 = function _typeof(obj) { return typeof obj; }; } else { _typeof$1 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$1(obj); }
 
-function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 
@@ -113,230 +43,179 @@ var __rest$1 = undefined && undefined.__rest || function (s, e) {
   return t;
 };
 
-var Search = /*#__PURE__*/function (_React$Component) {
-  _inherits$1(Search, _React$Component);
+var Checkbox = /*#__PURE__*/function (_React$Component) {
+  _inherits$1(Checkbox, _React$Component);
 
-  var _super = _createSuper$1(Search);
+  var _super = _createSuper$1(Checkbox);
 
-  function Search() {
+  function Checkbox() {
     var _this;
 
-    _classCallCheck$1(this, Search);
+    _classCallCheck$1(this, Checkbox);
 
     _this = _super.apply(this, arguments);
 
-    _this.saveInput = function (node) {
-      _this.input = node;
+    _this.saveCheckbox = function (node) {
+      _this.rcCheckbox = node;
     };
 
-    _this.onChange = function (e) {
-      var _this$props = _this.props,
-          onChange = _this$props.onChange,
-          onSearch = _this$props.onSearch;
+    _this.renderCheckbox = function (_ref) {
+      var _classNames;
 
-      if (e && e.target && e.type === 'click' && onSearch) {
-        onSearch(e.target.value, e);
-      }
-
-      if (onChange) {
-        onChange(e);
-      }
-    };
-
-    _this.onSearch = function (e) {
-      var _this$props2 = _this.props,
-          onSearch = _this$props2.onSearch,
-          loading = _this$props2.loading,
-          disabled = _this$props2.disabled;
-
-      if (loading || disabled) {
-        return;
-      }
-
-      if (onSearch) {
-        onSearch(_this.input.input.value, e);
-      }
-
-      if (!isMobileExports.isMobile({
-        tablet: true
-      })) {
-        _this.input.focus();
-      }
-    };
-
-    _this.renderLoading = function (prefixCls) {
-      var _this$props3 = _this.props,
-          enterButton = _this$props3.enterButton,
-          size = _this$props3.size;
-
-      if (enterButton) {
-        return /*#__PURE__*/React.createElement(Button, {
-          className: "".concat(prefixCls, "-button"),
-          type: "primary",
-          size: size,
-          key: "enterButton"
-        }, /*#__PURE__*/React.createElement(Icon, {
-          type: "loading"
-        }));
-      }
-
-      return /*#__PURE__*/React.createElement(Icon, {
-        className: "".concat(prefixCls, "-icon"),
-        type: "loading",
-        key: "loadingIcon"
-      });
-    };
-
-    _this.renderSuffix = function (prefixCls) {
-      var _this$props4 = _this.props,
-          suffix = _this$props4.suffix,
-          enterButton = _this$props4.enterButton,
-          loading = _this$props4.loading;
-
-      if (loading && !enterButton) {
-        return [suffix, _this.renderLoading(prefixCls)];
-      }
-
-      if (enterButton) return suffix;
-      var icon = /*#__PURE__*/React.createElement(Icon, {
-        className: "".concat(prefixCls, "-icon"),
-        type: "search",
-        key: "searchIcon",
-        onClick: _this.onSearch
-      });
-
-      if (suffix) {
-        return [/*#__PURE__*/React.isValidElement(suffix) ? /*#__PURE__*/React.cloneElement(suffix, {
-          key: 'suffix'
-        }) : null, icon];
-      }
-
-      return icon;
-    };
-
-    _this.renderAddonAfter = function (prefixCls) {
-      var _this$props5 = _this.props,
-          enterButton = _this$props5.enterButton,
-          size = _this$props5.size,
-          disabled = _this$props5.disabled,
-          addonAfter = _this$props5.addonAfter,
-          loading = _this$props5.loading;
-      var btnClassName = "".concat(prefixCls, "-button");
-
-      if (loading && enterButton) {
-        return [_this.renderLoading(prefixCls), addonAfter];
-      }
-
-      if (!enterButton) return addonAfter;
-      var button;
-      var enterButtonAsElement = enterButton;
-      var isAntdButton = enterButtonAsElement.type && enterButtonAsElement.type.__ANT_BUTTON === true;
-
-      if (isAntdButton || enterButtonAsElement.type === 'button') {
-        button = /*#__PURE__*/React.cloneElement(enterButtonAsElement, _extends$1({
-          onClick: _this.onSearch,
-          key: 'enterButton'
-        }, isAntdButton ? {
-          className: btnClassName,
-          size: size
-        } : {}));
-      } else {
-        button = /*#__PURE__*/React.createElement(Button, {
-          className: btnClassName,
-          type: "primary",
-          size: size,
-          disabled: disabled,
-          key: "enterButton",
-          onClick: _this.onSearch
-        }, enterButton === true ? /*#__PURE__*/React.createElement(Icon, {
-          type: "search"
-        }) : enterButton);
-      }
-
-      if (addonAfter) {
-        return [button, /*#__PURE__*/React.isValidElement(addonAfter) ? /*#__PURE__*/React.cloneElement(addonAfter, {
-          key: 'addonAfter'
-        }) : null];
-      }
-
-      return button;
-    };
-
-    _this.renderSearch = function (_ref) {
       var getPrefixCls = _ref.getPrefixCls;
 
-      var _a = _this.props,
-          customizePrefixCls = _a.prefixCls,
-          customizeInputPrefixCls = _a.inputPrefixCls,
-          size = _a.size,
-          enterButton = _a.enterButton,
-          className = _a.className,
-          restProps = __rest$1(_a, ["prefixCls", "inputPrefixCls", "size", "enterButton", "className"]);
+      var _assertThisInitialize = _assertThisInitialized$1(_this),
+          props = _assertThisInitialize.props,
+          context = _assertThisInitialize.context;
 
-      delete restProps.onSearch;
-      delete restProps.loading;
-      var prefixCls = getPrefixCls('input-search', customizePrefixCls);
-      var inputPrefixCls = getPrefixCls('input', customizeInputPrefixCls);
-      var inputClassName;
+      var customizePrefixCls = props.prefixCls,
+          className = props.className,
+          children = props.children,
+          indeterminate = props.indeterminate,
+          style = props.style,
+          onMouseEnter = props.onMouseEnter,
+          onMouseLeave = props.onMouseLeave,
+          restProps = __rest$1(props, ["prefixCls", "className", "children", "indeterminate", "style", "onMouseEnter", "onMouseLeave"]);
 
-      if (enterButton) {
-        var _classNames;
+      var checkboxGroup = context.checkboxGroup;
+      var prefixCls = getPrefixCls('checkbox', customizePrefixCls);
 
-        inputClassName = classNames(prefixCls, className, (_classNames = {}, _defineProperty$1(_classNames, "".concat(prefixCls, "-enter-button"), !!enterButton), _defineProperty$1(_classNames, "".concat(prefixCls, "-").concat(size), !!size), _classNames));
-      } else {
-        inputClassName = classNames(prefixCls, className);
+      var checkboxProps = _extends$1({}, restProps);
+
+      if (checkboxGroup) {
+        checkboxProps.onChange = function () {
+          if (restProps.onChange) {
+            restProps.onChange.apply(restProps, arguments);
+          }
+
+          checkboxGroup.toggleOption({
+            label: children,
+            value: props.value
+          });
+        };
+
+        checkboxProps.name = checkboxGroup.name;
+        checkboxProps.checked = checkboxGroup.value.indexOf(props.value) !== -1;
+        checkboxProps.disabled = props.disabled || checkboxGroup.disabled;
       }
 
-      return /*#__PURE__*/React.createElement(Input, _extends$1({
-        onPressEnter: _this.onSearch
-      }, restProps, {
-        size: size,
-        prefixCls: inputPrefixCls,
-        addonAfter: _this.renderAddonAfter(prefixCls),
-        suffix: _this.renderSuffix(prefixCls),
-        onChange: _this.onChange,
-        ref: _this.saveInput,
-        className: inputClassName
-      }));
+      var classString = classNames(className, (_classNames = {}, _defineProperty(_classNames, "".concat(prefixCls, "-wrapper"), true), _defineProperty(_classNames, "".concat(prefixCls, "-wrapper-checked"), checkboxProps.checked), _defineProperty(_classNames, "".concat(prefixCls, "-wrapper-disabled"), checkboxProps.disabled), _classNames));
+      var checkboxClass = classNames(_defineProperty({}, "".concat(prefixCls, "-indeterminate"), indeterminate));
+      return (
+        /*#__PURE__*/
+        // eslint-disable-next-line jsx-a11y/label-has-associated-control
+        React.createElement("label", {
+          className: classString,
+          style: style,
+          onMouseEnter: onMouseEnter,
+          onMouseLeave: onMouseLeave
+        }, /*#__PURE__*/React.createElement(Checkbox$1, _extends$1({}, checkboxProps, {
+          prefixCls: prefixCls,
+          className: checkboxClass,
+          ref: _this.saveCheckbox
+        })), children !== undefined && /*#__PURE__*/React.createElement("span", null, children))
+      );
     };
 
     return _this;
   }
 
-  _createClass$1(Search, [{
+  _createClass$1(Checkbox, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var value = this.props.value;
+
+      var _ref2 = this.context || {},
+          _ref2$checkboxGroup = _ref2.checkboxGroup,
+          checkboxGroup = _ref2$checkboxGroup === void 0 ? {} : _ref2$checkboxGroup;
+
+      if (checkboxGroup.registerValue) {
+        checkboxGroup.registerValue(value);
+      }
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps, nextState, nextContext) {
+      return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState) || !shallowEqual(this.context.checkboxGroup, nextContext.checkboxGroup);
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(_ref3) {
+      var prevValue = _ref3.value;
+      var value = this.props.value;
+
+      var _ref4 = this.context || {},
+          _ref4$checkboxGroup = _ref4.checkboxGroup,
+          checkboxGroup = _ref4$checkboxGroup === void 0 ? {} : _ref4$checkboxGroup;
+
+      if (value !== prevValue && checkboxGroup.registerValue && checkboxGroup.cancelValue) {
+        checkboxGroup.cancelValue(prevValue);
+        checkboxGroup.registerValue(value);
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      var value = this.props.value;
+
+      var _ref5 = this.context || {},
+          _ref5$checkboxGroup = _ref5.checkboxGroup,
+          checkboxGroup = _ref5$checkboxGroup === void 0 ? {} : _ref5$checkboxGroup;
+
+      if (checkboxGroup.cancelValue) {
+        checkboxGroup.cancelValue(value);
+      }
+    }
+  }, {
     key: "focus",
     value: function focus() {
-      this.input.focus();
+      this.rcCheckbox.focus();
     }
   }, {
     key: "blur",
     value: function blur() {
-      this.input.blur();
+      this.rcCheckbox.blur();
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderSearch);
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderCheckbox);
     }
   }]);
 
-  return Search;
+  return Checkbox;
 }(React.Component);
-Search.defaultProps = {
-  enterButton: false
+
+Checkbox.__ANT_CHECKBOX = true;
+Checkbox.defaultProps = {
+  indeterminate: false
 };
+Checkbox.contextTypes = {
+  checkboxGroup: propTypesExports.any
+};
+polyfill(Checkbox);
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -364,115 +243,194 @@ var __rest = undefined && undefined.__rest || function (s, e) {
   }
   return t;
 };
-var ActionMap = {
-  click: 'onClick',
-  hover: 'onMouseOver'
-};
 
-var Password = /*#__PURE__*/function (_React$Component) {
-  _inherits(Password, _React$Component);
+var CheckboxGroup = /*#__PURE__*/function (_React$Component) {
+  _inherits(CheckboxGroup, _React$Component);
 
-  var _super = _createSuper(Password);
+  var _super = _createSuper(CheckboxGroup);
 
-  function Password() {
+  function CheckboxGroup(props) {
     var _this;
 
-    _classCallCheck(this, Password);
+    _classCallCheck(this, CheckboxGroup);
 
-    _this = _super.apply(this, arguments);
-    _this.state = {
-      visible: false
-    };
+    _this = _super.call(this, props);
 
-    _this.onVisibleChange = function () {
-      var disabled = _this.props.disabled;
-
-      if (disabled) {
-        return;
-      }
-
+    _this.cancelValue = function (value) {
       _this.setState(function (_ref) {
-        var visible = _ref.visible;
+        var registeredValues = _ref.registeredValues;
         return {
-          visible: !visible
+          registeredValues: registeredValues.filter(function (val) {
+            return val !== value;
+          })
         };
       });
     };
 
-    _this.saveInput = function (instance) {
-      if (instance && instance.input) {
-        _this.input = instance.input;
+    _this.registerValue = function (value) {
+      _this.setState(function (_ref2) {
+        var registeredValues = _ref2.registeredValues;
+        return {
+          registeredValues: [].concat(_toConsumableArray(registeredValues), [value])
+        };
+      });
+    };
+
+    _this.toggleOption = function (option) {
+      var registeredValues = _this.state.registeredValues;
+
+      var optionIndex = _this.state.value.indexOf(option.value);
+
+      var value = _toConsumableArray(_this.state.value);
+
+      if (optionIndex === -1) {
+        value.push(option.value);
+      } else {
+        value.splice(optionIndex, 1);
+      }
+
+      if (!('value' in _this.props)) {
+        _this.setState({
+          value: value
+        });
+      }
+
+      var onChange = _this.props.onChange;
+
+      if (onChange) {
+        var options = _this.getOptions();
+
+        onChange(value.filter(function (val) {
+          return registeredValues.indexOf(val) !== -1;
+        }).sort(function (a, b) {
+          var indexA = options.findIndex(function (opt) {
+            return opt.value === a;
+          });
+          var indexB = options.findIndex(function (opt) {
+            return opt.value === b;
+          });
+          return indexA - indexB;
+        }));
       }
     };
 
+    _this.renderGroup = function (_ref3) {
+      var getPrefixCls = _ref3.getPrefixCls;
+
+      var _assertThisInitialize = _assertThisInitialized(_this),
+          props = _assertThisInitialize.props,
+          state = _assertThisInitialize.state;
+
+      var customizePrefixCls = props.prefixCls,
+          className = props.className,
+          style = props.style,
+          options = props.options,
+          restProps = __rest(props, ["prefixCls", "className", "style", "options"]);
+
+      var prefixCls = getPrefixCls('checkbox', customizePrefixCls);
+      var groupPrefixCls = "".concat(prefixCls, "-group");
+      var domProps = omit(restProps, ['children', 'defaultValue', 'value', 'onChange', 'disabled']);
+      var children = props.children;
+
+      if (options && options.length > 0) {
+        children = _this.getOptions().map(function (option) {
+          return /*#__PURE__*/React.createElement(Checkbox, {
+            prefixCls: prefixCls,
+            key: option.value.toString(),
+            disabled: 'disabled' in option ? option.disabled : props.disabled,
+            value: option.value,
+            checked: state.value.indexOf(option.value) !== -1,
+            onChange: option.onChange,
+            className: "".concat(groupPrefixCls, "-item")
+          }, option.label);
+        });
+      }
+
+      var classString = classNames(groupPrefixCls, className);
+      return /*#__PURE__*/React.createElement("div", _extends({
+        className: classString,
+        style: style
+      }, domProps), children);
+    };
+
+    _this.state = {
+      value: props.value || props.defaultValue || [],
+      registeredValues: []
+    };
     return _this;
   }
 
-  _createClass(Password, [{
-    key: "getIcon",
-    value: function getIcon() {
-      var _iconProps;
+  _createClass(CheckboxGroup, [{
+    key: "getChildContext",
+    value: function getChildContext() {
+      return {
+        checkboxGroup: {
+          toggleOption: this.toggleOption,
+          value: this.state.value,
+          disabled: this.props.disabled,
+          name: this.props.name,
+          // https://github.com/ant-design/ant-design/issues/16376
+          registerValue: this.registerValue,
+          cancelValue: this.cancelValue
+        }
+      };
+    }
+  }, {
+    key: "shouldComponentUpdate",
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      return !shallowEqual(this.props, nextProps) || !shallowEqual(this.state, nextState);
+    }
+  }, {
+    key: "getOptions",
+    value: function getOptions() {
+      var options = this.props.options; // https://github.com/Microsoft/TypeScript/issues/7960
 
-      var _this$props = this.props,
-          prefixCls = _this$props.prefixCls,
-          action = _this$props.action;
-      var iconTrigger = ActionMap[action] || '';
-      var iconProps = (_iconProps = {}, _defineProperty(_iconProps, iconTrigger, this.onVisibleChange), _defineProperty(_iconProps, "className", "".concat(prefixCls, "-icon")), _defineProperty(_iconProps, "type", this.state.visible ? 'eye' : 'eye-invisible'), _defineProperty(_iconProps, "key", 'passwordIcon'), _defineProperty(_iconProps, "onMouseDown", function onMouseDown(e) {
-        // Prevent focused state lost
-        // https://github.com/ant-design/ant-design/issues/15173
-        e.preventDefault();
-      }), _iconProps);
-      return /*#__PURE__*/React.createElement(Icon, iconProps);
-    }
-  }, {
-    key: "focus",
-    value: function focus() {
-      this.input.focus();
-    }
-  }, {
-    key: "blur",
-    value: function blur() {
-      this.input.blur();
-    }
-  }, {
-    key: "select",
-    value: function select() {
-      this.input.select();
+      return options.map(function (option) {
+        if (typeof option === 'string') {
+          return {
+            label: option,
+            value: option
+          };
+        }
+
+        return option;
+      });
     }
   }, {
     key: "render",
     value: function render() {
-      var _a = this.props,
-          className = _a.className,
-          prefixCls = _a.prefixCls,
-          inputPrefixCls = _a.inputPrefixCls,
-          size = _a.size,
-          visibilityToggle = _a.visibilityToggle,
-          restProps = __rest(_a, ["className", "prefixCls", "inputPrefixCls", "size", "visibilityToggle"]);
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderGroup);
+    }
+  }], [{
+    key: "getDerivedStateFromProps",
+    value: function getDerivedStateFromProps(nextProps) {
+      if ('value' in nextProps) {
+        return {
+          value: nextProps.value || []
+        };
+      }
 
-      var suffixIcon = visibilityToggle && this.getIcon();
-      var inputClassName = classNames(prefixCls, className, _defineProperty({}, "".concat(prefixCls, "-").concat(size), !!size));
-      return /*#__PURE__*/React.createElement(Input, _extends({}, omit(restProps, ['suffix']), {
-        type: this.state.visible ? 'text' : 'password',
-        size: size,
-        className: inputClassName,
-        prefixCls: inputPrefixCls,
-        suffix: suffixIcon,
-        ref: this.saveInput
-      }));
+      return null;
     }
   }]);
 
-  return Password;
+  return CheckboxGroup;
 }(React.Component);
-Password.defaultProps = {
-  inputPrefixCls: 'ant-input',
-  prefixCls: 'ant-input-password',
-  action: 'click',
-  visibilityToggle: true
-};
 
-Input.Group = Group;
-Input.Search = Search;
-Input.TextArea = TextArea;
-Input.Password = Password;
+CheckboxGroup.defaultProps = {
+  options: []
+};
+CheckboxGroup.propTypes = {
+  defaultValue: propTypesExports.array,
+  value: propTypesExports.array,
+  options: propTypesExports.array.isRequired,
+  onChange: propTypesExports.func
+};
+CheckboxGroup.childContextTypes = {
+  checkboxGroup: propTypesExports.any
+};
+polyfill(CheckboxGroup);
+
+Checkbox.Group = CheckboxGroup;
+
+export { Checkbox as C };

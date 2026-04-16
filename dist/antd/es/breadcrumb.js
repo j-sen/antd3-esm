@@ -1,5 +1,5 @@
 import { n } from '../../config-provider.js';
-export { B as default } from '../../index3.js';
+export { B as default } from '../../index5.js';
 import 'react';
 import '../../tree.js';
 import '../../menu.js';
@@ -7,10 +7,10 @@ import 'react-dom';
 import '../../icon.js';
 import '../../input.js';
 import '../../dropdown.js';
-import '../../index4.js';
-import '../../Divider.js';
-import '../../index5.js';
 import '../../index6.js';
+import '../../Divider.js';
+import '../../index7.js';
+import '../../index8.js';
 import '../../Sider.js';
 import '../../raf.js';
 

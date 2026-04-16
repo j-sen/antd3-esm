@@ -92,4 +92,4 @@ function require_assignValue () {
 	return _assignValue;
 }
 
-export { require_assignValue as a, require_defineProperty as b, require_baseAssignValue as r };
+export { require_baseAssignValue as a, require_defineProperty as b, require_assignValue as r };

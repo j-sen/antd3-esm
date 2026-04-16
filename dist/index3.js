@@ -1,407 +1,372 @@
-import * as React from 'react';
-import { C as ConfigConsumer, p as propTypesExports, c as classNames } from './config-provider.js';
-import { t as toArray } from './tree.js';
-import { o as omit } from './input.js';
-import { D as Dropdown } from './dropdown.js';
-import { I as Icon } from './icon.js';
-import { M as Menu } from './index4.js';
+import { e as requireReactIs, g as getDefaultExportFromCjs } from './config-provider.js';
+import React__default from 'react';
+import ReactDOM__default from 'react-dom';
+import { r as requireWarning } from './warning.js';
+import { r as require$$9 } from './ResizeObserver.es.js';
 
-function _typeof$2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$2 = function _typeof(obj) { return typeof obj; }; } else { _typeof$2 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$2(obj); }
+var es = {};
 
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
+var findDOMNode = {};
 
-function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+var hasRequiredFindDOMNode;
 
-function _defineProperties$2(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+function requireFindDOMNode () {
+	if (hasRequiredFindDOMNode) return findDOMNode;
+	hasRequiredFindDOMNode = 1;
 
-function _createClass$2(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$2(Constructor.prototype, protoProps); return Constructor; }
+	Object.defineProperty(findDOMNode, "__esModule", {
+	  value: true
+	});
+	findDOMNode.default = findDOMNode$1;
 
-function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$2(subClass, superClass); }
+	var _reactDom = _interopRequireDefault(ReactDOM__default);
 
-function _setPrototypeOf$2(o, p) { _setPrototypeOf$2 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$2(o, p); }
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf$2(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$2(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$2(this, result); }; }
+	/**
+	 * Return if a node is a DOM node. Else will return by `findDOMNode`
+	 */
+	function findDOMNode$1(node) {
+	  if (node instanceof HTMLElement) {
+	    return node;
+	  }
 
-function _possibleConstructorReturn$2(self, call) { if (call && (_typeof$2(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$2(self); }
-
-function _assertThisInitialized$2(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf$2(o) { _getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$2(o); }
-
-var __rest$1 = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-var BreadcrumbItem = /*#__PURE__*/function (_React$Component) {
-  _inherits$2(BreadcrumbItem, _React$Component);
-
-  var _super = _createSuper$2(BreadcrumbItem);
-
-  function BreadcrumbItem() {
-    var _this;
-
-    _classCallCheck$2(this, BreadcrumbItem);
-
-    _this = _super.apply(this, arguments);
-
-    _this.renderBreadcrumbItem = function (_ref) {
-      var getPrefixCls = _ref.getPrefixCls;
-
-      var _a = _this.props,
-          customizePrefixCls = _a.prefixCls,
-          separator = _a.separator,
-          children = _a.children,
-          restProps = __rest$1(_a, ["prefixCls", "separator", "children"]);
-
-      var prefixCls = getPrefixCls('breadcrumb', customizePrefixCls);
-      var link;
-
-      if ('href' in _this.props) {
-        link = /*#__PURE__*/React.createElement("a", _extends$1({
-          className: "".concat(prefixCls, "-link")
-        }, omit(restProps, ['overlay'])), children);
-      } else {
-        link = /*#__PURE__*/React.createElement("span", _extends$1({
-          className: "".concat(prefixCls, "-link")
-        }, omit(restProps, ['overlay'])), children);
-      } // wrap to dropDown
-
-
-      link = _this.renderBreadcrumbNode(link, prefixCls);
-
-      if (children) {
-        return /*#__PURE__*/React.createElement("span", null, link, separator && separator !== '' && /*#__PURE__*/React.createElement("span", {
-          className: "".concat(prefixCls, "-separator")
-        }, separator));
-      }
-
-      return null;
-    };
-    /**
-     * if overlay is have
-     * Wrap a DropDown
-     */
-
-
-    _this.renderBreadcrumbNode = function (breadcrumbItem, prefixCls) {
-      var overlay = _this.props.overlay;
-
-      if (overlay) {
-        return /*#__PURE__*/React.createElement(Dropdown, {
-          overlay: overlay,
-          placement: "bottomCenter"
-        }, /*#__PURE__*/React.createElement("span", {
-          className: "".concat(prefixCls, "-overlay-link")
-        }, breadcrumbItem, /*#__PURE__*/React.createElement(Icon, {
-          type: "down"
-        })));
-      }
-
-      return breadcrumbItem;
-    };
-
-    return _this;
-  }
-
-  _createClass$2(BreadcrumbItem, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderBreadcrumbItem);
-    }
-  }]);
-
-  return BreadcrumbItem;
-}(React.Component);
-BreadcrumbItem.__ANT_BREADCRUMB_ITEM = true;
-BreadcrumbItem.defaultProps = {
-  separator: '/'
-};
-BreadcrumbItem.propTypes = {
-  prefixCls: propTypesExports.string,
-  separator: propTypesExports.oneOfType([propTypesExports.string, propTypesExports.element]),
-  href: propTypesExports.string
-};
-
-function _typeof$1(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$1 = function _typeof(obj) { return typeof obj; }; } else { _typeof$1 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$1(obj); }
-
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
-
-function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
-
-function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-
-function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
-
-function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
-
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties$1(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); return Constructor; }
-
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
-
-function _setPrototypeOf$1(o, p) { _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$1(o, p); }
-
-function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf$1(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$1(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$1(this, result); }; }
-
-function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$1(self); }
-
-function _assertThisInitialized$1(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf$1(o) { _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$1(o); }
-
-var __rest = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-function getBreadcrumbName(route, params) {
-  if (!route.breadcrumbName) {
-    return null;
-  }
-
-  var paramsKeys = Object.keys(params).join('|');
-  var name = route.breadcrumbName.replace(new RegExp(":(".concat(paramsKeys, ")"), 'g'), function (replacement, key) {
-    return params[key] || replacement;
-  });
-  return name;
+	  return _reactDom.default.findDOMNode(node);
+	}
+	return findDOMNode;
 }
 
-function defaultItemRender(route, params, routes, paths) {
-  var isLastItem = routes.indexOf(route) === routes.length - 1;
-  var name = getBreadcrumbName(route, params);
-  return isLastItem ? /*#__PURE__*/React.createElement("span", null, name) : /*#__PURE__*/React.createElement("a", {
-    href: "#/".concat(paths.join('/'))
-  }, name);
+var toArray = {};
+
+var hasRequiredToArray;
+
+function requireToArray () {
+	if (hasRequiredToArray) return toArray;
+	hasRequiredToArray = 1;
+
+	Object.defineProperty(toArray, "__esModule", {
+	  value: true
+	});
+	toArray.default = toArray$1;
+
+	var _react = _interopRequireDefault(React__default);
+
+	var _reactIs = requireReactIs();
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function toArray$1(children) {
+	  var ret = [];
+
+	  _react.default.Children.forEach(children, function (child) {
+	    if (child === undefined || child === null) {
+	      return;
+	    }
+
+	    if (Array.isArray(child)) {
+	      ret = ret.concat(toArray$1(child));
+	    } else if ((0, _reactIs.isFragment)(child) && child.props) {
+	      ret = ret.concat(toArray$1(child.props.children));
+	    } else {
+	      ret.push(child);
+	    }
+	  });
+
+	  return ret;
+	}
+	return toArray;
 }
 
-function filterFragment(children) {
-  return toArray(children).map(function (element) {
-    if ( /*#__PURE__*/React.isValidElement(element) && element.type === React.Fragment) {
-      var props = element.props;
-      return props.children;
-    }
+var ref = {};
 
-    return element;
-  });
+var hasRequiredRef;
+
+function requireRef () {
+	if (hasRequiredRef) return ref;
+	hasRequiredRef = 1;
+
+	Object.defineProperty(ref, "__esModule", {
+	  value: true
+	});
+	ref.fillRef = fillRef;
+	ref.composeRef = composeRef;
+	ref.supportRef = supportRef;
+
+	function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+	function fillRef(ref, node) {
+	  if (typeof ref === 'function') {
+	    ref(node);
+	  } else if (_typeof(ref) === 'object' && ref && 'current' in ref) {
+	    ref.current = node;
+	  }
+	}
+	/**
+	 * Merge refs into one ref function to support ref passing.
+	 */
+
+
+	function composeRef() {
+	  for (var _len = arguments.length, refs = new Array(_len), _key = 0; _key < _len; _key++) {
+	    refs[_key] = arguments[_key];
+	  }
+
+	  return function (node) {
+	    refs.forEach(function (ref) {
+	      fillRef(ref, node);
+	    });
+	  };
+	}
+
+	function supportRef(nodeOrComponent) {
+	  // Function component node
+	  if (nodeOrComponent.type && nodeOrComponent.type.prototype && !nodeOrComponent.type.prototype.render) {
+	    return false;
+	  } // Class component
+
+
+	  if (typeof nodeOrComponent === 'function' && nodeOrComponent.prototype && !nodeOrComponent.prototype.render) {
+	    return false;
+	  }
+
+	  return true;
+	}
+	/* eslint-enable */
+	return ref;
 }
 
-var Breadcrumb = /*#__PURE__*/function (_React$Component) {
-  _inherits$1(Breadcrumb, _React$Component);
+var util = {};
 
-  var _super = _createSuper$1(Breadcrumb);
+var hasRequiredUtil;
 
-  function Breadcrumb() {
-    var _this;
+function requireUtil () {
+	if (hasRequiredUtil) return util;
+	hasRequiredUtil = 1;
 
-    _classCallCheck$1(this, Breadcrumb);
+	Object.defineProperty(util, "__esModule", {
+	  value: true
+	});
 
-    _this = _super.apply(this, arguments);
+	function supportRef(node) {
+	  // Function component
+	  if (node.type && node.type.prototype && !node.type.prototype.render) {
+	    return false;
+	  }
 
-    _this.getPath = function (path, params) {
-      path = (path || '').replace(/^\//, '');
-      Object.keys(params).forEach(function (key) {
-        path = path.replace(":".concat(key), params[key]);
-      });
-      return path;
-    };
+	  return true;
+	}
 
-    _this.addChildPath = function (paths) {
-      var childPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
-      var params = arguments.length > 2 ? arguments[2] : undefined;
+	util.supportRef = supportRef;
+	return util;
+}
 
-      var originalPaths = _toConsumableArray(paths);
+var hasRequiredEs;
 
-      var path = _this.getPath(childPath, params);
+function requireEs () {
+	if (hasRequiredEs) return es;
+	hasRequiredEs = 1;
 
-      if (path) {
-        originalPaths.push(path);
-      }
+	function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-      return originalPaths;
-    };
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-    _this.genForRoutes = function (_ref) {
-      var _ref$routes = _ref.routes,
-          routes = _ref$routes === void 0 ? [] : _ref$routes,
-          _ref$params = _ref.params,
-          params = _ref$params === void 0 ? {} : _ref$params,
-          separator = _ref.separator,
-          _ref$itemRender = _ref.itemRender,
-          itemRender = _ref$itemRender === void 0 ? defaultItemRender : _ref$itemRender;
-      var paths = [];
-      return routes.map(function (route) {
-        var path = _this.getPath(route.path, params);
+	function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-        if (path) {
-          paths.push(path);
-        } // generated overlay by route.children
+	function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
+
+	function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+	function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+	function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+	function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+	var __importStar = es && es.__importStar || function (mod) {
+	  if (mod && mod.__esModule) return mod;
+	  var result = {};
+	  if (mod != null) for (var k in mod) {
+	    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
+	  }
+	  result["default"] = mod;
+	  return result;
+	};
+
+	var __importDefault = es && es.__importDefault || function (mod) {
+	  return mod && mod.__esModule ? mod : {
+	    "default": mod
+	  };
+	};
+
+	Object.defineProperty(es, "__esModule", {
+	  value: true
+	});
+
+	var React = __importStar(React__default);
+
+	var findDOMNode_1 = __importDefault(requireFindDOMNode());
+
+	var toArray_1 = __importDefault(requireToArray());
+
+	var warning_1 = __importDefault(requireWarning());
+
+	var ref_1 = requireRef();
+
+	var resize_observer_polyfill_1 = __importDefault(require$$9);
+
+	var util_1 = requireUtil();
+
+	var INTERNAL_PREFIX_KEY = 'rc-observer-key'; // Still need to be compatible with React 15, we use class component here
+
+	var ReactResizeObserver =
+	/*#__PURE__*/
+	function (_React$Component) {
+	  _inherits(ReactResizeObserver, _React$Component);
+
+	  function ReactResizeObserver() {
+	    var _this;
+
+	    _classCallCheck(this, ReactResizeObserver);
+
+	    _this = _possibleConstructorReturn(this, _getPrototypeOf(ReactResizeObserver).apply(this, arguments));
+	    _this.resizeObserver = null;
+	    _this.childNode = null;
+	    _this.currentElement = null;
+	    _this.state = {
+	      width: 0,
+	      height: 0
+	    };
+
+	    _this.onResize = function (entries) {
+	      var onResize = _this.props.onResize;
+	      var target = entries[0].target;
+
+	      var _target$getBoundingCl = target.getBoundingClientRect(),
+	          width = _target$getBoundingCl.width,
+	          height = _target$getBoundingCl.height;
+	      /**
+	       * Resize observer trigger when content size changed.
+	       * In most case we just care about element size,
+	       * let's use `boundary` instead of `contentRect` here to avoid shaking.
+	       */
 
 
-        var overlay = null;
+	      var fixedWidth = Math.floor(width);
+	      var fixedHeight = Math.floor(height);
 
-        if (route.children && route.children.length) {
-          overlay = /*#__PURE__*/React.createElement(Menu, null, route.children.map(function (child) {
-            return /*#__PURE__*/React.createElement(Menu.Item, {
-              key: child.breadcrumbName || child.path
-            }, itemRender(child, params, routes, _this.addChildPath(paths, child.path, params)));
-          }));
-        }
+	      if (_this.state.width !== fixedWidth || _this.state.height !== fixedHeight) {
+	        var size = {
+	          width: fixedWidth,
+	          height: fixedHeight
+	        };
 
-        return /*#__PURE__*/React.createElement(BreadcrumbItem, {
-          overlay: overlay,
-          separator: separator,
-          key: route.breadcrumbName || path
-        }, itemRender(route, params, routes, paths));
-      });
-    };
+	        _this.setState(size);
 
-    _this.renderBreadcrumb = function (_ref2) {
-      var getPrefixCls = _ref2.getPrefixCls;
-      var crumbs;
+	        if (onResize) {
+	          onResize(size);
+	        }
+	      }
+	    };
 
-      var _a = _this.props,
-          customizePrefixCls = _a.prefixCls,
-          separator = _a.separator,
-          style = _a.style,
-          className = _a.className,
-          routes = _a.routes,
-          children = _a.children,
-          restProps = __rest(_a, ["prefixCls", "separator", "style", "className", "routes", "children"]);
+	    _this.setChildNode = function (node) {
+	      _this.childNode = node;
+	    };
 
-      var prefixCls = getPrefixCls('breadcrumb', customizePrefixCls);
+	    return _this;
+	  }
 
-      if (routes && routes.length > 0) {
-        // generated by route
-        crumbs = _this.genForRoutes(_this.props);
-      } else if (children) {
-        crumbs = React.Children.map(filterFragment(children), function (element, index) {
-          if (!element) {
-            return element;
-          }
-          return /*#__PURE__*/React.cloneElement(element, {
-            separator: separator,
-            key: index
-          });
-        });
-      }
+	  _createClass(ReactResizeObserver, [{
+	    key: "componentDidMount",
+	    value: function componentDidMount() {
+	      this.onComponentUpdated();
+	    }
+	  }, {
+	    key: "componentDidUpdate",
+	    value: function componentDidUpdate() {
+	      this.onComponentUpdated();
+	    }
+	  }, {
+	    key: "componentWillUnmount",
+	    value: function componentWillUnmount() {
+	      this.destroyObserver();
+	    }
+	  }, {
+	    key: "onComponentUpdated",
+	    value: function onComponentUpdated() {
+	      var disabled = this.props.disabled; // Unregister if disabled
 
-      return /*#__PURE__*/React.createElement("div", _extends({
-        className: classNames(className, prefixCls),
-        style: style
-      }, omit(restProps, ['itemRender', 'params'])), crumbs);
-    };
+	      if (disabled) {
+	        this.destroyObserver();
+	        return;
+	      } // Unregister if element changed
 
-    return _this;
-  }
 
-  _createClass$1(Breadcrumb, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderBreadcrumb);
-    }
-  }]);
+	      var element = findDOMNode_1.default(this.childNode || this);
+	      var elementChanged = element !== this.currentElement;
 
-  return Breadcrumb;
-}(React.Component);
-Breadcrumb.defaultProps = {
-  separator: '/'
-};
-Breadcrumb.propTypes = {
-  prefixCls: propTypesExports.string,
-  separator: propTypesExports.node,
-  routes: propTypesExports.array
-};
+	      if (elementChanged) {
+	        this.destroyObserver();
+	        this.currentElement = element;
+	      }
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+	      if (!this.resizeObserver && element) {
+	        this.resizeObserver = new resize_observer_polyfill_1.default(this.onResize);
+	        this.resizeObserver.observe(element);
+	      }
+	    }
+	  }, {
+	    key: "destroyObserver",
+	    value: function destroyObserver() {
+	      if (this.resizeObserver) {
+	        this.resizeObserver.disconnect();
+	        this.resizeObserver = null;
+	      }
+	    }
+	  }, {
+	    key: "render",
+	    value: function render() {
+	      var children = this.props.children;
+	      var childNodes = toArray_1.default(children);
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+	      if (childNodes.length > 1) {
+	        warning_1.default(false, 'Find more than one child node with `children` in ResizeObserver. Will only observe first one.');
+	      } else if (childNodes.length === 0) {
+	        warning_1.default(false, '`children` of ResizeObserver is empty. Nothing is in observe.');
+	        return null;
+	      }
 
-function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+	      var childNode = childNodes[0];
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
+	      if (React.isValidElement(childNode) && util_1.supportRef(childNode)) {
+	        var ref = childNode.ref;
+	        childNodes[0] = React.cloneElement(childNode, {
+	          ref: ref_1.composeRef(ref, this.setChildNode)
+	        });
+	      }
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+	      return childNodes.length === 1 ? childNodes[0] : childNodes.map(function (node, index) {
+	        if (!React.isValidElement(node) || 'key' in node && node.key !== null) {
+	          return node;
+	        }
 
-function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+	        return React.cloneElement(node, {
+	          key: "".concat(INTERNAL_PREFIX_KEY, "-").concat(index)
+	        });
+	      });
+	    }
+	  }]);
 
-function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+	  return ReactResizeObserver;
+	}(React.Component);
 
-function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+	ReactResizeObserver.displayName = 'ResizeObserver';
+	es.default = ReactResizeObserver;
+	return es;
+}
 
-function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+var esExports = requireEs();
+var ResizeObserver = /*@__PURE__*/getDefaultExportFromCjs(esExports);
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-var BreadcrumbSeparator = /*#__PURE__*/function (_React$Component) {
-  _inherits(BreadcrumbSeparator, _React$Component);
-
-  var _super = _createSuper(BreadcrumbSeparator);
-
-  function BreadcrumbSeparator() {
-    var _this;
-
-    _classCallCheck(this, BreadcrumbSeparator);
-
-    _this = _super.apply(this, arguments);
-
-    _this.renderSeparator = function (_ref) {
-      var getPrefixCls = _ref.getPrefixCls;
-      var children = _this.props.children;
-      var prefixCls = getPrefixCls('breadcrumb');
-      return /*#__PURE__*/React.createElement("span", {
-        className: "".concat(prefixCls, "-separator")
-      }, children || '/');
-    };
-
-    return _this;
-  }
-
-  _createClass(BreadcrumbSeparator, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderSeparator);
-    }
-  }]);
-
-  return BreadcrumbSeparator;
-}(React.Component);
-BreadcrumbSeparator.__ANT_BREADCRUMB_SEPARATOR = true;
-
-Breadcrumb.Item = BreadcrumbItem;
-Breadcrumb.Separator = BreadcrumbSeparator;
-
-export { Breadcrumb as B };
+export { ResizeObserver as R };

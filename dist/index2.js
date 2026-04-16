@@ -1,374 +1,462 @@
-import { e as requireReactIs, d as getAugmentedNamespace, g as getDefaultExportFromCjs } from './config-provider.js';
-import React__default from 'react';
-import ReactDOM__default from 'react-dom';
-import { r as requireWarning } from './warning.js';
-import { R as ResizeObserver_es } from './menu.js';
+import * as React from 'react';
+import { r as raf, a as addEventListenerWrap, p as polyfill } from './menu.js';
+import { c as classNames, C as ConfigConsumer } from './config-provider.js';
+import { o as omit } from './input.js';
+import { R as ResizeObserver } from './index3.js';
 
-var es = {};
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-var findDOMNode = {};
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-var hasRequiredFindDOMNode;
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function requireFindDOMNode () {
-	if (hasRequiredFindDOMNode) return findDOMNode;
-	hasRequiredFindDOMNode = 1;
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-	Object.defineProperty(findDOMNode, "__esModule", {
-	  value: true
-	});
-	findDOMNode.default = findDOMNode$1;
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-	var _reactDom = _interopRequireDefault(ReactDOM__default);
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+function throttleByAnimationFrame(fn) {
+  var requestId;
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+  var later = function later(args) {
+    return function () {
+      requestId = null;
+      fn.apply(void 0, _toConsumableArray(args));
+    };
+  };
 
-	/**
-	 * Return if a node is a DOM node. Else will return by `findDOMNode`
-	 */
-	function findDOMNode$1(node) {
-	  if (node instanceof HTMLElement) {
-	    return node;
-	  }
+  var throttled = function throttled() {
+    if (requestId == null) {
+      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
+        args[_key] = arguments[_key];
+      }
 
-	  return _reactDom.default.findDOMNode(node);
-	}
-	return findDOMNode;
+      requestId = raf(later(args));
+    }
+  };
+
+  throttled.cancel = function () {
+    return raf.cancel(requestId);
+  };
+
+  return throttled;
+}
+function throttleByAnimationFrameDecorator() {
+  // eslint-disable-next-line func-names
+  return function (target, key, descriptor) {
+    var fn = descriptor.value;
+    var definingProperty = false;
+    return {
+      configurable: true,
+      get: function get() {
+        // eslint-disable-next-line no-prototype-builtins
+        if (definingProperty || this === target.prototype || this.hasOwnProperty(key)) {
+          return fn;
+        }
+
+        var boundFn = throttleByAnimationFrame(fn.bind(this));
+        definingProperty = true;
+        Object.defineProperty(this, key, {
+          value: boundFn,
+          configurable: true,
+          writable: true
+        });
+        definingProperty = false;
+        return boundFn;
+      }
+    };
+  };
 }
 
-var toArray = {};
+function getTargetRect(target) {
+  return target !== window ? target.getBoundingClientRect() : {
+    top: 0,
+    bottom: window.innerHeight
+  };
+}
+function getFixedTop(placeholderReact, targetRect, offsetTop) {
+  if (offsetTop !== undefined && targetRect.top > placeholderReact.top - offsetTop) {
+    return offsetTop + targetRect.top;
+  }
 
-var hasRequiredToArray;
+  return undefined;
+}
+function getFixedBottom(placeholderReact, targetRect, offsetBottom) {
+  if (offsetBottom !== undefined && targetRect.bottom < placeholderReact.bottom + offsetBottom) {
+    var targetBottomOffset = window.innerHeight - targetRect.bottom;
+    return offsetBottom + targetBottomOffset;
+  }
 
-function requireToArray () {
-	if (hasRequiredToArray) return toArray;
-	hasRequiredToArray = 1;
+  return undefined;
+} // ======================== Observer ========================
 
-	Object.defineProperty(toArray, "__esModule", {
-	  value: true
-	});
-	toArray.default = toArray$1;
+var TRIGGER_EVENTS = ['resize', 'scroll', 'touchstart', 'touchmove', 'touchend', 'pageshow', 'load'];
+var observerEntities = [];
+function addObserveTarget(target, affix) {
+  if (!target) return;
+  var entity = observerEntities.find(function (item) {
+    return item.target === target;
+  });
 
-	var _react = _interopRequireDefault(React__default);
+  if (entity) {
+    entity.affixList.push(affix);
+  } else {
+    entity = {
+      target: target,
+      affixList: [affix],
+      eventHandlers: {}
+    };
+    observerEntities.push(entity); // Add listener
 
-	var _reactIs = requireReactIs();
+    TRIGGER_EVENTS.forEach(function (eventName) {
+      entity.eventHandlers[eventName] = addEventListenerWrap(target, eventName, function () {
+        entity.affixList.forEach(function (targetAffix) {
+          targetAffix.lazyUpdatePosition();
+        });
+      });
+    });
+  }
+}
+function removeObserveTarget(affix) {
+  var observerEntity = observerEntities.find(function (oriObserverEntity) {
+    var hasAffix = oriObserverEntity.affixList.some(function (item) {
+      return item === affix;
+    });
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+    if (hasAffix) {
+      oriObserverEntity.affixList = oriObserverEntity.affixList.filter(function (item) {
+        return item !== affix;
+      });
+    }
 
-	function toArray$1(children) {
-	  var ret = [];
+    return hasAffix;
+  });
 
-	  _react.default.Children.forEach(children, function (child) {
-	    if (child === undefined || child === null) {
-	      return;
-	    }
+  if (observerEntity && observerEntity.affixList.length === 0) {
+    observerEntities = observerEntities.filter(function (item) {
+      return item !== observerEntity;
+    }); // Remove listener
 
-	    if (Array.isArray(child)) {
-	      ret = ret.concat(toArray$1(child));
-	    } else if ((0, _reactIs.isFragment)(child) && child.props) {
-	      ret = ret.concat(toArray$1(child.props.children));
-	    } else {
-	      ret.push(child);
-	    }
-	  });
+    TRIGGER_EVENTS.forEach(function (eventName) {
+      var handler = observerEntity.eventHandlers[eventName];
 
-	  return ret;
-	}
-	return toArray;
+      if (handler && handler.remove) {
+        handler.remove();
+      }
+    });
+  }
 }
 
-var ref = {};
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-var hasRequiredRef;
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-function requireRef () {
-	if (hasRequiredRef) return ref;
-	hasRequiredRef = 1;
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	Object.defineProperty(ref, "__esModule", {
-	  value: true
-	});
-	ref.fillRef = fillRef;
-	ref.composeRef = composeRef;
-	ref.supportRef = supportRef;
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-	function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
 
-	function fillRef(ref, node) {
-	  if (typeof ref === 'function') {
-	    ref(node);
-	  } else if (_typeof(ref) === 'object' && ref && 'current' in ref) {
-	    ref.current = node;
-	  }
-	}
-	/**
-	 * Merge refs into one ref function to support ref passing.
-	 */
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
 
-	function composeRef() {
-	  for (var _len = arguments.length, refs = new Array(_len), _key = 0; _key < _len; _key++) {
-	    refs[_key] = arguments[_key];
-	  }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
 
-	  return function (node) {
-	    refs.forEach(function (ref) {
-	      fillRef(ref, node);
-	    });
-	  };
-	}
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
 
-	function supportRef(nodeOrComponent) {
-	  // Function component node
-	  if (nodeOrComponent.type && nodeOrComponent.type.prototype && !nodeOrComponent.type.prototype.render) {
-	    return false;
-	  } // Class component
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-	  if (typeof nodeOrComponent === 'function' && nodeOrComponent.prototype && !nodeOrComponent.prototype.render) {
-	    return false;
-	  }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-	  return true;
-	}
-	/* eslint-enable */
-	return ref;
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var __decorate = undefined && undefined.__decorate || function (decorators, target, key, desc) {
+  var c = arguments.length,
+      r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc,
+      d;
+  if ((typeof Reflect === "undefined" ? "undefined" : _typeof(Reflect)) === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);else for (var i = decorators.length - 1; i >= 0; i--) {
+    if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+  }
+  return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+
+function getDefaultTarget() {
+  return typeof window !== 'undefined' ? window : null;
 }
 
-var require$$9 = /*@__PURE__*/getAugmentedNamespace(ResizeObserver_es);
+var AffixStatus;
 
-var util = {};
+(function (AffixStatus) {
+  AffixStatus[AffixStatus["None"] = 0] = "None";
+  AffixStatus[AffixStatus["Prepare"] = 1] = "Prepare";
+})(AffixStatus || (AffixStatus = {}));
 
-var hasRequiredUtil;
+var Affix = /*#__PURE__*/function (_React$Component) {
+  _inherits(Affix, _React$Component);
 
-function requireUtil () {
-	if (hasRequiredUtil) return util;
-	hasRequiredUtil = 1;
+  var _super = _createSuper(Affix);
 
-	Object.defineProperty(util, "__esModule", {
-	  value: true
-	});
+  function Affix() {
+    var _this;
 
-	function supportRef(node) {
-	  // Function component
-	  if (node.type && node.type.prototype && !node.type.prototype.render) {
-	    return false;
-	  }
+    _classCallCheck(this, Affix);
 
-	  return true;
-	}
+    _this = _super.apply(this, arguments);
+    _this.state = {
+      status: AffixStatus.None,
+      lastAffix: false,
+      prevTarget: null
+    };
 
-	util.supportRef = supportRef;
-	return util;
-}
+    _this.getOffsetTop = function () {
+      var _this$props = _this.props,
+          offset = _this$props.offset,
+          offsetBottom = _this$props.offsetBottom;
+      var offsetTop = _this.props.offsetTop;
 
-var hasRequiredEs;
+      if (typeof offsetTop === 'undefined') {
+        offsetTop = offset;
+      }
 
-function requireEs () {
-	if (hasRequiredEs) return es;
-	hasRequiredEs = 1;
+      if (offsetBottom === undefined && offsetTop === undefined) {
+        offsetTop = 0;
+      }
 
-	function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+      return offsetTop;
+    };
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+    _this.getOffsetBottom = function () {
+      return _this.props.offsetBottom;
+    };
 
-	function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+    _this.savePlaceholderNode = function (node) {
+      _this.placeholderNode = node;
+    };
 
-	function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
-
-	function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
-
-	function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-	function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
-
-	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
-
-	function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
-
-	var __importStar = es && es.__importStar || function (mod) {
-	  if (mod && mod.__esModule) return mod;
-	  var result = {};
-	  if (mod != null) for (var k in mod) {
-	    if (Object.hasOwnProperty.call(mod, k)) result[k] = mod[k];
-	  }
-	  result["default"] = mod;
-	  return result;
-	};
-
-	var __importDefault = es && es.__importDefault || function (mod) {
-	  return mod && mod.__esModule ? mod : {
-	    "default": mod
-	  };
-	};
-
-	Object.defineProperty(es, "__esModule", {
-	  value: true
-	});
-
-	var React = __importStar(React__default);
-
-	var findDOMNode_1 = __importDefault(requireFindDOMNode());
-
-	var toArray_1 = __importDefault(requireToArray());
-
-	var warning_1 = __importDefault(requireWarning());
-
-	var ref_1 = requireRef();
-
-	var resize_observer_polyfill_1 = __importDefault(require$$9);
-
-	var util_1 = requireUtil();
-
-	var INTERNAL_PREFIX_KEY = 'rc-observer-key'; // Still need to be compatible with React 15, we use class component here
-
-	var ReactResizeObserver =
-	/*#__PURE__*/
-	function (_React$Component) {
-	  _inherits(ReactResizeObserver, _React$Component);
-
-	  function ReactResizeObserver() {
-	    var _this;
-
-	    _classCallCheck(this, ReactResizeObserver);
-
-	    _this = _possibleConstructorReturn(this, _getPrototypeOf(ReactResizeObserver).apply(this, arguments));
-	    _this.resizeObserver = null;
-	    _this.childNode = null;
-	    _this.currentElement = null;
-	    _this.state = {
-	      width: 0,
-	      height: 0
-	    };
-
-	    _this.onResize = function (entries) {
-	      var onResize = _this.props.onResize;
-	      var target = entries[0].target;
-
-	      var _target$getBoundingCl = target.getBoundingClientRect(),
-	          width = _target$getBoundingCl.width,
-	          height = _target$getBoundingCl.height;
-	      /**
-	       * Resize observer trigger when content size changed.
-	       * In most case we just care about element size,
-	       * let's use `boundary` instead of `contentRect` here to avoid shaking.
-	       */
+    _this.saveFixedNode = function (node) {
+      _this.fixedNode = node;
+    }; // =================== Measure ===================
 
 
-	      var fixedWidth = Math.floor(width);
-	      var fixedHeight = Math.floor(height);
+    _this.measure = function () {
+      var _this$state = _this.state,
+          status = _this$state.status,
+          lastAffix = _this$state.lastAffix;
+      var _this$props2 = _this.props,
+          target = _this$props2.target,
+          onChange = _this$props2.onChange;
 
-	      if (_this.state.width !== fixedWidth || _this.state.height !== fixedHeight) {
-	        var size = {
-	          width: fixedWidth,
-	          height: fixedHeight
-	        };
+      if (status !== AffixStatus.Prepare || !_this.fixedNode || !_this.placeholderNode || !target) {
+        return;
+      }
 
-	        _this.setState(size);
+      var offsetTop = _this.getOffsetTop();
 
-	        if (onResize) {
-	          onResize(size);
-	        }
-	      }
-	    };
+      var offsetBottom = _this.getOffsetBottom();
 
-	    _this.setChildNode = function (node) {
-	      _this.childNode = node;
-	    };
+      var targetNode = target();
 
-	    return _this;
-	  }
+      if (!targetNode) {
+        return;
+      }
 
-	  _createClass(ReactResizeObserver, [{
-	    key: "componentDidMount",
-	    value: function componentDidMount() {
-	      this.onComponentUpdated();
-	    }
-	  }, {
-	    key: "componentDidUpdate",
-	    value: function componentDidUpdate() {
-	      this.onComponentUpdated();
-	    }
-	  }, {
-	    key: "componentWillUnmount",
-	    value: function componentWillUnmount() {
-	      this.destroyObserver();
-	    }
-	  }, {
-	    key: "onComponentUpdated",
-	    value: function onComponentUpdated() {
-	      var disabled = this.props.disabled; // Unregister if disabled
+      var newState = {
+        status: AffixStatus.None
+      };
+      var targetRect = getTargetRect(targetNode);
+      var placeholderReact = getTargetRect(_this.placeholderNode);
+      var fixedTop = getFixedTop(placeholderReact, targetRect, offsetTop);
+      var fixedBottom = getFixedBottom(placeholderReact, targetRect, offsetBottom);
 
-	      if (disabled) {
-	        this.destroyObserver();
-	        return;
-	      } // Unregister if element changed
+      if (fixedTop !== undefined) {
+        newState.affixStyle = {
+          position: 'fixed',
+          top: fixedTop,
+          width: placeholderReact.width,
+          height: placeholderReact.height
+        };
+        newState.placeholderStyle = {
+          width: placeholderReact.width,
+          height: placeholderReact.height
+        };
+      } else if (fixedBottom !== undefined) {
+        newState.affixStyle = {
+          position: 'fixed',
+          bottom: fixedBottom,
+          width: placeholderReact.width,
+          height: placeholderReact.height
+        };
+        newState.placeholderStyle = {
+          width: placeholderReact.width,
+          height: placeholderReact.height
+        };
+      }
+
+      newState.lastAffix = !!newState.affixStyle;
+
+      if (onChange && lastAffix !== newState.lastAffix) {
+        onChange(newState.lastAffix);
+      }
+
+      _this.setState(newState);
+    }; // @ts-ignore TS6133
 
 
-	      var element = findDOMNode_1.default(this.childNode || this);
-	      var elementChanged = element !== this.currentElement;
+    _this.prepareMeasure = function () {
+      // event param is used before. Keep compatible ts define here.
+      _this.setState({
+        status: AffixStatus.Prepare,
+        affixStyle: undefined,
+        placeholderStyle: undefined
+      }); // Test if `updatePosition` called
+    }; // =================== Render ===================
 
-	      if (elementChanged) {
-	        this.destroyObserver();
-	        this.currentElement = element;
-	      }
 
-	      if (!this.resizeObserver && element) {
-	        this.resizeObserver = new resize_observer_polyfill_1.default(this.onResize);
-	        this.resizeObserver.observe(element);
-	      }
-	    }
-	  }, {
-	    key: "destroyObserver",
-	    value: function destroyObserver() {
-	      if (this.resizeObserver) {
-	        this.resizeObserver.disconnect();
-	        this.resizeObserver = null;
-	      }
-	    }
-	  }, {
-	    key: "render",
-	    value: function render() {
-	      var children = this.props.children;
-	      var childNodes = toArray_1.default(children);
+    _this.renderAffix = function (_ref) {
+      var getPrefixCls = _ref.getPrefixCls;
+      var _this$state2 = _this.state,
+          affixStyle = _this$state2.affixStyle,
+          placeholderStyle = _this$state2.placeholderStyle;
+      var _this$props3 = _this.props,
+          prefixCls = _this$props3.prefixCls,
+          children = _this$props3.children;
+      var className = classNames(_defineProperty({}, getPrefixCls('affix', prefixCls), affixStyle));
+      var props = omit(_this.props, ['prefixCls', 'offsetTop', 'offsetBottom', 'target', 'onChange']); // Omit this since `onTestUpdatePosition` only works on test.
 
-	      if (childNodes.length > 1) {
-	        warning_1.default(false, 'Find more than one child node with `children` in ResizeObserver. Will only observe first one.');
-	      } else if (childNodes.length === 0) {
-	        warning_1.default(false, '`children` of ResizeObserver is empty. Nothing is in observe.');
-	        return null;
-	      }
+      return /*#__PURE__*/React.createElement(ResizeObserver, {
+        onResize: function onResize() {
+          _this.updatePosition();
+        }
+      }, /*#__PURE__*/React.createElement("div", _extends({}, props, {
+        ref: _this.savePlaceholderNode
+      }), affixStyle && /*#__PURE__*/React.createElement("div", {
+        style: placeholderStyle,
+        "aria-hidden": "true"
+      }), /*#__PURE__*/React.createElement("div", {
+        className: className,
+        ref: _this.saveFixedNode,
+        style: affixStyle
+      }, /*#__PURE__*/React.createElement(ResizeObserver, {
+        onResize: function onResize() {
+          _this.updatePosition();
+        }
+      }, children))));
+    };
 
-	      var childNode = childNodes[0];
+    return _this;
+  } // Event handler
 
-	      if (React.isValidElement(childNode) && util_1.supportRef(childNode)) {
-	        var ref = childNode.ref;
-	        childNodes[0] = React.cloneElement(childNode, {
-	          ref: ref_1.composeRef(ref, this.setChildNode)
-	        });
-	      }
 
-	      return childNodes.length === 1 ? childNodes[0] : childNodes.map(function (node, index) {
-	        if (!React.isValidElement(node) || 'key' in node && node.key !== null) {
-	          return node;
-	        }
+  _createClass(Affix, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
 
-	        return React.cloneElement(node, {
-	          key: "".concat(INTERNAL_PREFIX_KEY, "-").concat(index)
-	        });
-	      });
-	    }
-	  }]);
+      var target = this.props.target;
 
-	  return ReactResizeObserver;
-	}(React.Component);
+      if (target) {
+        // [Legacy] Wait for parent component ref has its value.
+        // We should use target as directly element instead of function which makes element check hard.
+        this.timeout = setTimeout(function () {
+          addObserveTarget(target(), _this2); // Mock Event object.
 
-	ReactResizeObserver.displayName = 'ResizeObserver';
-	es.default = ReactResizeObserver;
-	return es;
-}
+          _this2.updatePosition();
+        });
+      }
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var prevTarget = this.state.prevTarget;
+      var target = this.props.target;
+      var newTarget = null;
 
-var esExports = requireEs();
-var ResizeObserver = /*@__PURE__*/getDefaultExportFromCjs(esExports);
+      if (target) {
+        newTarget = target() || null;
+      }
 
-export { ResizeObserver as R };
+      if (prevTarget !== newTarget) {
+        removeObserveTarget(this);
+
+        if (newTarget) {
+          addObserveTarget(newTarget, this); // Mock Event object.
+
+          this.updatePosition();
+        }
+
+        this.setState({
+          prevTarget: newTarget
+        });
+      }
+
+      if (prevProps.offsetTop !== this.props.offsetTop || prevProps.offsetBottom !== this.props.offsetBottom) {
+        this.updatePosition();
+      }
+
+      this.measure();
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearTimeout(this.timeout);
+      removeObserveTarget(this);
+      this.updatePosition.cancel(); // https://github.com/ant-design/ant-design/issues/22683
+
+      this.lazyUpdatePosition.cancel();
+    } // Handle realign logic
+
+  }, {
+    key: "updatePosition",
+    value: function updatePosition() {
+      this.prepareMeasure();
+    }
+  }, {
+    key: "lazyUpdatePosition",
+    value: function lazyUpdatePosition() {
+      var target = this.props.target;
+      var affixStyle = this.state.affixStyle; // Check position change before measure to make Safari smooth
+
+      if (target && affixStyle) {
+        var offsetTop = this.getOffsetTop();
+        var offsetBottom = this.getOffsetBottom();
+        var targetNode = target();
+
+        if (targetNode && this.placeholderNode) {
+          var targetRect = getTargetRect(targetNode);
+          var placeholderReact = getTargetRect(this.placeholderNode);
+          var fixedTop = getFixedTop(placeholderReact, targetRect, offsetTop);
+          var fixedBottom = getFixedBottom(placeholderReact, targetRect, offsetBottom);
+
+          if (fixedTop !== undefined && affixStyle.top === fixedTop || fixedBottom !== undefined && affixStyle.bottom === fixedBottom) {
+            return;
+          }
+        }
+      } // Directly call prepare measure since it's already throttled.
+
+
+      this.prepareMeasure();
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderAffix);
+    }
+  }]);
+
+  return Affix;
+}(React.Component);
+
+Affix.defaultProps = {
+  target: getDefaultTarget
+};
+
+__decorate([throttleByAnimationFrameDecorator()], Affix.prototype, "updatePosition", null);
+
+__decorate([throttleByAnimationFrameDecorator()], Affix.prototype, "lazyUpdatePosition", null);
+
+polyfill(Affix);
+
+export { Affix as A };

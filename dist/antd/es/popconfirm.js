@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { p as polyfill } from '../../menu.js';
-import { T as Tooltip } from '../../index6.js';
+import { T as Tooltip } from '../../index8.js';
 import { I as Icon } from '../../icon.js';
-import { B as Button } from '../../index7.js';
+import { B as Button } from '../../index9.js';
 import { C as ConfigConsumer, L as LocaleReceiver, i as defaultLocale } from '../../config-provider.js';
 import 'react-dom';
 import '../../input.js';

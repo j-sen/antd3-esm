@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { p as polyfill } from './menu.js';
 import { o as omit, r as resolveOnChange, C as ClearableLabeledInput, f as fixControlledValue } from './input.js';
-import { R as ResizeObserver } from './index2.js';
+import { R as ResizeObserver } from './index3.js';
 import { c as classNames, C as ConfigConsumer } from './config-provider.js';
 import { w as wrapperRaf } from './raf.js';
 

@@ -10,7 +10,7 @@ import { c as requireIsArrayLike } from '../../_overArg.js';
 import { r as requireIsArray, a as require_arrayMap } from '../../_arrayMap.js';
 import { a as require_stringToArray } from '../../_stringToArray.js';
 import { A as Animate, p as polyfill } from '../../menu.js';
-import { s as scrollIntoView } from '../../index5.js';
+import { s as scrollIntoView } from '../../index7.js';
 import '../../input.js';
 import '../../isLength.js';
 

@@ -1,346 +1,199 @@
 import * as React from 'react';
-import React__default, { Component } from 'react';
-import { b as Trigger, p as polyfill } from './menu.js';
-import { _ as _inherits$1, a as _classCallCheck$1, b as _possibleConstructorReturn$1, f as _objectWithoutProperties, e as _extends$2 } from './icon.js';
-import { P as PropTypes, c as classNames, C as ConfigConsumer } from './config-provider.js';
+import { c as connected$1, D as Divider, M as MenuItemGroup, a as Menu$1 } from './Divider.js';
+import { d as connected, p as polyfill } from './menu.js';
+import { h as createReactContext, c as classNames, p as propTypesExports, C as ConfigConsumer } from './config-provider.js';
+import { o as omit } from './input.js';
+import { T as Tooltip } from './index8.js';
+import { a as SiderContext } from './Sider.js';
+import { w as wrapperRaf } from './raf.js';
+import { c as collapseMotion } from './tree.js';
 
-var autoAdjustOverflow = {
-  adjustX: 1,
-  adjustY: 1
-};
+var MenuContext = createReactContext({
+  inlineCollapsed: false
+});
 
-var targetOffset$1 = [0, 0];
+function _typeof$2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$2 = function _typeof(obj) { return typeof obj; }; } else { _typeof$2 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$2(obj); }
 
-var placements = {
-  left: {
-    points: ['cr', 'cl'],
-    overflow: autoAdjustOverflow,
-    offset: [-4, 0],
-    targetOffset: targetOffset$1
-  },
-  right: {
-    points: ['cl', 'cr'],
-    overflow: autoAdjustOverflow,
-    offset: [4, 0],
-    targetOffset: targetOffset$1
-  },
-  top: {
-    points: ['bc', 'tc'],
-    overflow: autoAdjustOverflow,
-    offset: [0, -4],
-    targetOffset: targetOffset$1
-  },
-  bottom: {
-    points: ['tc', 'bc'],
-    overflow: autoAdjustOverflow,
-    offset: [0, 4],
-    targetOffset: targetOffset$1
-  },
-  topLeft: {
-    points: ['bl', 'tl'],
-    overflow: autoAdjustOverflow,
-    offset: [0, -4],
-    targetOffset: targetOffset$1
-  },
-  leftTop: {
-    points: ['tr', 'tl'],
-    overflow: autoAdjustOverflow,
-    offset: [-4, 0],
-    targetOffset: targetOffset$1
-  },
-  topRight: {
-    points: ['br', 'tr'],
-    overflow: autoAdjustOverflow,
-    offset: [0, -4],
-    targetOffset: targetOffset$1
-  },
-  rightTop: {
-    points: ['tl', 'tr'],
-    overflow: autoAdjustOverflow,
-    offset: [4, 0],
-    targetOffset: targetOffset$1
-  },
-  bottomRight: {
-    points: ['tr', 'br'],
-    overflow: autoAdjustOverflow,
-    offset: [0, 4],
-    targetOffset: targetOffset$1
-  },
-  rightBottom: {
-    points: ['bl', 'br'],
-    overflow: autoAdjustOverflow,
-    offset: [4, 0],
-    targetOffset: targetOffset$1
-  },
-  bottomLeft: {
-    points: ['tl', 'bl'],
-    overflow: autoAdjustOverflow,
-    offset: [0, 4],
-    targetOffset: targetOffset$1
-  },
-  leftBottom: {
-    points: ['br', 'bl'],
-    overflow: autoAdjustOverflow,
-    offset: [-4, 0],
-    targetOffset: targetOffset$1
-  }
-};
+function _extends$2() { _extends$2 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$2.apply(this, arguments); }
 
-var Content = function (_React$Component) {
-  _inherits$1(Content, _React$Component);
+function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-  function Content() {
-    _classCallCheck$1(this, Content);
+function _defineProperties$2(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-    return _possibleConstructorReturn$1(this, _React$Component.apply(this, arguments));
+function _createClass$2(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$2(Constructor.prototype, protoProps); return Constructor; }
+
+function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$2(subClass, superClass); }
+
+function _setPrototypeOf$2(o, p) { _setPrototypeOf$2 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$2(o, p); }
+
+function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf$2(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$2(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$2(this, result); }; }
+
+function _possibleConstructorReturn$2(self, call) { if (call && (_typeof$2(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$2(self); }
+
+function _assertThisInitialized$2(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf$2(o) { _getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$2(o); }
+
+var SubMenu = /*#__PURE__*/function (_React$Component) {
+  _inherits$2(SubMenu, _React$Component);
+
+  var _super = _createSuper$2(SubMenu);
+
+  function SubMenu() {
+    var _this;
+
+    _classCallCheck$2(this, SubMenu);
+
+    _this = _super.apply(this, arguments);
+
+    _this.onKeyDown = function (e) {
+      _this.subMenu.onKeyDown(e);
+    };
+
+    _this.saveSubMenu = function (subMenu) {
+      _this.subMenu = subMenu;
+    };
+
+    return _this;
   }
 
-  Content.prototype.componentDidUpdate = function componentDidUpdate() {
-    var trigger = this.props.trigger;
+  _createClass$2(SubMenu, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
 
-    if (trigger) {
-      trigger.forcePopupAlign();
+      var _this$props = this.props,
+          rootPrefixCls = _this$props.rootPrefixCls,
+          popupClassName = _this$props.popupClassName;
+      return /*#__PURE__*/React.createElement(MenuContext.Consumer, null, function (_ref) {
+        var antdMenuTheme = _ref.antdMenuTheme;
+        return /*#__PURE__*/React.createElement(connected, _extends$2({}, _this2.props, {
+          ref: _this2.saveSubMenu,
+          popupClassName: classNames("".concat(rootPrefixCls, "-").concat(antdMenuTheme), popupClassName)
+        }));
+      });
     }
-  };
+  }]);
 
-  Content.prototype.render = function render() {
-    var _props = this.props,
-        overlay = _props.overlay,
-        prefixCls = _props.prefixCls,
-        id = _props.id;
+  return SubMenu;
+}(React.Component);
 
-    return React__default.createElement(
-      'div',
-      { className: prefixCls + '-inner', id: id, role: 'tooltip' },
-      typeof overlay === 'function' ? overlay() : overlay
-    );
-  };
+SubMenu.contextTypes = {
+  antdMenuTheme: propTypesExports.string
+}; // fix issue:https://github.com/ant-design/ant-design/issues/8666
 
-  return Content;
-}(React__default.Component);
+SubMenu.isSubMenu = 1;
 
-Content.propTypes = {
-  prefixCls: PropTypes.string,
-  overlay: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-  id: PropTypes.string,
-  trigger: PropTypes.any
-};
-
-var Tooltip$1 = function (_Component) {
-  _inherits$1(Tooltip, _Component);
-
-  function Tooltip() {
-    var _temp, _this, _ret;
-
-    _classCallCheck$1(this, Tooltip);
-
-    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
-      args[_key] = arguments[_key];
-    }
-
-    return _ret = (_temp = (_this = _possibleConstructorReturn$1(this, _Component.call.apply(_Component, [this].concat(args))), _this), _this.getPopupElement = function () {
-      var _this$props = _this.props,
-          arrowContent = _this$props.arrowContent,
-          overlay = _this$props.overlay,
-          prefixCls = _this$props.prefixCls,
-          id = _this$props.id;
-
-      return [React__default.createElement(
-        'div',
-        { className: prefixCls + '-arrow', key: 'arrow' },
-        arrowContent
-      ), React__default.createElement(Content, {
-        key: 'content',
-        trigger: _this.trigger,
-        prefixCls: prefixCls,
-        id: id,
-        overlay: overlay
-      })];
-    }, _this.saveTrigger = function (node) {
-      _this.trigger = node;
-    }, _temp), _possibleConstructorReturn$1(_this, _ret);
-  }
-
-  Tooltip.prototype.getPopupDomNode = function getPopupDomNode() {
-    return this.trigger.getPopupDomNode();
-  };
-
-  Tooltip.prototype.render = function render() {
-    var _props = this.props,
-        overlayClassName = _props.overlayClassName,
-        trigger = _props.trigger,
-        mouseEnterDelay = _props.mouseEnterDelay,
-        mouseLeaveDelay = _props.mouseLeaveDelay,
-        overlayStyle = _props.overlayStyle,
-        prefixCls = _props.prefixCls,
-        children = _props.children,
-        onVisibleChange = _props.onVisibleChange,
-        afterVisibleChange = _props.afterVisibleChange,
-        transitionName = _props.transitionName,
-        animation = _props.animation,
-        placement = _props.placement,
-        align = _props.align,
-        destroyTooltipOnHide = _props.destroyTooltipOnHide,
-        defaultVisible = _props.defaultVisible,
-        getTooltipContainer = _props.getTooltipContainer,
-        restProps = _objectWithoutProperties(_props, ['overlayClassName', 'trigger', 'mouseEnterDelay', 'mouseLeaveDelay', 'overlayStyle', 'prefixCls', 'children', 'onVisibleChange', 'afterVisibleChange', 'transitionName', 'animation', 'placement', 'align', 'destroyTooltipOnHide', 'defaultVisible', 'getTooltipContainer']);
-
-    var extraProps = _extends$2({}, restProps);
-    if ('visible' in this.props) {
-      extraProps.popupVisible = this.props.visible;
-    }
-    return React__default.createElement(
-      Trigger,
-      _extends$2({
-        popupClassName: overlayClassName,
-        ref: this.saveTrigger,
-        prefixCls: prefixCls,
-        popup: this.getPopupElement,
-        action: trigger,
-        builtinPlacements: placements,
-        popupPlacement: placement,
-        popupAlign: align,
-        getPopupContainer: getTooltipContainer,
-        onPopupVisibleChange: onVisibleChange,
-        afterPopupVisibleChange: afterVisibleChange,
-        popupTransitionName: transitionName,
-        popupAnimation: animation,
-        defaultPopupVisible: defaultVisible,
-        destroyPopupOnHide: destroyTooltipOnHide,
-        mouseLeaveDelay: mouseLeaveDelay,
-        popupStyle: overlayStyle,
-        mouseEnterDelay: mouseEnterDelay
-      }, extraProps),
-      children
-    );
-  };
-
-  return Tooltip;
-}(Component);
-
-Tooltip$1.propTypes = {
-  trigger: PropTypes.any,
-  children: PropTypes.any,
-  defaultVisible: PropTypes.bool,
-  visible: PropTypes.bool,
-  placement: PropTypes.string,
-  transitionName: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
-  animation: PropTypes.any,
-  onVisibleChange: PropTypes.func,
-  afterVisibleChange: PropTypes.func,
-  overlay: PropTypes.oneOfType([PropTypes.node, PropTypes.func]).isRequired,
-  overlayStyle: PropTypes.object,
-  overlayClassName: PropTypes.string,
-  prefixCls: PropTypes.string,
-  mouseEnterDelay: PropTypes.number,
-  mouseLeaveDelay: PropTypes.number,
-  getTooltipContainer: PropTypes.func,
-  destroyTooltipOnHide: PropTypes.bool,
-  align: PropTypes.object,
-  arrowContent: PropTypes.any,
-  id: PropTypes.string
-};
-Tooltip$1.defaultProps = {
-  prefixCls: 'rc-tooltip',
-  mouseEnterDelay: 0,
-  destroyTooltipOnHide: false,
-  mouseLeaveDelay: 0.1,
-  align: {},
-  placement: 'right',
-  trigger: ['hover'],
-  arrowContent: null
-};
+function _typeof$1(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$1 = function _typeof(obj) { return typeof obj; }; } else { _typeof$1 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$1(obj); }
 
 function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
-var autoAdjustOverflowEnabled = {
-  adjustX: 1,
-  adjustY: 1
-};
-var autoAdjustOverflowDisabled = {
-  adjustX: 0,
-  adjustY: 0
-};
-var targetOffset = [0, 0];
-function getOverflowOptions(autoAdjustOverflow) {
-  if (typeof autoAdjustOverflow === 'boolean') {
-    return autoAdjustOverflow ? autoAdjustOverflowEnabled : autoAdjustOverflowDisabled;
+
+function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties$1(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); return Constructor; }
+
+function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
+
+function _setPrototypeOf$1(o, p) { _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$1(o, p); }
+
+function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf$1(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$1(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$1(this, result); }; }
+
+function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$1(self); }
+
+function _assertThisInitialized$1(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf$1(o) { _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$1(o); }
+
+var __rest = undefined && undefined.__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
   }
 
-  return _extends$1(_extends$1({}, autoAdjustOverflowDisabled), autoAdjustOverflow);
-}
-function getPlacements() {
-  var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
-  var _config$arrowWidth = config.arrowWidth,
-      arrowWidth = _config$arrowWidth === void 0 ? 5 : _config$arrowWidth,
-      _config$horizontalArr = config.horizontalArrowShift,
-      horizontalArrowShift = _config$horizontalArr === void 0 ? 16 : _config$horizontalArr,
-      _config$verticalArrow = config.verticalArrowShift,
-      verticalArrowShift = _config$verticalArrow === void 0 ? 12 : _config$verticalArrow,
-      _config$autoAdjustOve = config.autoAdjustOverflow,
-      autoAdjustOverflow = _config$autoAdjustOve === void 0 ? true : _config$autoAdjustOve;
-  var placementMap = {
-    left: {
-      points: ['cr', 'cl'],
-      offset: [-4, 0]
-    },
-    right: {
-      points: ['cl', 'cr'],
-      offset: [4, 0]
-    },
-    top: {
-      points: ['bc', 'tc'],
-      offset: [0, -4]
-    },
-    bottom: {
-      points: ['tc', 'bc'],
-      offset: [0, 4]
-    },
-    topLeft: {
-      points: ['bl', 'tc'],
-      offset: [-(horizontalArrowShift + arrowWidth), -4]
-    },
-    leftTop: {
-      points: ['tr', 'cl'],
-      offset: [-4, -(verticalArrowShift + arrowWidth)]
-    },
-    topRight: {
-      points: ['br', 'tc'],
-      offset: [horizontalArrowShift + arrowWidth, -4]
-    },
-    rightTop: {
-      points: ['tl', 'cr'],
-      offset: [4, -(verticalArrowShift + arrowWidth)]
-    },
-    bottomRight: {
-      points: ['tr', 'bc'],
-      offset: [horizontalArrowShift + arrowWidth, 4]
-    },
-    rightBottom: {
-      points: ['bl', 'cr'],
-      offset: [4, verticalArrowShift + arrowWidth]
-    },
-    bottomLeft: {
-      points: ['tl', 'bc'],
-      offset: [-(horizontalArrowShift + arrowWidth), 4]
-    },
-    leftBottom: {
-      points: ['br', 'cl'],
-      offset: [-4, verticalArrowShift + arrowWidth]
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
+
+var MenuItem = /*#__PURE__*/function (_React$Component) {
+  _inherits$1(MenuItem, _React$Component);
+
+  var _super = _createSuper$1(MenuItem);
+
+  function MenuItem() {
+    var _this;
+
+    _classCallCheck$1(this, MenuItem);
+
+    _this = _super.apply(this, arguments);
+
+    _this.onKeyDown = function (e) {
+      _this.menuItem.onKeyDown(e);
+    };
+
+    _this.saveMenuItem = function (menuItem) {
+      _this.menuItem = menuItem;
+    };
+
+    _this.renderItem = function (_ref) {
+      var siderCollapsed = _ref.siderCollapsed;
+      var _this$props = _this.props,
+          level = _this$props.level,
+          children = _this$props.children,
+          rootPrefixCls = _this$props.rootPrefixCls;
+
+      var _a = _this.props,
+          title = _a.title,
+          rest = __rest(_a, ["title"]);
+
+      return /*#__PURE__*/React.createElement(MenuContext.Consumer, null, function (_ref2) {
+        var inlineCollapsed = _ref2.inlineCollapsed;
+        var tooltipProps = {
+          title: title || (level === 1 ? children : '')
+        };
+
+        if (!siderCollapsed && !inlineCollapsed) {
+          tooltipProps.title = null; // Reset `visible` to fix control mode tooltip display not correct
+          // ref: https://github.com/ant-design/ant-design/issues/16742
+
+          tooltipProps.visible = false;
+        }
+
+        return /*#__PURE__*/React.createElement(Tooltip, _extends$1({}, tooltipProps, {
+          placement: "right",
+          overlayClassName: "".concat(rootPrefixCls, "-inline-collapsed-tooltip")
+        }), /*#__PURE__*/React.createElement(connected$1, _extends$1({}, rest, {
+          title: title,
+          ref: _this.saveMenuItem
+        })));
+      });
+    };
+
+    return _this;
+  }
+
+  _createClass$1(MenuItem, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(SiderContext.Consumer, null, this.renderItem);
     }
-  };
-  Object.keys(placementMap).forEach(function (key) {
-    placementMap[key] = config.arrowPointAtCenter ? _extends$1(_extends$1({}, placementMap[key]), {
-      overflow: getOverflowOptions(autoAdjustOverflow),
-      targetOffset: targetOffset
-    }) : _extends$1(_extends$1({}, placements[key]), {
-      overflow: getOverflowOptions(autoAdjustOverflow)
-    });
-    placementMap[key].ignoreShake = true;
-  });
-  return placementMap;
-}
+  }]);
+
+  return MenuItem;
+}(React.Component);
+MenuItem.isMenuItem = true;
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
@@ -364,238 +217,306 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+var InternalMenu = /*#__PURE__*/function (_React$Component) {
+  _inherits(InternalMenu, _React$Component);
 
-var splitObject = function splitObject(obj, keys) {
-  var picked = {};
+  var _super = _createSuper(InternalMenu);
 
-  var omitted = _extends({}, obj);
-
-  keys.forEach(function (key) {
-    if (obj && key in obj) {
-      picked[key] = obj[key];
-      delete omitted[key];
-    }
-  });
-  return {
-    picked: picked,
-    omitted: omitted
-  };
-}; // Fix Tooltip won't hide at disabled button
-// mouse events don't trigger at disabled button in Chrome
-// https://github.com/react-component/tooltip/issues/18
-
-
-function getDisabledCompatibleChildren(element) {
-  var elementType = element.type;
-
-  if ((elementType.__ANT_BUTTON === true || elementType.__ANT_SWITCH === true || elementType.__ANT_CHECKBOX === true || element.type === 'button') && element.props.disabled) {
-    // Pick some layout related style properties up to span
-    // Prevent layout bugs like https://github.com/ant-design/ant-design/issues/5254
-    var _splitObject = splitObject(element.props.style, ['position', 'left', 'right', 'top', 'bottom', 'float', 'display', 'zIndex']),
-        picked = _splitObject.picked,
-        omitted = _splitObject.omitted;
-
-    var spanStyle = _extends(_extends({
-      display: 'inline-block'
-    }, picked), {
-      cursor: 'not-allowed',
-      width: element.props.block ? '100%' : null
-    });
-
-    var buttonStyle = _extends(_extends({}, omitted), {
-      pointerEvents: 'none'
-    });
-
-    var child = /*#__PURE__*/React.cloneElement(element, {
-      style: buttonStyle,
-      className: null
-    });
-    return /*#__PURE__*/React.createElement("span", {
-      style: spanStyle,
-      className: element.props.className
-    }, child);
-  }
-
-  return element;
-}
-
-var Tooltip = /*#__PURE__*/function (_React$Component) {
-  _inherits(Tooltip, _React$Component);
-
-  var _super = _createSuper(Tooltip);
-
-  function Tooltip(props) {
+  function InternalMenu(props) {
     var _this;
 
-    _classCallCheck(this, Tooltip);
+    _classCallCheck(this, InternalMenu);
 
-    _this = _super.call(this, props);
+    _this = _super.call(this, props); // Restore vertical mode when menu is collapsed responsively when mounted
+    // https://github.com/ant-design/ant-design/issues/13104
+    // TODO: not a perfect solution, looking a new way to avoid setting switchingModeFromInline in this situation
 
-    _this.onVisibleChange = function (visible) {
-      var onVisibleChange = _this.props.onVisibleChange;
+    _this.handleMouseEnter = function (e) {
+      _this.restoreModeVerticalFromInline();
 
-      if (!('visible' in _this.props)) {
-        _this.setState({
-          visible: _this.isNoTitle() ? false : visible
-        });
-      }
+      var onMouseEnter = _this.props.onMouseEnter;
 
-      if (onVisibleChange && !_this.isNoTitle()) {
-        onVisibleChange(visible);
+      if (onMouseEnter) {
+        onMouseEnter(e);
       }
     };
 
-    _this.saveTooltip = function (node) {
-      _this.tooltip = node;
-    }; // 动态设置动画点
+    _this.handleTransitionEnd = function (e) {
+      // when inlineCollapsed menu width animation finished
+      // https://github.com/ant-design/ant-design/issues/12864
+      var widthCollapsed = e.propertyName === 'width' && e.target === e.currentTarget; // Fix SVGElement e.target.className.indexOf is not a function
+      // https://github.com/ant-design/ant-design/issues/15699
 
+      var className = e.target.className; // SVGAnimatedString.animVal should be identical to SVGAnimatedString.baseVal, unless during an animation.
 
-    _this.onPopupAlign = function (domNode, align) {
-      var placements = _this.getPlacements(); // 当前返回的位置
+      var classNameValue = Object.prototype.toString.call(className) === '[object SVGAnimatedString]' ? className.animVal : className; // Fix for <Menu style={{ width: '100%' }} />, the width transition won't trigger when menu is collapsed
+      // https://github.com/ant-design/ant-design-pro/issues/2783
 
+      var iconScaled = e.propertyName === 'font-size' && classNameValue.indexOf('anticon') >= 0;
 
-      var placement = Object.keys(placements).filter(function (key) {
-        return placements[key].points[0] === align.points[0] && placements[key].points[1] === align.points[1];
-      })[0];
-
-      if (!placement) {
-        return;
-      } // 根据当前坐标设置动画点
-
-
-      var rect = domNode.getBoundingClientRect();
-      var transformOrigin = {
-        top: '50%',
-        left: '50%'
-      };
-
-      if (placement.indexOf('top') >= 0 || placement.indexOf('Bottom') >= 0) {
-        transformOrigin.top = "".concat(rect.height - align.offset[1], "px");
-      } else if (placement.indexOf('Top') >= 0 || placement.indexOf('bottom') >= 0) {
-        transformOrigin.top = "".concat(-align.offset[1], "px");
+      if (widthCollapsed || iconScaled) {
+        _this.restoreModeVerticalFromInline();
       }
-
-      if (placement.indexOf('left') >= 0 || placement.indexOf('Right') >= 0) {
-        transformOrigin.left = "".concat(rect.width - align.offset[0], "px");
-      } else if (placement.indexOf('right') >= 0 || placement.indexOf('Left') >= 0) {
-        transformOrigin.left = "".concat(-align.offset[0], "px");
-      }
-
-      domNode.style.transformOrigin = "".concat(transformOrigin.left, " ").concat(transformOrigin.top);
     };
 
-    _this.renderTooltip = function (_ref) {
-      var getContextPopupContainer = _ref.getPopupContainer,
+    _this.handleClick = function (e) {
+      _this.handleOpenChange([]);
+
+      var onClick = _this.props.onClick;
+
+      if (onClick) {
+        onClick(e);
+      }
+    };
+
+    _this.handleOpenChange = function (openKeys) {
+      _this.setOpenKeys(openKeys);
+
+      var onOpenChange = _this.props.onOpenChange;
+
+      if (onOpenChange) {
+        onOpenChange(openKeys);
+      }
+    };
+
+    _this.renderMenu = function (_ref) {
+      var getPopupContainer = _ref.getPopupContainer,
           getPrefixCls = _ref.getPrefixCls;
+      var _this$props = _this.props,
+          customizePrefixCls = _this$props.prefixCls,
+          className = _this$props.className,
+          theme = _this$props.theme,
+          collapsedWidth = _this$props.collapsedWidth;
+      var passProps = omit(_this.props, ['collapsedWidth', 'siderCollapsed']);
 
-      var _assertThisInitialize = _assertThisInitialized(_this),
-          props = _assertThisInitialize.props,
-          state = _assertThisInitialize.state;
+      var menuMode = _this.getRealMenuMode();
 
-      var customizePrefixCls = props.prefixCls,
-          openClassName = props.openClassName,
-          getPopupContainer = props.getPopupContainer,
-          getTooltipContainer = props.getTooltipContainer;
-      var children = props.children;
-      var prefixCls = getPrefixCls('tooltip', customizePrefixCls);
-      var visible = state.visible; // Hide tooltip when there is no title
+      var menuOpenMotion = _this.getOpenMotionProps(menuMode);
 
-      if (!('visible' in props) && _this.isNoTitle()) {
-        visible = false;
+      var prefixCls = getPrefixCls('menu', customizePrefixCls);
+      var menuClassName = classNames(className, "".concat(prefixCls, "-").concat(theme), _defineProperty({}, "".concat(prefixCls, "-inline-collapsed"), _this.getInlineCollapsed()));
+
+      var menuProps = _extends({
+        openKeys: _this.state.openKeys,
+        onOpenChange: _this.handleOpenChange,
+        className: menuClassName,
+        mode: menuMode
+      }, menuOpenMotion);
+
+      if (menuMode !== 'inline') {
+        // closing vertical popup submenu after click it
+        menuProps.onClick = _this.handleClick;
+      } // https://github.com/ant-design/ant-design/issues/8587
+
+
+      var hideMenu = _this.getInlineCollapsed() && (collapsedWidth === 0 || collapsedWidth === '0' || collapsedWidth === '0px');
+
+      if (hideMenu) {
+        menuProps.openKeys = [];
       }
 
-      var child = getDisabledCompatibleChildren( /*#__PURE__*/React.isValidElement(children) ? children : /*#__PURE__*/React.createElement("span", null, children));
-      var childProps = child.props;
-      var childCls = classNames(childProps.className, _defineProperty({}, openClassName || "".concat(prefixCls, "-open"), true));
-      return /*#__PURE__*/React.createElement(Tooltip$1, _extends({}, _this.props, {
+      return /*#__PURE__*/React.createElement(Menu$1, _extends({
+        getPopupContainer: getPopupContainer
+      }, passProps, menuProps, {
         prefixCls: prefixCls,
-        getTooltipContainer: getPopupContainer || getTooltipContainer || getContextPopupContainer,
-        ref: _this.saveTooltip,
-        builtinPlacements: _this.getPlacements(),
-        overlay: _this.getOverlay(),
-        visible: visible,
-        onVisibleChange: _this.onVisibleChange,
-        onPopupAlign: _this.onPopupAlign
-      }), visible ? /*#__PURE__*/React.cloneElement(child, {
-        className: childCls
-      }) : child);
+        onTransitionEnd: _this.handleTransitionEnd,
+        onMouseEnter: _this.handleMouseEnter
+      }));
     };
+    var openKeys;
+
+    if ('openKeys' in props) {
+      openKeys = props.openKeys;
+    } else if ('defaultOpenKeys' in props) {
+      openKeys = props.defaultOpenKeys;
+    }
 
     _this.state = {
-      visible: !!props.visible || !!props.defaultVisible
+      openKeys: openKeys || [],
+      switchingModeFromInline: false,
+      inlineOpenKeys: [],
+      prevProps: props
     };
     return _this;
   }
 
-  _createClass(Tooltip, [{
-    key: "getPopupDomNode",
-    value: function getPopupDomNode() {
-      return this.tooltip.getPopupDomNode();
+  _createClass(InternalMenu, [{
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      wrapperRaf.cancel(this.mountRafId);
     }
   }, {
-    key: "getPlacements",
-    value: function getPlacements$1() {
-      var _this$props = this.props,
-          builtinPlacements = _this$props.builtinPlacements,
-          arrowPointAtCenter = _this$props.arrowPointAtCenter,
-          autoAdjustOverflow = _this$props.autoAdjustOverflow;
-      return builtinPlacements || getPlacements({
-        arrowPointAtCenter: arrowPointAtCenter,
-        verticalArrowShift: 8,
-        autoAdjustOverflow: autoAdjustOverflow
-      });
+    key: "setOpenKeys",
+    value: function setOpenKeys(openKeys) {
+      if (!('openKeys' in this.props)) {
+        this.setState({
+          openKeys: openKeys
+        });
+      }
     }
   }, {
-    key: "isNoTitle",
-    value: function isNoTitle() {
-      var _this$props2 = this.props,
-          title = _this$props2.title,
-          overlay = _this$props2.overlay;
-      return !title && !overlay && title !== 0; // overlay for old version compatibility
-    }
-  }, {
-    key: "getOverlay",
-    value: function getOverlay() {
-      var _this$props3 = this.props,
-          title = _this$props3.title,
-          overlay = _this$props3.overlay;
+    key: "getRealMenuMode",
+    value: function getRealMenuMode() {
+      var inlineCollapsed = this.getInlineCollapsed();
 
-      if (title === 0) {
-        return title;
+      if (this.state.switchingModeFromInline && inlineCollapsed) {
+        return 'inline';
       }
 
-      return overlay || title || '';
+      var mode = this.props.mode;
+      return inlineCollapsed ? 'vertical' : mode;
+    }
+  }, {
+    key: "getInlineCollapsed",
+    value: function getInlineCollapsed() {
+      var inlineCollapsed = this.props.inlineCollapsed;
+
+      if (this.props.siderCollapsed !== undefined) {
+        return this.props.siderCollapsed;
+      }
+
+      return inlineCollapsed;
+    }
+  }, {
+    key: "getOpenMotionProps",
+    value: function getOpenMotionProps(menuMode) {
+      var _this$props2 = this.props,
+          openTransitionName = _this$props2.openTransitionName,
+          openAnimation = _this$props2.openAnimation,
+          motion = _this$props2.motion; // Provides by user
+
+      if (motion) {
+        return {
+          motion: motion
+        };
+      }
+
+      if (openAnimation) {
+        return {
+          openAnimation: openAnimation
+        };
+      }
+
+      if (openTransitionName) {
+        return {
+          openTransitionName: openTransitionName
+        };
+      } // Default logic
+
+
+      if (menuMode === 'horizontal') {
+        return {
+          motion: {
+            motionName: 'slide-up'
+          }
+        };
+      }
+
+      if (menuMode === 'inline') {
+        return {
+          motion: collapseMotion
+        };
+      } // When mode switch from inline
+      // submenu should hide without animation
+
+
+      return {
+        motion: {
+          motionName: this.state.switchingModeFromInline ? '' : 'zoom-big'
+        }
+      };
+    }
+  }, {
+    key: "restoreModeVerticalFromInline",
+    value: function restoreModeVerticalFromInline() {
+      var switchingModeFromInline = this.state.switchingModeFromInline;
+
+      if (switchingModeFromInline) {
+        this.setState({
+          switchingModeFromInline: false
+        });
+      }
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderTooltip);
+      return /*#__PURE__*/React.createElement(MenuContext.Provider, {
+        value: {
+          inlineCollapsed: this.getInlineCollapsed() || false,
+          antdMenuTheme: this.props.theme
+        }
+      }, /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderMenu));
     }
   }], [{
     key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(nextProps) {
-      if ('visible' in nextProps) {
-        return {
-          visible: nextProps.visible
-        };
+    value: function getDerivedStateFromProps(nextProps, prevState) {
+      var prevProps = prevState.prevProps;
+      var newState = {
+        prevProps: nextProps
+      };
+
+      if (prevProps.mode === 'inline' && nextProps.mode !== 'inline') {
+        newState.switchingModeFromInline = true;
       }
 
-      return null;
+      if ('openKeys' in nextProps) {
+        newState.openKeys = nextProps.openKeys;
+      } else {
+        // [Legacy] Old code will return after `openKeys` changed.
+        // Not sure the reason, we should keep this logic still.
+        if (nextProps.inlineCollapsed && !prevProps.inlineCollapsed || nextProps.siderCollapsed && !prevProps.siderCollapsed) {
+          newState.switchingModeFromInline = true;
+          newState.inlineOpenKeys = prevState.openKeys;
+          newState.openKeys = [];
+        }
+
+        if (!nextProps.inlineCollapsed && prevProps.inlineCollapsed || !nextProps.siderCollapsed && prevProps.siderCollapsed) {
+          newState.openKeys = prevState.inlineOpenKeys;
+          newState.inlineOpenKeys = [];
+        }
+      }
+
+      return newState;
     }
   }]);
 
-  return Tooltip;
+  return InternalMenu;
 }(React.Component);
 
-Tooltip.defaultProps = {
-  placement: 'top',
-  transitionName: 'zoom-big-fast',
-  mouseEnterDelay: 0.1,
-  mouseLeaveDelay: 0.1,
-  arrowPointAtCenter: false,
-  autoAdjustOverflow: true
+InternalMenu.defaultProps = {
+  className: '',
+  theme: 'light',
+  focusable: false
 };
-polyfill(Tooltip);
+polyfill(InternalMenu); // We should keep this as ref-able
 
-export { Tooltip as T };
+var Menu = /*#__PURE__*/function (_React$Component2) {
+  _inherits(Menu, _React$Component2);
+
+  var _super2 = _createSuper(Menu);
+
+  function Menu() {
+    _classCallCheck(this, Menu);
+
+    return _super2.apply(this, arguments);
+  }
+
+  _createClass(Menu, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
+
+      return /*#__PURE__*/React.createElement(SiderContext.Consumer, null, function (context) {
+        return /*#__PURE__*/React.createElement(InternalMenu, _extends({}, _this2.props, context));
+      });
+    }
+  }]);
+
+  return Menu;
+}(React.Component);
+Menu.Divider = Divider;
+Menu.Item = MenuItem;
+Menu.SubMenu = SubMenu;
+Menu.ItemGroup = MenuItemGroup;
+
+export { Menu as M };

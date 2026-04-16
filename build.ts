@@ -9,6 +9,7 @@ import json from '@rollup/plugin-json';
 
 import { fileURLToPath } from 'node:url';
 import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 
 const distDir = fileURLToPath(import.meta.resolve('./dist'));
 
@@ -19,8 +20,29 @@ const createExports = async (jsId: string, jsPath: string) => {
     const ast = parseAst(jsCode, {
         jsx: true,
     });
-    const hasNamedExport = ast.body.some((it) => it.type === 'ExportAllDeclaration' || it.type === 'ExportNamedDeclaration');
-    const hasDefaultExport = ast.body.some((it) => it.type === 'ExportDefaultDeclaration');
+    let hasNamedExport = false;
+    let hasDefaultExport = false;
+    for (const stm of ast.body) {
+        if (stm.type === 'ExportAllDeclaration') {
+            hasNamedExport = true;
+        } else if (stm.type === 'ExportNamedDeclaration') {
+            if (stm.declaration) {
+                hasNamedExport = true;
+            } else if (stm.specifiers.length > 0) {
+                if (stm.specifiers.some((it) => it.exported.type === 'Identifier' && it.exported.name === 'default')) {
+                    hasDefaultExport = true;
+                    if (stm.specifiers.length > 1) {
+                        hasNamedExport = true;
+                    }
+                } else {
+                    hasNamedExport = true;
+                }
+            }
+        } else if (stm.type === 'ExportDefaultDeclaration') {
+            hasDefaultExport = true;
+        }
+    }
+
     return {
         exportStar: hasNamedExport ? jsId : '',
         exportDefault: hasDefaultExport ? jsId : '',
@@ -76,6 +98,8 @@ const codeLine = (seg: TemplateStringsArray, ...args: any[]) => {
 const Prefix = 'antd3-esm';
 const PrefixReg = /^antd3-esm(?=\/)/;
 const PrefixRegSlash = /^antd3-esm\//;
+const sourcePattern = `ReactIcon.add.apply(ReactIcon, _toConsumableArray(Object.keys(allIcons).map(function (key) {`;
+const sourcePatternReplace = `ReactIcon.add.apply(ReactIcon, _toConsumableArray(Object.keys(allIcons).filter(function(k) {return k !== "default" && k !== '__proto__'}).map(function (key) {`;
 
 export const build = async () => {
     const list = await getExportList();
@@ -104,7 +128,7 @@ export const build = async () => {
         encoding: 'utf-8',
     });
 
-    (
+    await (
         await rollup({
             input: entryMap.keys().toArray(),
             external: ['react', 'react-dom'],
@@ -119,7 +143,7 @@ export const build = async () => {
                     load(id) {
                         if (entryMap.has(id)) {
                             const { less, exportDefault, exportStar, sideEffect } = entryMap.get(id)!;
-                            return {
+                            const source = {
                                 code: [
                                     codeLine`//${id}`,
                                     codeLine`import '${less}'`,
@@ -128,6 +152,7 @@ export const build = async () => {
                                     codeLine`import '${sideEffect}'`,
                                 ].join(';\n'),
                             };
+                            return source;
                         }
                     },
                 },
@@ -158,6 +183,24 @@ export const build = async () => {
                     'process && process.env': JSON.stringify(true),
                     preventAssignment: true,
                 }),
+                {
+                    name: 'antd3-icon',
+                    transform(code, id) {
+                        const modulePath = id.replace(/\\/g, '/');
+                        const pattern = 'antd/es/icon/index.js';
+
+                        if (modulePath.includes(pattern)) {
+                            return {
+                                code: code.replace(sourcePattern, sourcePatternReplace),
+                                map: null,
+                            };
+                        }
+                        return {
+                            code,
+                            map: null,
+                        };
+                    },
+                },
             ],
             treeshake: {
                 propertyReadSideEffects: false,
@@ -214,6 +257,21 @@ export const build = async () => {
             return chunkInfo.name + '.js';
         },
     });
+
+    for (const [id, { exportDefault, exportStar }] of entryMap) {
+        const types = [];
+        if (exportDefault) {
+            types.push(`export { default } from '${exportDefault.replace(/\.js$/, '')}'`);
+        }
+        if (exportStar) {
+            types.push(`export * from '${exportStar.replace(/\.js$/, '')}'`);
+        }
+        if (types.length > 0) {
+            await writeFile(join(distDir, id.replace(PrefixRegSlash, '') + '.d.ts'), types.join(';\n'), {
+                encoding: 'utf-8',
+            });
+        }
+    }
 };
 
 export const clear = async () => {

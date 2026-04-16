@@ -1,4 +1,4 @@
-import { n, c as classNames, s as withConfigConsumer, h as createReactContext } from '../../config-provider.js';
+import { n, c as classNames, t as withConfigConsumer, h as createReactContext } from '../../config-provider.js';
 import * as React from 'react';
 import { g as getScrollBarSize, P as Portal } from '../../PortalWrapper.js';
 import { p as polyfill, K as KeyCode } from '../../menu.js';

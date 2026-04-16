@@ -2,7 +2,7 @@ import * as React from 'react';
 import { n as noop, l as libExports, g as getActiveKey, e as connected$1, K as KeyCode, m as menuAllProps } from './menu.js';
 import * as ReactDOM from 'react-dom';
 import { c as classNames } from './config-provider.js';
-import { s as scrollIntoView } from './index5.js';
+import { s as scrollIntoView } from './index7.js';
 
 function _typeof$3(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$3 = function _typeof(obj) { return typeof obj; }; } else { _typeof$3 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$3(obj); }
 function getMotion(_ref) {

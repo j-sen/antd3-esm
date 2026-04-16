@@ -5,9 +5,9 @@ import '../../icon.js';
 import '../../zh_CN.js';
 import '../../menu.js';
 import 'react-dom';
-import '../../index12.js';
+import '../../index15.js';
 import '../../Divider.js';
-import '../../index5.js';
+import '../../index7.js';
 import '../../tree.js';
 import '../../input.js';
 

@@ -7,3 +7,4 @@ import '../../menu.js';
 import 'react-dom';
 import '../../icon.js';
 import '../../responsiveObserve.js';
+import '../../index.js';

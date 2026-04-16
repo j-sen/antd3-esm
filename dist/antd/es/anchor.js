@@ -2,12 +2,13 @@ import { n, c as classNames, C as ConfigConsumer, p as propTypesExports } from '
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
 import { a as addEventListenerWrap, p as polyfill } from '../../menu.js';
-import { A as Affix } from '../../index.js';
+import { A as Affix } from '../../index2.js';
 import { s as scrollTo, g as getScroll } from '../../scrollTo.js';
 import '../../icon.js';
 import '../../input.js';
-import '../../index2.js';
+import '../../index3.js';
 import '../../warning.js';
+import '../../ResizeObserver.es.js';
 
 var css = "/* stylelint-disable at-rule-empty-line-before,at-rule-name-space-after,at-rule-no-unknown */\n/* stylelint-disable no-duplicate-selectors */\n/* stylelint-disable */\n/* stylelint-disable declaration-bang-space-before,no-duplicate-selectors,string-no-newline */\n.ant-anchor {\n  box-sizing: border-box;\n  margin: 0;\n  padding: 0;\n  color: rgba(0, 0, 0, 0.65);\n  font-size: 14px;\n  font-variant: tabular-nums;\n  line-height: 1.5;\n  list-style: none;\n  font-feature-settings: 'tnum';\n  position: relative;\n  padding-left: 2px;\n}\n.ant-anchor-wrapper {\n  margin-left: -4px;\n  padding-left: 4px;\n  overflow: auto;\n  background-color: #fff;\n}\n.ant-anchor-ink {\n  position: absolute;\n  top: 0;\n  left: 0;\n  height: 100%;\n}\n.ant-anchor-ink::before {\n  position: relative;\n  display: block;\n  width: 2px;\n  height: 100%;\n  margin: 0 auto;\n  background-color: #e8e8e8;\n  content: ' ';\n}\n.ant-anchor-ink-ball {\n  position: absolute;\n  left: 50%;\n  display: none;\n  width: 8px;\n  height: 8px;\n  background-color: #fff;\n  border: 2px solid #1890ff;\n  border-radius: 8px;\n  transform: translateX(-50%);\n  transition: top 0.3s ease-in-out;\n}\n.ant-anchor-ink-ball.visible {\n  display: inline-block;\n}\n.ant-anchor.fixed .ant-anchor-ink .ant-anchor-ink-ball {\n  display: none;\n}\n.ant-anchor-link {\n  padding: 7px 0 7px 16px;\n  line-height: 1.143;\n}\n.ant-anchor-link-title {\n  position: relative;\n  display: block;\n  margin-bottom: 6px;\n  overflow: hidden;\n  color: rgba(0, 0, 0, 0.65);\n  white-space: nowrap;\n  text-overflow: ellipsis;\n  transition: all 0.3s;\n}\n.ant-anchor-link-title:only-child {\n  margin-bottom: 0;\n}\n.ant-anchor-link-active > .ant-anchor-link-title {\n  color: #1890ff;\n}\n.ant-anchor-link .ant-anchor-link {\n  padding-top: 5px;\n  padding-bottom: 5px;\n}\n/*# sourceMappingURL=index.css.map */";
 n(css,{"prepend":true});

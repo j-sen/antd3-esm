@@ -1,12 +1,13 @@
-import { D as Dropdown } from './dropdown.js';
 import * as React from 'react';
-import { c as classNames, C as ConfigConsumer } from './config-provider.js';
-import { B as Button } from './index7.js';
+import { c as classNames, C as ConfigConsumer, p as propTypesExports } from './config-provider.js';
+import { p as polyfill } from './menu.js';
+import { o as omit, t as tuple } from './input.js';
 import { I as Icon } from './icon.js';
+import { W as Wave } from './wave.js';
 
-function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 
-function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -28,6 +29,292 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+var __rest$1 = undefined && undefined.__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  }
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
+var rxTwoCNChar = /^[\u4e00-\u9fa5]{2}$/;
+var isTwoCNChar = rxTwoCNChar.test.bind(rxTwoCNChar);
+
+function isString(str) {
+  return typeof str === 'string';
+} // Insert one space between two chinese characters automatically.
+
+
+function insertSpace(child, needInserted) {
+  // Check the child if is undefined or null.
+  if (child == null) {
+    return;
+  }
+
+  var SPACE = needInserted ? ' ' : ''; // strictNullChecks oops.
+
+  if (typeof child !== 'string' && typeof child !== 'number' && isString(child.type) && isTwoCNChar(child.props.children)) {
+    return /*#__PURE__*/React.cloneElement(child, {}, child.props.children.split('').join(SPACE));
+  }
+
+  if (typeof child === 'string') {
+    if (isTwoCNChar(child)) {
+      child = child.split('').join(SPACE);
+    }
+
+    return /*#__PURE__*/React.createElement("span", null, child);
+  }
+
+  return child;
+}
+
+function spaceChildren(children, needInserted) {
+  var isPrevChildPure = false;
+  var childList = [];
+  React.Children.forEach(children, function (child) {
+    var type = _typeof(child);
+
+    var isCurrentChildPure = type === 'string' || type === 'number';
+
+    if (isPrevChildPure && isCurrentChildPure) {
+      var lastIndex = childList.length - 1;
+      var lastChild = childList[lastIndex];
+      childList[lastIndex] = "".concat(lastChild).concat(child);
+    } else {
+      childList.push(child);
+    }
+
+    isPrevChildPure = isCurrentChildPure;
+  }); // Pass to React.Children.map to auto fill key
+
+  return React.Children.map(childList, function (child) {
+    return insertSpace(child, needInserted);
+  });
+}
+
+tuple('default', 'primary', 'ghost', 'dashed', 'danger', 'link');
+var ButtonShapes = tuple('circle', 'circle-outline', 'round');
+var ButtonSizes = tuple('large', 'default', 'small');
+var ButtonHTMLTypes = tuple('submit', 'button', 'reset');
+
+var Button = /*#__PURE__*/function (_React$Component) {
+  _inherits(Button, _React$Component);
+
+  var _super = _createSuper(Button);
+
+  function Button(props) {
+    var _this;
+
+    _classCallCheck(this, Button);
+
+    _this = _super.call(this, props);
+
+    _this.saveButtonRef = function (node) {
+      _this.buttonNode = node;
+    };
+
+    _this.handleClick = function (e) {
+      var loading = _this.state.loading;
+      var onClick = _this.props.onClick;
+
+      if (loading) {
+        return;
+      }
+
+      if (onClick) {
+        onClick(e);
+      }
+    };
+
+    _this.renderButton = function (_ref) {
+      var _classNames;
+
+      var getPrefixCls = _ref.getPrefixCls,
+          autoInsertSpaceInButton = _ref.autoInsertSpaceInButton;
+
+      var _a = _this.props,
+          customizePrefixCls = _a.prefixCls,
+          type = _a.type,
+          shape = _a.shape,
+          size = _a.size,
+          className = _a.className,
+          children = _a.children,
+          icon = _a.icon,
+          ghost = _a.ghost,
+          block = _a.block,
+          rest = __rest$1(_a, ["prefixCls", "type", "shape", "size", "className", "children", "icon", "ghost", "block"]);
+
+      var _this$state = _this.state,
+          loading = _this$state.loading,
+          hasTwoCNChar = _this$state.hasTwoCNChar;
+      var prefixCls = getPrefixCls('btn', customizePrefixCls);
+      var autoInsertSpace = autoInsertSpaceInButton !== false; // large => lg
+      // small => sm
+
+      var sizeCls = '';
+
+      switch (size) {
+        case 'large':
+          sizeCls = 'lg';
+          break;
+
+        case 'small':
+          sizeCls = 'sm';
+          break;
+      }
+
+      var iconType = loading ? 'loading' : icon;
+      var classes = classNames(prefixCls, className, (_classNames = {}, _defineProperty$1(_classNames, "".concat(prefixCls, "-").concat(type), type), _defineProperty$1(_classNames, "".concat(prefixCls, "-").concat(shape), shape), _defineProperty$1(_classNames, "".concat(prefixCls, "-").concat(sizeCls), sizeCls), _defineProperty$1(_classNames, "".concat(prefixCls, "-icon-only"), !children && children !== 0 && iconType), _defineProperty$1(_classNames, "".concat(prefixCls, "-loading"), !!loading), _defineProperty$1(_classNames, "".concat(prefixCls, "-background-ghost"), ghost), _defineProperty$1(_classNames, "".concat(prefixCls, "-two-chinese-chars"), hasTwoCNChar && autoInsertSpace), _defineProperty$1(_classNames, "".concat(prefixCls, "-block"), block), _classNames));
+      var iconNode = iconType ? /*#__PURE__*/React.createElement(Icon, {
+        type: iconType
+      }) : null;
+      var kids = children || children === 0 ? spaceChildren(children, _this.isNeedInserted() && autoInsertSpace) : null;
+      var linkButtonRestProps = omit(rest, ['htmlType', 'loading']);
+
+      if (linkButtonRestProps.href !== undefined) {
+        return /*#__PURE__*/React.createElement("a", _extends$1({}, linkButtonRestProps, {
+          className: classes,
+          onClick: _this.handleClick,
+          ref: _this.saveButtonRef
+        }), iconNode, kids);
+      } // React does not recognize the `htmlType` prop on a DOM element. Here we pick it out of `rest`.
+
+
+      var _b = rest,
+          htmlType = _b.htmlType,
+          otherProps = __rest$1(_b, ["htmlType"]);
+
+      var buttonNode = /*#__PURE__*/React.createElement("button", _extends$1({}, omit(otherProps, ['loading']), {
+        type: htmlType,
+        className: classes,
+        onClick: _this.handleClick,
+        ref: _this.saveButtonRef
+      }), iconNode, kids);
+
+      if (type === 'link') {
+        return buttonNode;
+      }
+
+      return /*#__PURE__*/React.createElement(Wave, null, buttonNode);
+    };
+
+    _this.state = {
+      loading: props.loading,
+      hasTwoCNChar: false
+    };
+    return _this;
+  }
+
+  _createClass(Button, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.fixTwoCNChar();
+    }
+  }, {
+    key: "componentDidUpdate",
+    value: function componentDidUpdate(prevProps) {
+      var _this2 = this;
+
+      this.fixTwoCNChar();
+
+      if (prevProps.loading && typeof prevProps.loading !== 'boolean') {
+        clearTimeout(this.delayTimeout);
+      }
+
+      var loading = this.props.loading;
+
+      if (loading && typeof loading !== 'boolean' && loading.delay) {
+        this.delayTimeout = window.setTimeout(function () {
+          _this2.setState({
+            loading: loading
+          });
+        }, loading.delay);
+      } else if (prevProps.loading !== loading) {
+        // eslint-disable-next-line react/no-did-update-set-state
+        this.setState({
+          loading: loading
+        });
+      }
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      if (this.delayTimeout) {
+        clearTimeout(this.delayTimeout);
+      }
+    }
+  }, {
+    key: "fixTwoCNChar",
+    value: function fixTwoCNChar() {
+      // Fix for HOC usage like <FormatMessage />
+      if (!this.buttonNode) {
+        return;
+      }
+
+      var buttonText = this.buttonNode.textContent;
+
+      if (this.isNeedInserted() && isTwoCNChar(buttonText)) {
+        if (!this.state.hasTwoCNChar) {
+          this.setState({
+            hasTwoCNChar: true
+          });
+        }
+      } else if (this.state.hasTwoCNChar) {
+        this.setState({
+          hasTwoCNChar: false
+        });
+      }
+    }
+  }, {
+    key: "isNeedInserted",
+    value: function isNeedInserted() {
+      var _this$props = this.props,
+          icon = _this$props.icon,
+          children = _this$props.children,
+          type = _this$props.type;
+      return React.Children.count(children) === 1 && !icon && type !== 'link';
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderButton);
+    }
+  }]);
+
+  return Button;
+}(React.Component);
+
+Button.__ANT_BUTTON = true;
+Button.defaultProps = {
+  loading: false,
+  ghost: false,
+  block: false,
+  htmlType: 'button'
+};
+Button.propTypes = {
+  type: propTypesExports.string,
+  shape: propTypesExports.oneOf(ButtonShapes),
+  size: propTypesExports.oneOf(ButtonSizes),
+  htmlType: propTypesExports.oneOf(ButtonHTMLTypes),
+  onClick: propTypesExports.func,
+  loading: propTypesExports.oneOfType([propTypesExports.bool, propTypesExports.object]),
+  className: propTypesExports.string,
+  icon: propTypesExports.string,
+  block: propTypesExports.bool,
+  title: propTypesExports.string
+};
+polyfill(Button);
+
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 var __rest = undefined && undefined.__rest || function (s, e) {
   var t = {};
 
@@ -40,91 +327,38 @@ var __rest = undefined && undefined.__rest || function (s, e) {
   }
   return t;
 };
-var ButtonGroup = Button.Group;
 
-var DropdownButton = /*#__PURE__*/function (_React$Component) {
-  _inherits(DropdownButton, _React$Component);
+var ButtonGroup = function ButtonGroup(props) {
+  return /*#__PURE__*/React.createElement(ConfigConsumer, null, function (_ref) {
+    var getPrefixCls = _ref.getPrefixCls;
 
-  var _super = _createSuper(DropdownButton);
+    var customizePrefixCls = props.prefixCls,
+        size = props.size,
+        className = props.className,
+        others = __rest(props, ["prefixCls", "size", "className"]);
 
-  function DropdownButton() {
-    var _this;
+    var prefixCls = getPrefixCls('btn-group', customizePrefixCls); // large => lg
+    // small => sm
 
-    _classCallCheck(this, DropdownButton);
+    var sizeCls = '';
 
-    _this = _super.apply(this, arguments);
+    switch (size) {
+      case 'large':
+        sizeCls = 'lg';
+        break;
 
-    _this.renderButton = function (_ref) {
-      var getContextPopupContainer = _ref.getPopupContainer,
-          getPrefixCls = _ref.getPrefixCls;
-
-      var _a = _this.props,
-          customizePrefixCls = _a.prefixCls,
-          type = _a.type,
-          disabled = _a.disabled,
-          onClick = _a.onClick,
-          htmlType = _a.htmlType,
-          children = _a.children,
-          className = _a.className,
-          overlay = _a.overlay,
-          trigger = _a.trigger,
-          align = _a.align,
-          visible = _a.visible,
-          onVisibleChange = _a.onVisibleChange,
-          placement = _a.placement,
-          getPopupContainer = _a.getPopupContainer,
-          href = _a.href,
-          _a$icon = _a.icon,
-          icon = _a$icon === void 0 ? /*#__PURE__*/React.createElement(Icon, {
-        type: "ellipsis"
-      }) : _a$icon,
-          title = _a.title,
-          restProps = __rest(_a, ["prefixCls", "type", "disabled", "onClick", "htmlType", "children", "className", "overlay", "trigger", "align", "visible", "onVisibleChange", "placement", "getPopupContainer", "href", "icon", "title"]);
-
-      var prefixCls = getPrefixCls('dropdown-button', customizePrefixCls);
-      var dropdownProps = {
-        align: align,
-        overlay: overlay,
-        disabled: disabled,
-        trigger: disabled ? [] : trigger,
-        onVisibleChange: onVisibleChange,
-        placement: placement,
-        getPopupContainer: getPopupContainer || getContextPopupContainer
-      };
-
-      if ('visible' in _this.props) {
-        dropdownProps.visible = visible;
-      }
-
-      return /*#__PURE__*/React.createElement(ButtonGroup, _extends({}, restProps, {
-        className: classNames(prefixCls, className)
-      }), /*#__PURE__*/React.createElement(Button, {
-        type: type,
-        disabled: disabled,
-        onClick: onClick,
-        htmlType: htmlType,
-        href: href,
-        title: title
-      }, children), /*#__PURE__*/React.createElement(Dropdown, dropdownProps, /*#__PURE__*/React.createElement(Button, {
-        type: type
-      }, icon)));
-    };
-
-    return _this;
-  }
-
-  _createClass(DropdownButton, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderButton);
+      case 'small':
+        sizeCls = 'sm';
+        break;
     }
-  }]);
 
-  return DropdownButton;
-}(React.Component);
-DropdownButton.defaultProps = {
-  placement: 'bottomRight',
-  type: 'default'
+    var classes = classNames(prefixCls, _defineProperty({}, "".concat(prefixCls, "-").concat(sizeCls), sizeCls), className);
+    return /*#__PURE__*/React.createElement("div", _extends({}, others, {
+      className: classes
+    }));
+  });
 };
 
-Dropdown.Button = DropdownButton;
+Button.Group = ButtonGroup;
+
+export { Button as B };

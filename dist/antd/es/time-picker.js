@@ -1,5 +1,5 @@
 import { n } from '../../config-provider.js';
-export { T as default, g as generateShowHourMinuteSecond } from '../../index15.js';
+export { T as default, g as generateShowHourMinuteSecond } from '../../index19.js';
 import 'react';
 import '../../input.js';
 import '../../menu.js';

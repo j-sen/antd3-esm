@@ -1,601 +1,407 @@
-import { g as getDefaultExportFromCjs } from './config-provider.js';
+import * as React from 'react';
+import { C as ConfigConsumer, p as propTypesExports, c as classNames } from './config-provider.js';
+import { t as toArray } from './tree.js';
+import { o as omit } from './input.js';
+import { D as Dropdown } from './dropdown.js';
+import { I as Icon } from './icon.js';
+import { M as Menu } from './index6.js';
 
-var util;
-var hasRequiredUtil;
+function _typeof$2(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$2 = function _typeof(obj) { return typeof obj; }; } else { _typeof$2 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$2(obj); }
 
-function requireUtil () {
-	if (hasRequiredUtil) return util;
-	hasRequiredUtil = 1;
+function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
 
-	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+function _classCallCheck$2(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+function _defineProperties$2(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-	var RE_NUM = /[\-+]?(?:\d*\.|)\d+(?:[eE][\-+]?\d+|)/.source;
+function _createClass$2(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$2(Constructor.prototype, protoProps); return Constructor; }
 
-	function getClientPosition(elem) {
-	  var box = undefined;
-	  var x = undefined;
-	  var y = undefined;
-	  var doc = elem.ownerDocument;
-	  var body = doc.body;
-	  var docElem = doc && doc.documentElement;
-	  // 根据 GBS 最新数据，A-Grade Browsers 都已支持 getBoundingClientRect 方法，不用再考虑传统的实现方式
-	  box = elem.getBoundingClientRect();
+function _inherits$2(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$2(subClass, superClass); }
 
-	  // 注：jQuery 还考虑减去 docElem.clientLeft/clientTop
-	  // 但测试发现，这样反而会导致当 html 和 body 有边距/边框样式时，获取的值不正确
-	  // 此外，ie6 会忽略 html 的 margin 值，幸运地是没有谁会去设置 html 的 margin
+function _setPrototypeOf$2(o, p) { _setPrototypeOf$2 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$2(o, p); }
 
-	  x = box.left;
-	  y = box.top;
+function _createSuper$2(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$2(); return function _createSuperInternal() { var Super = _getPrototypeOf$2(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$2(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$2(this, result); }; }
 
-	  // In IE, most of the time, 2 extra pixels are added to the top and left
-	  // due to the implicit 2-pixel inset border.  In IE6/7 quirks mode and
-	  // IE6 standards mode, this border can be overridden by setting the
-	  // document element's border to zero -- thus, we cannot rely on the
-	  // offset always being 2 pixels.
+function _possibleConstructorReturn$2(self, call) { if (call && (_typeof$2(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$2(self); }
 
-	  // In quirks mode, the offset can be determined by querying the body's
-	  // clientLeft/clientTop, but in standards mode, it is found by querying
-	  // the document element's clientLeft/clientTop.  Since we already called
-	  // getClientBoundingRect we have already forced a reflow, so it is not
-	  // too expensive just to query them all.
+function _assertThisInitialized$2(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-	  // ie 下应该减去窗口的边框吧，毕竟默认 absolute 都是相对窗口定位的
-	  // 窗口边框标准是设 documentElement ,quirks 时设置 body
-	  // 最好禁止在 body 和 html 上边框 ，但 ie < 9 html 默认有 2px ，减去
-	  // 但是非 ie 不可能设置窗口边框，body html 也不是窗口 ,ie 可以通过 html,body 设置
-	  // 标准 ie 下 docElem.clientTop 就是 border-top
-	  // ie7 html 即窗口边框改变不了。永远为 2
-	  // 但标准 firefox/chrome/ie9 下 docElem.clientTop 是窗口边框，即使设了 border-top 也为 0
+function _isNativeReflectConstruct$2() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
 
-	  x -= docElem.clientLeft || body.clientLeft || 0;
-	  y -= docElem.clientTop || body.clientTop || 0;
+function _getPrototypeOf$2(o) { _getPrototypeOf$2 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$2(o); }
 
-	  return {
-	    left: x,
-	    top: y
-	  };
-	}
+var __rest$1 = undefined && undefined.__rest || function (s, e) {
+  var t = {};
 
-	function getScroll(w, top) {
-	  var ret = w['page' + (top ? 'Y' : 'X') + 'Offset'];
-	  var method = 'scroll' + (top ? 'Top' : 'Left');
-	  if (typeof ret !== 'number') {
-	    var d = w.document;
-	    // ie6,7,8 standard mode
-	    ret = d.documentElement[method];
-	    if (typeof ret !== 'number') {
-	      // quirks mode
-	      ret = d.body[method];
-	    }
-	  }
-	  return ret;
-	}
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  }
 
-	function getScrollLeft(w) {
-	  return getScroll(w);
-	}
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
 
-	function getScrollTop(w) {
-	  return getScroll(w, true);
-	}
+var BreadcrumbItem = /*#__PURE__*/function (_React$Component) {
+  _inherits$2(BreadcrumbItem, _React$Component);
 
-	function getOffset(el) {
-	  var pos = getClientPosition(el);
-	  var doc = el.ownerDocument;
-	  var w = doc.defaultView || doc.parentWindow;
-	  pos.left += getScrollLeft(w);
-	  pos.top += getScrollTop(w);
-	  return pos;
-	}
-	function _getComputedStyle(elem, name, computedStyle_) {
-	  var val = '';
-	  var d = elem.ownerDocument;
-	  var computedStyle = computedStyle_ || d.defaultView.getComputedStyle(elem, null);
+  var _super = _createSuper$2(BreadcrumbItem);
 
-	  // https://github.com/kissyteam/kissy/issues/61
-	  if (computedStyle) {
-	    val = computedStyle.getPropertyValue(name) || computedStyle[name];
-	  }
+  function BreadcrumbItem() {
+    var _this;
 
-	  return val;
-	}
+    _classCallCheck$2(this, BreadcrumbItem);
 
-	var _RE_NUM_NO_PX = new RegExp('^(' + RE_NUM + ')(?!px)[a-z%]+$', 'i');
-	var RE_POS = /^(top|right|bottom|left)$/;
-	var CURRENT_STYLE = 'currentStyle';
-	var RUNTIME_STYLE = 'runtimeStyle';
-	var LEFT = 'left';
-	var PX = 'px';
+    _this = _super.apply(this, arguments);
 
-	function _getComputedStyleIE(elem, name) {
-	  // currentStyle maybe null
-	  // http://msdn.microsoft.com/en-us/library/ms535231.aspx
-	  var ret = elem[CURRENT_STYLE] && elem[CURRENT_STYLE][name];
+    _this.renderBreadcrumbItem = function (_ref) {
+      var getPrefixCls = _ref.getPrefixCls;
 
-	  // 当 width/height 设置为百分比时，通过 pixelLeft 方式转换的 width/height 值
-	  // 一开始就处理了! CUSTOM_STYLE.height,CUSTOM_STYLE.width ,cssHook 解决@2011-08-19
-	  // 在 ie 下不对，需要直接用 offset 方式
-	  // borderWidth 等值也有问题，但考虑到 borderWidth 设为百分比的概率很小，这里就不考虑了
+      var _a = _this.props,
+          customizePrefixCls = _a.prefixCls,
+          separator = _a.separator,
+          children = _a.children,
+          restProps = __rest$1(_a, ["prefixCls", "separator", "children"]);
 
-	  // From the awesome hack by Dean Edwards
-	  // http://erik.eae.net/archives/2007/07/27/18.54.15/#comment-102291
-	  // If we're not dealing with a regular pixel number
-	  // but a number that has a weird ending, we need to convert it to pixels
-	  // exclude left right for relativity
-	  if (_RE_NUM_NO_PX.test(ret) && !RE_POS.test(name)) {
-	    // Remember the original values
-	    var style = elem.style;
-	    var left = style[LEFT];
-	    var rsLeft = elem[RUNTIME_STYLE][LEFT];
+      var prefixCls = getPrefixCls('breadcrumb', customizePrefixCls);
+      var link;
 
-	    // prevent flashing of content
-	    elem[RUNTIME_STYLE][LEFT] = elem[CURRENT_STYLE][LEFT];
+      if ('href' in _this.props) {
+        link = /*#__PURE__*/React.createElement("a", _extends$1({
+          className: "".concat(prefixCls, "-link")
+        }, omit(restProps, ['overlay'])), children);
+      } else {
+        link = /*#__PURE__*/React.createElement("span", _extends$1({
+          className: "".concat(prefixCls, "-link")
+        }, omit(restProps, ['overlay'])), children);
+      } // wrap to dropDown
 
-	    // Put in the new values to get a computed value out
-	    style[LEFT] = name === 'fontSize' ? '1em' : ret || 0;
-	    ret = style.pixelLeft + PX;
 
-	    // Revert the changed values
-	    style[LEFT] = left;
+      link = _this.renderBreadcrumbNode(link, prefixCls);
 
-	    elem[RUNTIME_STYLE][LEFT] = rsLeft;
-	  }
-	  return ret === '' ? 'auto' : ret;
-	}
+      if (children) {
+        return /*#__PURE__*/React.createElement("span", null, link, separator && separator !== '' && /*#__PURE__*/React.createElement("span", {
+          className: "".concat(prefixCls, "-separator")
+        }, separator));
+      }
 
-	var getComputedStyleX = undefined;
-	if (typeof window !== 'undefined') {
-	  getComputedStyleX = window.getComputedStyle ? _getComputedStyle : _getComputedStyleIE;
-	}
+      return null;
+    };
+    /**
+     * if overlay is have
+     * Wrap a DropDown
+     */
 
-	function each(arr, fn) {
-	  for (var i = 0; i < arr.length; i++) {
-	    fn(arr[i]);
-	  }
-	}
 
-	function isBorderBoxFn(elem) {
-	  return getComputedStyleX(elem, 'boxSizing') === 'border-box';
-	}
+    _this.renderBreadcrumbNode = function (breadcrumbItem, prefixCls) {
+      var overlay = _this.props.overlay;
 
-	var BOX_MODELS = ['margin', 'border', 'padding'];
-	var CONTENT_INDEX = -1;
-	var PADDING_INDEX = 2;
-	var BORDER_INDEX = 1;
-	var MARGIN_INDEX = 0;
+      if (overlay) {
+        return /*#__PURE__*/React.createElement(Dropdown, {
+          overlay: overlay,
+          placement: "bottomCenter"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "".concat(prefixCls, "-overlay-link")
+        }, breadcrumbItem, /*#__PURE__*/React.createElement(Icon, {
+          type: "down"
+        })));
+      }
 
-	function swap(elem, options, callback) {
-	  var old = {};
-	  var style = elem.style;
-	  var name = undefined;
+      return breadcrumbItem;
+    };
 
-	  // Remember the old values, and insert the new ones
-	  for (name in options) {
-	    if (options.hasOwnProperty(name)) {
-	      old[name] = style[name];
-	      style[name] = options[name];
-	    }
-	  }
+    return _this;
+  }
 
-	  callback.call(elem);
+  _createClass$2(BreadcrumbItem, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderBreadcrumbItem);
+    }
+  }]);
 
-	  // Revert the old values
-	  for (name in options) {
-	    if (options.hasOwnProperty(name)) {
-	      style[name] = old[name];
-	    }
-	  }
-	}
+  return BreadcrumbItem;
+}(React.Component);
+BreadcrumbItem.__ANT_BREADCRUMB_ITEM = true;
+BreadcrumbItem.defaultProps = {
+  separator: '/'
+};
+BreadcrumbItem.propTypes = {
+  prefixCls: propTypesExports.string,
+  separator: propTypesExports.oneOfType([propTypesExports.string, propTypesExports.element]),
+  href: propTypesExports.string
+};
 
-	function getPBMWidth(elem, props, which) {
-	  var value = 0;
-	  var prop = undefined;
-	  var j = undefined;
-	  var i = undefined;
-	  for (j = 0; j < props.length; j++) {
-	    prop = props[j];
-	    if (prop) {
-	      for (i = 0; i < which.length; i++) {
-	        var cssProp = undefined;
-	        if (prop === 'border') {
-	          cssProp = prop + which[i] + 'Width';
-	        } else {
-	          cssProp = prop + which[i];
-	        }
-	        value += parseFloat(getComputedStyleX(elem, cssProp)) || 0;
-	      }
-	    }
-	  }
-	  return value;
-	}
+function _typeof$1(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$1 = function _typeof(obj) { return typeof obj; }; } else { _typeof$1 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$1(obj); }
 
-	/**
-	 * A crude way of determining if an object is a window
-	 * @member util
-	 */
-	function isWindow(obj) {
-	  // must use == for ie8
-	  /* eslint eqeqeq:0 */
-	  return obj != null && obj == obj.window;
-	}
+function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-	var domUtils = {};
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
 
-	each(['Width', 'Height'], function (name) {
-	  domUtils['doc' + name] = function (refWin) {
-	    var d = refWin.document;
-	    return Math.max(
-	    // firefox chrome documentElement.scrollHeight< body.scrollHeight
-	    // ie standard mode : documentElement.scrollHeight> body.scrollHeight
-	    d.documentElement['scroll' + name],
-	    // quirks : documentElement.scrollHeight 最大等于可视窗口多一点？
-	    d.body['scroll' + name], domUtils['viewport' + name](d));
-	  };
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-	  domUtils['viewport' + name] = function (win) {
-	    // pc browser includes scrollbar in window.innerWidth
-	    var prop = 'client' + name;
-	    var doc = win.document;
-	    var body = doc.body;
-	    var documentElement = doc.documentElement;
-	    var documentElementProp = documentElement[prop];
-	    // 标准模式取 documentElement
-	    // backcompat 取 body
-	    return doc.compatMode === 'CSS1Compat' && documentElementProp || body && body[prop] || documentElementProp;
-	  };
-	});
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-	/*
-	 得到元素的大小信息
-	 @param elem
-	 @param name
-	 @param {String} [extra]  'padding' : (css width) + padding
-	 'border' : (css width) + padding + border
-	 'margin' : (css width) + padding + border + margin
-	 */
-	function getWH(elem, name, extra) {
-	  if (isWindow(elem)) {
-	    return name === 'width' ? domUtils.viewportWidth(elem) : domUtils.viewportHeight(elem);
-	  } else if (elem.nodeType === 9) {
-	    return name === 'width' ? domUtils.docWidth(elem) : domUtils.docHeight(elem);
-	  }
-	  var which = name === 'width' ? ['Left', 'Right'] : ['Top', 'Bottom'];
-	  var borderBoxValue = name === 'width' ? elem.offsetWidth : elem.offsetHeight;
-	  getComputedStyleX(elem);
-	  var isBorderBox = isBorderBoxFn(elem);
-	  var cssBoxValue = 0;
-	  if (borderBoxValue == null || borderBoxValue <= 0) {
-	    borderBoxValue = undefined;
-	    // Fall back to computed then un computed css if necessary
-	    cssBoxValue = getComputedStyleX(elem, name);
-	    if (cssBoxValue == null || Number(cssBoxValue) < 0) {
-	      cssBoxValue = elem.style[name] || 0;
-	    }
-	    // Normalize '', auto, and prepare for extra
-	    cssBoxValue = parseFloat(cssBoxValue) || 0;
-	  }
-	  if (extra === undefined) {
-	    extra = isBorderBox ? BORDER_INDEX : CONTENT_INDEX;
-	  }
-	  var borderBoxValueOrIsBorderBox = borderBoxValue !== undefined || isBorderBox;
-	  var val = borderBoxValue || cssBoxValue;
-	  if (extra === CONTENT_INDEX) {
-	    if (borderBoxValueOrIsBorderBox) {
-	      return val - getPBMWidth(elem, ['border', 'padding'], which);
-	    }
-	    return cssBoxValue;
-	  }
-	  if (borderBoxValueOrIsBorderBox) {
-	    var padding = extra === PADDING_INDEX ? -getPBMWidth(elem, ['border'], which) : getPBMWidth(elem, ['margin'], which);
-	    return val + (extra === BORDER_INDEX ? 0 : padding);
-	  }
-	  return cssBoxValue + getPBMWidth(elem, BOX_MODELS.slice(extra), which);
-	}
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
 
-	var cssShow = {
-	  position: 'absolute',
-	  visibility: 'hidden',
-	  display: 'block'
-	};
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
 
-	// fix #119 : https://github.com/kissyteam/kissy/issues/119
-	function getWHIgnoreDisplay(elem) {
-	  var val = undefined;
-	  var args = arguments;
-	  // in case elem is window
-	  // elem.offsetWidth === undefined
-	  if (elem.offsetWidth !== 0) {
-	    val = getWH.apply(undefined, args);
-	  } else {
-	    swap(elem, cssShow, function () {
-	      val = getWH.apply(undefined, args);
-	    });
-	  }
-	  return val;
-	}
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
-	function css(el, name, v) {
-	  var value = v;
-	  if ((typeof name === 'undefined' ? 'undefined' : _typeof(name)) === 'object') {
-	    for (var i in name) {
-	      if (name.hasOwnProperty(i)) {
-	        css(el, i, name[i]);
-	      }
-	    }
-	    return undefined;
-	  }
-	  if (typeof value !== 'undefined') {
-	    if (typeof value === 'number') {
-	      value += 'px';
-	    }
-	    el.style[name] = value;
-	    return undefined;
-	  }
-	  return getComputedStyleX(el, name);
-	}
+function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	each(['width', 'height'], function (name) {
-	  var first = name.charAt(0).toUpperCase() + name.slice(1);
-	  domUtils['outer' + first] = function (el, includeMargin) {
-	    return el && getWHIgnoreDisplay(el, name, includeMargin ? MARGIN_INDEX : BORDER_INDEX);
-	  };
-	  var which = name === 'width' ? ['Left', 'Right'] : ['Top', 'Bottom'];
+function _defineProperties$1(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-	  domUtils[name] = function (elem, val) {
-	    if (val !== undefined) {
-	      if (elem) {
-	        getComputedStyleX(elem);
-	        var isBorderBox = isBorderBoxFn(elem);
-	        if (isBorderBox) {
-	          val += getPBMWidth(elem, ['padding', 'border'], which);
-	        }
-	        return css(elem, name, val);
-	      }
-	      return undefined;
-	    }
-	    return elem && getWHIgnoreDisplay(elem, name, CONTENT_INDEX);
-	  };
-	});
+function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); return Constructor; }
 
-	// 设置 elem 相对 elem.ownerDocument 的坐标
-	function setOffset(elem, offset) {
-	  // set position first, in-case top/left are set even on static elem
-	  if (css(elem, 'position') === 'static') {
-	    elem.style.position = 'relative';
-	  }
+function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
 
-	  var old = getOffset(elem);
-	  var ret = {};
-	  var current = undefined;
-	  var key = undefined;
+function _setPrototypeOf$1(o, p) { _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$1(o, p); }
 
-	  for (key in offset) {
-	    if (offset.hasOwnProperty(key)) {
-	      current = parseFloat(css(elem, key)) || 0;
-	      ret[key] = current + offset[key] - old[key];
-	    }
-	  }
-	  css(elem, ret);
-	}
+function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf$1(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$1(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$1(this, result); }; }
 
-	util = _extends({
-	  getWindow: function getWindow(node) {
-	    var doc = node.ownerDocument || node;
-	    return doc.defaultView || doc.parentWindow;
-	  },
-	  offset: function offset(el, value) {
-	    if (typeof value !== 'undefined') {
-	      setOffset(el, value);
-	    } else {
-	      return getOffset(el);
-	    }
-	  },
+function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$1(self); }
 
-	  isWindow: isWindow,
-	  each: each,
-	  css: css,
-	  clone: function clone(obj) {
-	    var ret = {};
-	    for (var i in obj) {
-	      if (obj.hasOwnProperty(i)) {
-	        ret[i] = obj[i];
-	      }
-	    }
-	    var overflow = obj.overflow;
-	    if (overflow) {
-	      for (var i in obj) {
-	        if (obj.hasOwnProperty(i)) {
-	          ret.overflow[i] = obj.overflow[i];
-	        }
-	      }
-	    }
-	    return ret;
-	  },
-	  scrollLeft: function scrollLeft(w, v) {
-	    if (isWindow(w)) {
-	      if (v === undefined) {
-	        return getScrollLeft(w);
-	      }
-	      window.scrollTo(v, getScrollTop(w));
-	    } else {
-	      if (v === undefined) {
-	        return w.scrollLeft;
-	      }
-	      w.scrollLeft = v;
-	    }
-	  },
-	  scrollTop: function scrollTop(w, v) {
-	    if (isWindow(w)) {
-	      if (v === undefined) {
-	        return getScrollTop(w);
-	      }
-	      window.scrollTo(getScrollLeft(w), v);
-	    } else {
-	      if (v === undefined) {
-	        return w.scrollTop;
-	      }
-	      w.scrollTop = v;
-	    }
-	  },
+function _assertThisInitialized$1(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-	  viewportWidth: 0,
-	  viewportHeight: 0
-	}, domUtils);
-	return util;
+function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf$1(o) { _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$1(o); }
+
+var __rest = undefined && undefined.__rest || function (s, e) {
+  var t = {};
+
+  for (var p in s) {
+    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
+  }
+
+  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
+  }
+  return t;
+};
+
+function getBreadcrumbName(route, params) {
+  if (!route.breadcrumbName) {
+    return null;
+  }
+
+  var paramsKeys = Object.keys(params).join('|');
+  var name = route.breadcrumbName.replace(new RegExp(":(".concat(paramsKeys, ")"), 'g'), function (replacement, key) {
+    return params[key] || replacement;
+  });
+  return name;
 }
 
-var domScrollIntoView;
-var hasRequiredDomScrollIntoView;
-
-function requireDomScrollIntoView () {
-	if (hasRequiredDomScrollIntoView) return domScrollIntoView;
-	hasRequiredDomScrollIntoView = 1;
-
-	var util = requireUtil();
-
-	function scrollIntoView(elem, container, config) {
-	  config = config || {};
-	  // document 归一化到 window
-	  if (container.nodeType === 9) {
-	    container = util.getWindow(container);
-	  }
-
-	  var allowHorizontalScroll = config.allowHorizontalScroll;
-	  var onlyScrollIfNeeded = config.onlyScrollIfNeeded;
-	  var alignWithTop = config.alignWithTop;
-	  var alignWithLeft = config.alignWithLeft;
-	  var offsetTop = config.offsetTop || 0;
-	  var offsetLeft = config.offsetLeft || 0;
-	  var offsetBottom = config.offsetBottom || 0;
-	  var offsetRight = config.offsetRight || 0;
-
-	  allowHorizontalScroll = allowHorizontalScroll === undefined ? true : allowHorizontalScroll;
-
-	  var isWin = util.isWindow(container);
-	  var elemOffset = util.offset(elem);
-	  var eh = util.outerHeight(elem);
-	  var ew = util.outerWidth(elem);
-	  var containerOffset = undefined;
-	  var ch = undefined;
-	  var cw = undefined;
-	  var containerScroll = undefined;
-	  var diffTop = undefined;
-	  var diffBottom = undefined;
-	  var win = undefined;
-	  var winScroll = undefined;
-	  var ww = undefined;
-	  var wh = undefined;
-
-	  if (isWin) {
-	    win = container;
-	    wh = util.height(win);
-	    ww = util.width(win);
-	    winScroll = {
-	      left: util.scrollLeft(win),
-	      top: util.scrollTop(win)
-	    };
-	    // elem 相对 container 可视视窗的距离
-	    diffTop = {
-	      left: elemOffset.left - winScroll.left - offsetLeft,
-	      top: elemOffset.top - winScroll.top - offsetTop
-	    };
-	    diffBottom = {
-	      left: elemOffset.left + ew - (winScroll.left + ww) + offsetRight,
-	      top: elemOffset.top + eh - (winScroll.top + wh) + offsetBottom
-	    };
-	    containerScroll = winScroll;
-	  } else {
-	    containerOffset = util.offset(container);
-	    ch = container.clientHeight;
-	    cw = container.clientWidth;
-	    containerScroll = {
-	      left: container.scrollLeft,
-	      top: container.scrollTop
-	    };
-	    // elem 相对 container 可视视窗的距离
-	    // 注意边框, offset 是边框到根节点
-	    diffTop = {
-	      left: elemOffset.left - (containerOffset.left + (parseFloat(util.css(container, 'borderLeftWidth')) || 0)) - offsetLeft,
-	      top: elemOffset.top - (containerOffset.top + (parseFloat(util.css(container, 'borderTopWidth')) || 0)) - offsetTop
-	    };
-	    diffBottom = {
-	      left: elemOffset.left + ew - (containerOffset.left + cw + (parseFloat(util.css(container, 'borderRightWidth')) || 0)) + offsetRight,
-	      top: elemOffset.top + eh - (containerOffset.top + ch + (parseFloat(util.css(container, 'borderBottomWidth')) || 0)) + offsetBottom
-	    };
-	  }
-
-	  if (diffTop.top < 0 || diffBottom.top > 0) {
-	    // 强制向上
-	    if (alignWithTop === true) {
-	      util.scrollTop(container, containerScroll.top + diffTop.top);
-	    } else if (alignWithTop === false) {
-	      util.scrollTop(container, containerScroll.top + diffBottom.top);
-	    } else {
-	      // 自动调整
-	      if (diffTop.top < 0) {
-	        util.scrollTop(container, containerScroll.top + diffTop.top);
-	      } else {
-	        util.scrollTop(container, containerScroll.top + diffBottom.top);
-	      }
-	    }
-	  } else {
-	    if (!onlyScrollIfNeeded) {
-	      alignWithTop = alignWithTop === undefined ? true : !!alignWithTop;
-	      if (alignWithTop) {
-	        util.scrollTop(container, containerScroll.top + diffTop.top);
-	      } else {
-	        util.scrollTop(container, containerScroll.top + diffBottom.top);
-	      }
-	    }
-	  }
-
-	  if (allowHorizontalScroll) {
-	    if (diffTop.left < 0 || diffBottom.left > 0) {
-	      // 强制向上
-	      if (alignWithLeft === true) {
-	        util.scrollLeft(container, containerScroll.left + diffTop.left);
-	      } else if (alignWithLeft === false) {
-	        util.scrollLeft(container, containerScroll.left + diffBottom.left);
-	      } else {
-	        // 自动调整
-	        if (diffTop.left < 0) {
-	          util.scrollLeft(container, containerScroll.left + diffTop.left);
-	        } else {
-	          util.scrollLeft(container, containerScroll.left + diffBottom.left);
-	        }
-	      }
-	    } else {
-	      if (!onlyScrollIfNeeded) {
-	        alignWithLeft = alignWithLeft === undefined ? true : !!alignWithLeft;
-	        if (alignWithLeft) {
-	          util.scrollLeft(container, containerScroll.left + diffTop.left);
-	        } else {
-	          util.scrollLeft(container, containerScroll.left + diffBottom.left);
-	        }
-	      }
-	    }
-	  }
-	}
-
-	domScrollIntoView = scrollIntoView;
-	return domScrollIntoView;
+function defaultItemRender(route, params, routes, paths) {
+  var isLastItem = routes.indexOf(route) === routes.length - 1;
+  var name = getBreadcrumbName(route, params);
+  return isLastItem ? /*#__PURE__*/React.createElement("span", null, name) : /*#__PURE__*/React.createElement("a", {
+    href: "#/".concat(paths.join('/'))
+  }, name);
 }
 
-var lib;
-var hasRequiredLib;
+function filterFragment(children) {
+  return toArray(children).map(function (element) {
+    if ( /*#__PURE__*/React.isValidElement(element) && element.type === React.Fragment) {
+      var props = element.props;
+      return props.children;
+    }
 
-function requireLib () {
-	if (hasRequiredLib) return lib;
-	hasRequiredLib = 1;
-
-	lib = requireDomScrollIntoView();
-	return lib;
+    return element;
+  });
 }
 
-var libExports = requireLib();
-var scrollIntoView = /*@__PURE__*/getDefaultExportFromCjs(libExports);
+var Breadcrumb = /*#__PURE__*/function (_React$Component) {
+  _inherits$1(Breadcrumb, _React$Component);
 
-export { scrollIntoView as s };
+  var _super = _createSuper$1(Breadcrumb);
+
+  function Breadcrumb() {
+    var _this;
+
+    _classCallCheck$1(this, Breadcrumb);
+
+    _this = _super.apply(this, arguments);
+
+    _this.getPath = function (path, params) {
+      path = (path || '').replace(/^\//, '');
+      Object.keys(params).forEach(function (key) {
+        path = path.replace(":".concat(key), params[key]);
+      });
+      return path;
+    };
+
+    _this.addChildPath = function (paths) {
+      var childPath = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : '';
+      var params = arguments.length > 2 ? arguments[2] : undefined;
+
+      var originalPaths = _toConsumableArray(paths);
+
+      var path = _this.getPath(childPath, params);
+
+      if (path) {
+        originalPaths.push(path);
+      }
+
+      return originalPaths;
+    };
+
+    _this.genForRoutes = function (_ref) {
+      var _ref$routes = _ref.routes,
+          routes = _ref$routes === void 0 ? [] : _ref$routes,
+          _ref$params = _ref.params,
+          params = _ref$params === void 0 ? {} : _ref$params,
+          separator = _ref.separator,
+          _ref$itemRender = _ref.itemRender,
+          itemRender = _ref$itemRender === void 0 ? defaultItemRender : _ref$itemRender;
+      var paths = [];
+      return routes.map(function (route) {
+        var path = _this.getPath(route.path, params);
+
+        if (path) {
+          paths.push(path);
+        } // generated overlay by route.children
+
+
+        var overlay = null;
+
+        if (route.children && route.children.length) {
+          overlay = /*#__PURE__*/React.createElement(Menu, null, route.children.map(function (child) {
+            return /*#__PURE__*/React.createElement(Menu.Item, {
+              key: child.breadcrumbName || child.path
+            }, itemRender(child, params, routes, _this.addChildPath(paths, child.path, params)));
+          }));
+        }
+
+        return /*#__PURE__*/React.createElement(BreadcrumbItem, {
+          overlay: overlay,
+          separator: separator,
+          key: route.breadcrumbName || path
+        }, itemRender(route, params, routes, paths));
+      });
+    };
+
+    _this.renderBreadcrumb = function (_ref2) {
+      var getPrefixCls = _ref2.getPrefixCls;
+      var crumbs;
+
+      var _a = _this.props,
+          customizePrefixCls = _a.prefixCls,
+          separator = _a.separator,
+          style = _a.style,
+          className = _a.className,
+          routes = _a.routes,
+          children = _a.children,
+          restProps = __rest(_a, ["prefixCls", "separator", "style", "className", "routes", "children"]);
+
+      var prefixCls = getPrefixCls('breadcrumb', customizePrefixCls);
+
+      if (routes && routes.length > 0) {
+        // generated by route
+        crumbs = _this.genForRoutes(_this.props);
+      } else if (children) {
+        crumbs = React.Children.map(filterFragment(children), function (element, index) {
+          if (!element) {
+            return element;
+          }
+          return /*#__PURE__*/React.cloneElement(element, {
+            separator: separator,
+            key: index
+          });
+        });
+      }
+
+      return /*#__PURE__*/React.createElement("div", _extends({
+        className: classNames(className, prefixCls),
+        style: style
+      }, omit(restProps, ['itemRender', 'params'])), crumbs);
+    };
+
+    return _this;
+  }
+
+  _createClass$1(Breadcrumb, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderBreadcrumb);
+    }
+  }]);
+
+  return Breadcrumb;
+}(React.Component);
+Breadcrumb.defaultProps = {
+  separator: '/'
+};
+Breadcrumb.propTypes = {
+  prefixCls: propTypesExports.string,
+  separator: propTypesExports.node,
+  routes: propTypesExports.array
+};
+
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
+
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized(self); }
+
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
+
+var BreadcrumbSeparator = /*#__PURE__*/function (_React$Component) {
+  _inherits(BreadcrumbSeparator, _React$Component);
+
+  var _super = _createSuper(BreadcrumbSeparator);
+
+  function BreadcrumbSeparator() {
+    var _this;
+
+    _classCallCheck(this, BreadcrumbSeparator);
+
+    _this = _super.apply(this, arguments);
+
+    _this.renderSeparator = function (_ref) {
+      var getPrefixCls = _ref.getPrefixCls;
+      var children = _this.props.children;
+      var prefixCls = getPrefixCls('breadcrumb');
+      return /*#__PURE__*/React.createElement("span", {
+        className: "".concat(prefixCls, "-separator")
+      }, children || '/');
+    };
+
+    return _this;
+  }
+
+  _createClass(BreadcrumbSeparator, [{
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderSeparator);
+    }
+  }]);
+
+  return BreadcrumbSeparator;
+}(React.Component);
+BreadcrumbSeparator.__ANT_BREADCRUMB_SEPARATOR = true;
+
+Breadcrumb.Item = BreadcrumbItem;
+Breadcrumb.Separator = BreadcrumbSeparator;
+
+export { Breadcrumb as B };

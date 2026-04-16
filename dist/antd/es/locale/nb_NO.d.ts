@@ -1,0 +1,1 @@
+export { default } from 'antd/es/locale/nb_NO'

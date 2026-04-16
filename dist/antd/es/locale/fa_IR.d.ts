@@ -1,0 +1,1 @@
+export { default } from 'antd/es/locale/fa_IR'

@@ -1,0 +1,1 @@
+export { default } from 'antd/es/auto-complete/index'

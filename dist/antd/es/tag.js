@@ -1,10 +1,11 @@
 import { n } from '../../config-provider.js';
-export { T as default } from '../../index14.js';
+export { T as default } from '../../index18.js';
 import 'react';
 import '../../input.js';
 import '../../menu.js';
 import 'react-dom';
 import '../../icon.js';
+import '../../colors.js';
 import '../../wave.js';
 import '../../raf.js';
 

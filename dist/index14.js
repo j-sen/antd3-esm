@@ -1,112 +1,13 @@
 import * as React from 'react';
-import { c as classNames, C as ConfigConsumer } from './config-provider.js';
-import { t as tuple, o as omit } from './input.js';
-import { p as polyfill } from './menu.js';
-import { I as Icon } from './icon.js';
-import { W as Wave } from './wave.js';
-
-var PresetColorTypes = tuple('pink', 'red', 'yellow', 'orange', 'cyan', 'green', 'blue', 'purple', 'geekblue', 'magenta', 'volcano', 'gold', 'lime');
-
-function _typeof$1(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof$1 = function _typeof(obj) { return typeof obj; }; } else { _typeof$1 = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof$1(obj); }
-
-function _extends$1() { _extends$1 = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends$1.apply(this, arguments); }
-
-function _defineProperty$1(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function _classCallCheck$1(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _defineProperties$1(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function _createClass$1(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties$1(Constructor.prototype, protoProps); return Constructor; }
-
-function _inherits$1(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf$1(subClass, superClass); }
-
-function _setPrototypeOf$1(o, p) { _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf$1(o, p); }
-
-function _createSuper$1(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct$1(); return function _createSuperInternal() { var Super = _getPrototypeOf$1(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf$1(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn$1(this, result); }; }
-
-function _possibleConstructorReturn$1(self, call) { if (call && (_typeof$1(call) === "object" || typeof call === "function")) { return call; } return _assertThisInitialized$1(self); }
-
-function _assertThisInitialized$1(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function _isNativeReflectConstruct$1() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
-
-function _getPrototypeOf$1(o) { _getPrototypeOf$1 = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf$1(o); }
-
-var __rest$1 = undefined && undefined.__rest || function (s, e) {
-  var t = {};
-
-  for (var p in s) {
-    if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0) t[p] = s[p];
-  }
-
-  if (s != null && typeof Object.getOwnPropertySymbols === "function") for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-    if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i])) t[p[i]] = s[p[i]];
-  }
-  return t;
-};
-
-var CheckableTag = /*#__PURE__*/function (_React$Component) {
-  _inherits$1(CheckableTag, _React$Component);
-
-  var _super = _createSuper$1(CheckableTag);
-
-  function CheckableTag() {
-    var _this;
-
-    _classCallCheck$1(this, CheckableTag);
-
-    _this = _super.apply(this, arguments);
-
-    _this.handleClick = function () {
-      var _this$props = _this.props,
-          checked = _this$props.checked,
-          onChange = _this$props.onChange;
-
-      if (onChange) {
-        onChange(!checked);
-      }
-    };
-
-    _this.renderCheckableTag = function (_ref) {
-      var _classNames;
-
-      var getPrefixCls = _ref.getPrefixCls;
-
-      var _a = _this.props,
-          customizePrefixCls = _a.prefixCls,
-          className = _a.className,
-          checked = _a.checked,
-          restProps = __rest$1(_a, ["prefixCls", "className", "checked"]);
-
-      var prefixCls = getPrefixCls('tag', customizePrefixCls);
-      var cls = classNames(prefixCls, (_classNames = {}, _defineProperty$1(_classNames, "".concat(prefixCls, "-checkable"), true), _defineProperty$1(_classNames, "".concat(prefixCls, "-checkable-checked"), checked), _classNames), className);
-      delete restProps.onChange; // TypeScript cannot check delete now.
-
-      return /*#__PURE__*/React.createElement("span", _extends$1({}, restProps, {
-        className: cls,
-        onClick: _this.handleClick
-      }));
-    };
-
-    return _this;
-  }
-
-  _createClass$1(CheckableTag, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderCheckableTag);
-    }
-  }]);
-
-  return CheckableTag;
-}(React.Component);
+import { c as classNames, C as ConfigConsumer, p as propTypesExports } from './config-provider.js';
+import { o as omit, t as tuple } from './input.js';
+import { d as debounce } from './tree.js';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -140,144 +41,192 @@ var __rest = undefined && undefined.__rest || function (s, e) {
   }
   return t;
 };
-var PresetColorRegex = new RegExp("^(".concat(PresetColorTypes.join('|'), ")(-inverse)?$"));
+var SpinSizes = tuple('small', 'default', 'large'); // Render indicator
 
-var Tag = /*#__PURE__*/function (_React$Component) {
-  _inherits(Tag, _React$Component);
+var defaultIndicator = null;
 
-  var _super = _createSuper(Tag);
+function renderIndicator(prefixCls, props) {
+  var indicator = props.indicator;
+  var dotClassName = "".concat(prefixCls, "-dot"); // should not be render default indicator when indicator value is null
 
-  function Tag(props) {
+  if (indicator === null) {
+    return null;
+  }
+
+  if ( /*#__PURE__*/React.isValidElement(indicator)) {
+    return /*#__PURE__*/React.cloneElement(indicator, {
+      className: classNames(indicator.props.className, dotClassName)
+    });
+  }
+
+  if ( /*#__PURE__*/React.isValidElement(defaultIndicator)) {
+    return /*#__PURE__*/React.cloneElement(defaultIndicator, {
+      className: classNames(defaultIndicator.props.className, dotClassName)
+    });
+  }
+
+  return /*#__PURE__*/React.createElement("span", {
+    className: classNames(dotClassName, "".concat(prefixCls, "-dot-spin"))
+  }, /*#__PURE__*/React.createElement("i", {
+    className: "".concat(prefixCls, "-dot-item")
+  }), /*#__PURE__*/React.createElement("i", {
+    className: "".concat(prefixCls, "-dot-item")
+  }), /*#__PURE__*/React.createElement("i", {
+    className: "".concat(prefixCls, "-dot-item")
+  }), /*#__PURE__*/React.createElement("i", {
+    className: "".concat(prefixCls, "-dot-item")
+  }));
+}
+
+function shouldDelay(spinning, delay) {
+  return !!spinning && !!delay && !isNaN(Number(delay));
+}
+
+var Spin = /*#__PURE__*/function (_React$Component) {
+  _inherits(Spin, _React$Component);
+
+  var _super = _createSuper(Spin);
+
+  function Spin(props) {
     var _this;
 
-    _classCallCheck(this, Tag);
+    _classCallCheck(this, Spin);
 
     _this = _super.call(this, props);
-    _this.state = {
-      visible: true
+
+    _this.debouncifyUpdateSpinning = function (props) {
+      var _ref = props || _this.props,
+          delay = _ref.delay;
+
+      if (delay) {
+        _this.cancelExistingSpin();
+
+        _this.updateSpinning = debounce(_this.originalUpdateSpinning, delay);
+      }
     };
 
-    _this.handleIconClick = function (e) {
-      e.stopPropagation();
+    _this.updateSpinning = function () {
+      var spinning = _this.props.spinning;
+      var currentSpinning = _this.state.spinning;
 
-      _this.setVisible(false, e);
+      if (currentSpinning !== spinning) {
+        _this.setState({
+          spinning: spinning
+        });
+      }
     };
 
-    _this.renderTag = function (configProps) {
+    _this.renderSpin = function (_ref2) {
+      var _classNames;
+
+      var getPrefixCls = _ref2.getPrefixCls;
+
       var _a = _this.props,
-          children = _a.children,
-          otherProps = __rest(_a, ["children"]);
+          customizePrefixCls = _a.prefixCls,
+          className = _a.className,
+          size = _a.size,
+          tip = _a.tip,
+          wrapperClassName = _a.wrapperClassName,
+          style = _a.style,
+          restProps = __rest(_a, ["prefixCls", "className", "size", "tip", "wrapperClassName", "style"]);
 
-      var isNeedWave = 'onClick' in otherProps || children && children.type === 'a';
-      var tagProps = omit(otherProps, ['onClose', 'afterClose', 'color', 'visible', 'closable', 'prefixCls']);
-      return isNeedWave ? /*#__PURE__*/React.createElement(Wave, null, /*#__PURE__*/React.createElement("span", _extends({}, tagProps, {
-        className: _this.getTagClassName(configProps),
-        style: _this.getTagStyle()
-      }), children, _this.renderCloseIcon())) : /*#__PURE__*/React.createElement("span", _extends({}, tagProps, {
-        className: _this.getTagClassName(configProps),
-        style: _this.getTagStyle()
-      }), children, _this.renderCloseIcon());
+      var spinning = _this.state.spinning;
+      var prefixCls = getPrefixCls('spin', customizePrefixCls);
+      var spinClassName = classNames(prefixCls, (_classNames = {}, _defineProperty(_classNames, "".concat(prefixCls, "-sm"), size === 'small'), _defineProperty(_classNames, "".concat(prefixCls, "-lg"), size === 'large'), _defineProperty(_classNames, "".concat(prefixCls, "-spinning"), spinning), _defineProperty(_classNames, "".concat(prefixCls, "-show-text"), !!tip), _classNames), className); // fix https://fb.me/react-unknown-prop
+
+      var divProps = omit(restProps, ['spinning', 'delay', 'indicator']);
+      var spinElement = /*#__PURE__*/React.createElement("div", _extends({}, divProps, {
+        style: style,
+        className: spinClassName
+      }), renderIndicator(prefixCls, _this.props), tip ? /*#__PURE__*/React.createElement("div", {
+        className: "".concat(prefixCls, "-text")
+      }, tip) : null);
+
+      if (_this.isNestedPattern()) {
+        var containerClassName = classNames("".concat(prefixCls, "-container"), _defineProperty({}, "".concat(prefixCls, "-blur"), spinning));
+        return /*#__PURE__*/React.createElement("div", _extends({}, divProps, {
+          className: classNames("".concat(prefixCls, "-nested-loading"), wrapperClassName)
+        }), spinning && /*#__PURE__*/React.createElement("div", {
+          key: "loading"
+        }, spinElement), /*#__PURE__*/React.createElement("div", {
+          className: containerClassName,
+          key: "container"
+        }, _this.props.children));
+      }
+
+      return spinElement;
     };
+
+    var spinning = props.spinning,
+        delay = props.delay;
+    var shouldBeDelayed = shouldDelay(spinning, delay);
+    _this.state = {
+      spinning: spinning && !shouldBeDelayed
+    };
+    _this.originalUpdateSpinning = _this.updateSpinning;
+
+    _this.debouncifyUpdateSpinning(props);
+
     return _this;
   }
 
-  _createClass(Tag, [{
-    key: "getTagStyle",
-    value: function getTagStyle() {
-      var _this$props = this.props,
-          color = _this$props.color,
-          style = _this$props.style;
-      var isPresetColor = this.isPresetColor();
-      return _extends({
-        backgroundColor: color && !isPresetColor ? color : undefined
-      }, style);
+  _createClass(Spin, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      this.updateSpinning();
     }
   }, {
-    key: "getTagClassName",
-    value: function getTagClassName(_ref) {
-      var _classNames;
-
-      var getPrefixCls = _ref.getPrefixCls;
-      var _this$props2 = this.props,
-          customizePrefixCls = _this$props2.prefixCls,
-          className = _this$props2.className,
-          color = _this$props2.color;
-      var visible = this.state.visible;
-      var isPresetColor = this.isPresetColor();
-      var prefixCls = getPrefixCls('tag', customizePrefixCls);
-      return classNames(prefixCls, (_classNames = {}, _defineProperty(_classNames, "".concat(prefixCls, "-").concat(color), isPresetColor), _defineProperty(_classNames, "".concat(prefixCls, "-has-color"), color && !isPresetColor), _defineProperty(_classNames, "".concat(prefixCls, "-hidden"), !visible), _classNames), className);
+    key: "componentDidUpdate",
+    value: function componentDidUpdate() {
+      this.debouncifyUpdateSpinning();
+      this.updateSpinning();
     }
   }, {
-    key: "setVisible",
-    value: function setVisible(visible, e) {
-      var _this$props3 = this.props,
-          onClose = _this$props3.onClose,
-          afterClose = _this$props3.afterClose;
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      this.cancelExistingSpin();
+    }
+  }, {
+    key: "cancelExistingSpin",
+    value: function cancelExistingSpin() {
+      var updateSpinning = this.updateSpinning;
 
-      if (onClose) {
-        onClose(e);
-      }
-
-      if (afterClose && !onClose) {
-        // next version remove.
-        afterClose();
-      }
-
-      if (e.defaultPrevented) {
-        return;
-      }
-
-      if (!('visible' in this.props)) {
-        this.setState({
-          visible: visible
-        });
+      if (updateSpinning && updateSpinning.cancel) {
+        updateSpinning.cancel();
       }
     }
   }, {
-    key: "isPresetColor",
-    value: function isPresetColor() {
-      var color = this.props.color;
-
-      if (!color) {
-        return false;
-      }
-
-      return PresetColorRegex.test(color);
-    }
-  }, {
-    key: "renderCloseIcon",
-    value: function renderCloseIcon() {
-      var closable = this.props.closable;
-      return closable ? /*#__PURE__*/React.createElement(Icon, {
-        type: "close",
-        onClick: this.handleIconClick
-      }) : null;
+    key: "isNestedPattern",
+    value: function isNestedPattern() {
+      return !!(this.props && this.props.children);
     }
   }, {
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderTag);
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderSpin);
     }
   }], [{
-    key: "getDerivedStateFromProps",
-    value: function getDerivedStateFromProps(nextProps) {
-      if ('visible' in nextProps) {
-        return {
-          visible: nextProps.visible
-        };
-      }
-
-      return null;
+    key: "setDefaultIndicator",
+    value: function setDefaultIndicator(indicator) {
+      defaultIndicator = indicator;
     }
   }]);
 
-  return Tag;
+  return Spin;
 }(React.Component);
 
-Tag.CheckableTag = CheckableTag;
-Tag.defaultProps = {
-  closable: false
+Spin.defaultProps = {
+  spinning: true,
+  size: 'default',
+  wrapperClassName: ''
 };
-polyfill(Tag);
+Spin.propTypes = {
+  prefixCls: propTypesExports.string,
+  className: propTypesExports.string,
+  spinning: propTypesExports.bool,
+  size: propTypesExports.oneOf(SpinSizes),
+  wrapperClassName: propTypesExports.string,
+  indicator: propTypesExports.element
+};
 
-export { Tag as T };
+export { Spin as S };

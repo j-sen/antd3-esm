@@ -1,0 +1,1 @@
+export { default } from 'antd/es/locale/ms_MY'

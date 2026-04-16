@@ -1,19 +1,18 @@
+import { D as Dropdown } from './dropdown.js';
 import * as React from 'react';
-import { c as classNames, C as ConfigConsumer, p as propTypesExports } from './config-provider.js';
-import { o as omit, t as tuple } from './input.js';
-import { d as debounce } from './tree.js';
+import { c as classNames, C as ConfigConsumer } from './config-provider.js';
+import { B as Button } from './index9.js';
+import { I as Icon } from './icon.js';
 
 function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _extends() { _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; }; return _extends.apply(this, arguments); }
 
-function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
 
-function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); return Constructor; }
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
@@ -41,192 +40,91 @@ var __rest = undefined && undefined.__rest || function (s, e) {
   }
   return t;
 };
-var SpinSizes = tuple('small', 'default', 'large'); // Render indicator
+var ButtonGroup = Button.Group;
 
-var defaultIndicator = null;
+var DropdownButton = /*#__PURE__*/function (_React$Component) {
+  _inherits(DropdownButton, _React$Component);
 
-function renderIndicator(prefixCls, props) {
-  var indicator = props.indicator;
-  var dotClassName = "".concat(prefixCls, "-dot"); // should not be render default indicator when indicator value is null
+  var _super = _createSuper(DropdownButton);
 
-  if (indicator === null) {
-    return null;
-  }
-
-  if ( /*#__PURE__*/React.isValidElement(indicator)) {
-    return /*#__PURE__*/React.cloneElement(indicator, {
-      className: classNames(indicator.props.className, dotClassName)
-    });
-  }
-
-  if ( /*#__PURE__*/React.isValidElement(defaultIndicator)) {
-    return /*#__PURE__*/React.cloneElement(defaultIndicator, {
-      className: classNames(defaultIndicator.props.className, dotClassName)
-    });
-  }
-
-  return /*#__PURE__*/React.createElement("span", {
-    className: classNames(dotClassName, "".concat(prefixCls, "-dot-spin"))
-  }, /*#__PURE__*/React.createElement("i", {
-    className: "".concat(prefixCls, "-dot-item")
-  }), /*#__PURE__*/React.createElement("i", {
-    className: "".concat(prefixCls, "-dot-item")
-  }), /*#__PURE__*/React.createElement("i", {
-    className: "".concat(prefixCls, "-dot-item")
-  }), /*#__PURE__*/React.createElement("i", {
-    className: "".concat(prefixCls, "-dot-item")
-  }));
-}
-
-function shouldDelay(spinning, delay) {
-  return !!spinning && !!delay && !isNaN(Number(delay));
-}
-
-var Spin = /*#__PURE__*/function (_React$Component) {
-  _inherits(Spin, _React$Component);
-
-  var _super = _createSuper(Spin);
-
-  function Spin(props) {
+  function DropdownButton() {
     var _this;
 
-    _classCallCheck(this, Spin);
+    _classCallCheck(this, DropdownButton);
 
-    _this = _super.call(this, props);
+    _this = _super.apply(this, arguments);
 
-    _this.debouncifyUpdateSpinning = function (props) {
-      var _ref = props || _this.props,
-          delay = _ref.delay;
-
-      if (delay) {
-        _this.cancelExistingSpin();
-
-        _this.updateSpinning = debounce(_this.originalUpdateSpinning, delay);
-      }
-    };
-
-    _this.updateSpinning = function () {
-      var spinning = _this.props.spinning;
-      var currentSpinning = _this.state.spinning;
-
-      if (currentSpinning !== spinning) {
-        _this.setState({
-          spinning: spinning
-        });
-      }
-    };
-
-    _this.renderSpin = function (_ref2) {
-      var _classNames;
-
-      var getPrefixCls = _ref2.getPrefixCls;
+    _this.renderButton = function (_ref) {
+      var getContextPopupContainer = _ref.getPopupContainer,
+          getPrefixCls = _ref.getPrefixCls;
 
       var _a = _this.props,
           customizePrefixCls = _a.prefixCls,
+          type = _a.type,
+          disabled = _a.disabled,
+          onClick = _a.onClick,
+          htmlType = _a.htmlType,
+          children = _a.children,
           className = _a.className,
-          size = _a.size,
-          tip = _a.tip,
-          wrapperClassName = _a.wrapperClassName,
-          style = _a.style,
-          restProps = __rest(_a, ["prefixCls", "className", "size", "tip", "wrapperClassName", "style"]);
+          overlay = _a.overlay,
+          trigger = _a.trigger,
+          align = _a.align,
+          visible = _a.visible,
+          onVisibleChange = _a.onVisibleChange,
+          placement = _a.placement,
+          getPopupContainer = _a.getPopupContainer,
+          href = _a.href,
+          _a$icon = _a.icon,
+          icon = _a$icon === void 0 ? /*#__PURE__*/React.createElement(Icon, {
+        type: "ellipsis"
+      }) : _a$icon,
+          title = _a.title,
+          restProps = __rest(_a, ["prefixCls", "type", "disabled", "onClick", "htmlType", "children", "className", "overlay", "trigger", "align", "visible", "onVisibleChange", "placement", "getPopupContainer", "href", "icon", "title"]);
 
-      var spinning = _this.state.spinning;
-      var prefixCls = getPrefixCls('spin', customizePrefixCls);
-      var spinClassName = classNames(prefixCls, (_classNames = {}, _defineProperty(_classNames, "".concat(prefixCls, "-sm"), size === 'small'), _defineProperty(_classNames, "".concat(prefixCls, "-lg"), size === 'large'), _defineProperty(_classNames, "".concat(prefixCls, "-spinning"), spinning), _defineProperty(_classNames, "".concat(prefixCls, "-show-text"), !!tip), _classNames), className); // fix https://fb.me/react-unknown-prop
+      var prefixCls = getPrefixCls('dropdown-button', customizePrefixCls);
+      var dropdownProps = {
+        align: align,
+        overlay: overlay,
+        disabled: disabled,
+        trigger: disabled ? [] : trigger,
+        onVisibleChange: onVisibleChange,
+        placement: placement,
+        getPopupContainer: getPopupContainer || getContextPopupContainer
+      };
 
-      var divProps = omit(restProps, ['spinning', 'delay', 'indicator']);
-      var spinElement = /*#__PURE__*/React.createElement("div", _extends({}, divProps, {
-        style: style,
-        className: spinClassName
-      }), renderIndicator(prefixCls, _this.props), tip ? /*#__PURE__*/React.createElement("div", {
-        className: "".concat(prefixCls, "-text")
-      }, tip) : null);
-
-      if (_this.isNestedPattern()) {
-        var containerClassName = classNames("".concat(prefixCls, "-container"), _defineProperty({}, "".concat(prefixCls, "-blur"), spinning));
-        return /*#__PURE__*/React.createElement("div", _extends({}, divProps, {
-          className: classNames("".concat(prefixCls, "-nested-loading"), wrapperClassName)
-        }), spinning && /*#__PURE__*/React.createElement("div", {
-          key: "loading"
-        }, spinElement), /*#__PURE__*/React.createElement("div", {
-          className: containerClassName,
-          key: "container"
-        }, _this.props.children));
+      if ('visible' in _this.props) {
+        dropdownProps.visible = visible;
       }
 
-      return spinElement;
+      return /*#__PURE__*/React.createElement(ButtonGroup, _extends({}, restProps, {
+        className: classNames(prefixCls, className)
+      }), /*#__PURE__*/React.createElement(Button, {
+        type: type,
+        disabled: disabled,
+        onClick: onClick,
+        htmlType: htmlType,
+        href: href,
+        title: title
+      }, children), /*#__PURE__*/React.createElement(Dropdown, dropdownProps, /*#__PURE__*/React.createElement(Button, {
+        type: type
+      }, icon)));
     };
-
-    var spinning = props.spinning,
-        delay = props.delay;
-    var shouldBeDelayed = shouldDelay(spinning, delay);
-    _this.state = {
-      spinning: spinning && !shouldBeDelayed
-    };
-    _this.originalUpdateSpinning = _this.updateSpinning;
-
-    _this.debouncifyUpdateSpinning(props);
 
     return _this;
   }
 
-  _createClass(Spin, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.updateSpinning();
-    }
-  }, {
-    key: "componentDidUpdate",
-    value: function componentDidUpdate() {
-      this.debouncifyUpdateSpinning();
-      this.updateSpinning();
-    }
-  }, {
-    key: "componentWillUnmount",
-    value: function componentWillUnmount() {
-      this.cancelExistingSpin();
-    }
-  }, {
-    key: "cancelExistingSpin",
-    value: function cancelExistingSpin() {
-      var updateSpinning = this.updateSpinning;
-
-      if (updateSpinning && updateSpinning.cancel) {
-        updateSpinning.cancel();
-      }
-    }
-  }, {
-    key: "isNestedPattern",
-    value: function isNestedPattern() {
-      return !!(this.props && this.props.children);
-    }
-  }, {
+  _createClass(DropdownButton, [{
     key: "render",
     value: function render() {
-      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderSpin);
-    }
-  }], [{
-    key: "setDefaultIndicator",
-    value: function setDefaultIndicator(indicator) {
-      defaultIndicator = indicator;
+      return /*#__PURE__*/React.createElement(ConfigConsumer, null, this.renderButton);
     }
   }]);
 
-  return Spin;
+  return DropdownButton;
 }(React.Component);
-
-Spin.defaultProps = {
-  spinning: true,
-  size: 'default',
-  wrapperClassName: ''
-};
-Spin.propTypes = {
-  prefixCls: propTypesExports.string,
-  className: propTypesExports.string,
-  spinning: propTypesExports.bool,
-  size: propTypesExports.oneOf(SpinSizes),
-  wrapperClassName: propTypesExports.string,
-  indicator: propTypesExports.element
+DropdownButton.defaultProps = {
+  placement: 'bottomRight',
+  type: 'default'
 };
 
-export { Spin as S };
+Dropdown.Button = DropdownButton;

@@ -1,0 +1,1 @@
+export { default } from 'antd/es/statistic/index'

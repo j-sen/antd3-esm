@@ -6048,7 +6048,7 @@ var __rest = undefined && undefined.__rest || function (s, e) {
   return t;
 };
 
-Icon$1.add.apply(Icon$1, _toConsumableArray(Object.keys(allIcons).map(function (key) {
+Icon$1.add.apply(Icon$1, _toConsumableArray(Object.keys(allIcons).filter(function(k) {return k !== "default" && k !== '__proto__'}).map(function (key) {
   return allIcons[key];
 })));
 setTwoToneColor('#1890ff');
@@ -6135,4 +6135,4 @@ Icon.createFromIconfontCN = create;
 Icon.getTwoToneColor = getTwoToneColor;
 Icon.setTwoToneColor = setTwoToneColor;
 
-export { Icon as I, _inherits as _, _classCallCheck as a, _possibleConstructorReturn as b, _createClass as c, _defineProperty$1 as d, _extends$2 as e, _objectWithoutProperties as f, require_anObject as g, require_iterators as h, require_wks as i, require_objectDp as j, require_propertyDesc as k, require_cof as l, require_core as m, require_ctx as n, require_export as o, require_toObject as p, require_toLength as q, require_typeof as r, requireEs6_string_iterator as s };
+export { Icon as I, _inherits as _, _classCallCheck as a, _possibleConstructorReturn as b, _createClass as c, _defineProperty$1 as d, _extends$2 as e, _objectWithoutProperties as f, require_anObject as g, require_wks as h, require_iterators as i, require_objectDp as j, require_propertyDesc as k, require_cof as l, require_core as m, require_export as n, require_toObject as o, require_ctx as p, require_toLength as q, require_typeof as r, requireEs6_string_iterator as s, require_fails as t, require_objectGpo as u, require_toIobject as v, require_objectGopd as w };
