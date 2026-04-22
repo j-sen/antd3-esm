@@ -242,10 +242,6 @@ export const build = async () => {
                     return chunkName;
                 }
             }
-
-            if (posixPath.includes('/antd/es/config-provider') || posixPath.includes('/antd/es/config-provider')) {
-                return 'config-provider';
-            }
         },
         entryFileNames({ name, facadeModuleId }) {
             if (!facadeModuleId) {
